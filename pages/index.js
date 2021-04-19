@@ -2,7 +2,6 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 export default function Home (props) {
-  console.log('props:', props)
   return (
     <div className='container'>
       <Head>
