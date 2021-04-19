@@ -11,7 +11,7 @@ export default function Home (props) {
       </Head>
 
       <main>
-        <Link href='users/12345'>ddovn</Link>
+        <Link href='users/12345'>link</Link>
         <h1 className='text-5xl'>bubble gogo</h1>
         <ul>
           <li>hp</li>
