@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import UserPanel from '../features/user/UserPanel'
-import Axios from 'axios'
+import PartyPanel from '../features/party/PartyPanel'
 
 export default function Home (props) {
   return (
@@ -13,15 +13,7 @@ export default function Home (props) {
       <main>
         <h1 className='text-5xl'>bubble gogo</h1>
         <UserPanel />
-        <button onClick={() => {
-          Axios.post('/api/test').then(
-            res => {
-              console.log('res:', res)
-            }
-          )
-        }}
-        >test
-        </button>
+        <PartyPanel />
       </main>
 
     </div>
