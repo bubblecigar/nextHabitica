@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import UserPanel from '../features/user/UserPanel'
-import store from '../app/store'
-import { Provider } from 'react-redux'
+import Axios from 'axios'
 
 export default function Home (props) {
   return (
@@ -14,6 +13,15 @@ export default function Home (props) {
       <main>
         <h1 className='text-5xl'>bubble gogo</h1>
         <UserPanel />
+        <button onClick={() => {
+          Axios.post('/api/test').then(
+            res => {
+              console.log('res:', res)
+            }
+          )
+        }}
+        >test
+        </button>
       </main>
 
     </div>
