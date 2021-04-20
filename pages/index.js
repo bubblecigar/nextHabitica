@@ -1,5 +1,7 @@
 import Head from 'next/head'
-import Link from 'next/link'
+import UserPanel from '../features/user/UserPanel'
+import store from '../app/store'
+import { Provider } from 'react-redux'
 
 export default function Home (props) {
   return (
@@ -10,13 +12,8 @@ export default function Home (props) {
       </Head>
 
       <main>
-        <Link href='users/12345'>link</Link>
         <h1 className='text-5xl'>bubble gogo</h1>
-        <ul>
-          <li>hp</li>
-          <li>mp</li>
-          <li>other attrs</li>
-        </ul>
+        <UserPanel />
       </main>
 
     </div>
