@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchPartyMembers } from './partySlice'
+import { fetchPartyMembers, addPartyMember } from './partySlice'
 
 const PartyPanel = () => {
   const partyMembers = useSelector(state => state.party.members)
@@ -25,6 +25,11 @@ const PartyPanel = () => {
           )
         }
       </ul>
+      <button onClick={() => {
+        dispatch(addPartyMember())
+      }}
+      >add member
+      </button>
     </div>
   )
 }
