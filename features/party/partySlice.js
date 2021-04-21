@@ -8,8 +8,15 @@ const fetchPartyMembers = createAsyncThunk(
     return response.data
   }
 )
+const addPartyMember = createAsyncThunk(
+  'party/addPartyMember',
+  async () => {
+    const response = await Axios.post('/api/party/add')
+    return response.data
+  }
+)
 
-export { fetchPartyMembers }
+export { fetchPartyMembers, addPartyMember }
 
 export const partySlice = createSlice({
   name: 'party',
@@ -21,11 +28,13 @@ export const partySlice = createSlice({
     [fetchPartyMembers.fulfilled]: (state, action) => {
       console.log('action:', action)
       state.members = action.payload
+    },
+    [addPartyMember.fulfilled]: (state, action) => {
+      state.members = [...state.members, action.payload]
     }
   }
 })
-
 // Action creators are generated for each case reducer function
-export const { getAll } = partySlice.actions
+export const { actions } = partySlice.actions
 
 export default partySlice.reducer
