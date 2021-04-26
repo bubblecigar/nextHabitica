@@ -1,6 +1,6 @@
 import Router from 'next/router'
 
-export default function Home (props) {
+export default function Login (props) {
   const handleSubmit = async e => {
     e.preventDefault()
 
@@ -29,9 +29,9 @@ export default function Home (props) {
     <div>
       <form onSubmit={handleSubmit}>
         <label htmlFor='username'>user name</label>
-        <input type='text' id='username' name='username' />
+        <input type='text' id='username' name='username' required />
         <label htmlFor='password'>password</label>
-        <input type='text' id='password' name='password' />
+        <input type='text' id='password' name='password' required />
         <button type='submit'>submit</button>
       </form>
     </div>
