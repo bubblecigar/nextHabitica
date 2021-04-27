@@ -32,7 +32,7 @@ export default function Login (props) {
         <input type='text' id='username' name='username' required />
         <label htmlFor='password'>password</label>
         <input type='text' id='password' name='password' required />
-        <button type='submit'>submit</button>
+        <button type='submit'>log in</button>
       </form>
     </div>
   )
