@@ -8,6 +8,9 @@ export default function Home (props) {
       <main>
         index page
         currently logged in as { user?.user_name }
+        <div>
+          <a href='/api/logout'>logout</a>
+        </div>
       </main>
     </div>
   )
