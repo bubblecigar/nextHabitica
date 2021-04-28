@@ -1,10 +1,7 @@
 import { useState } from 'react'
-import Router from 'next/router'
-// import { useUser } from '../lib/hooks'
+import { login } from './LoginForm'
 
-const Signup = () => {
-  // useUser({ redirectTo: '/', redirectIfFound: true })
-
+const SignupForm = () => {
   const [errorMsg, setErrorMsg] = useState('')
 
   async function handleSubmit (e) {
@@ -29,7 +26,7 @@ const Signup = () => {
         body: JSON.stringify(body)
       })
       if (res.status === 200) {
-        Router.push('/')
+        await login(body)
       } else {
         throw new Error(await res.text())
       }
@@ -43,13 +40,14 @@ const Signup = () => {
     <div>
       <form onSubmit={handleSubmit}>
         <label htmlFor='username'>user name</label>
-        <input type='text' id='username' name='username' />
+        <input type='text' id='username' name='username' required />
         <label htmlFor='password'>password</label>
-        <input type='text' id='password' name='password' />
+        <input type='text' id='password' name='password' required />
         <button type='submit'>sign up</button>
       </form>
+      {errorMsg ? <span>{errorMsg}</span> : null}
     </div>
   )
 }
 
-export default Signup
+export default SignupForm
