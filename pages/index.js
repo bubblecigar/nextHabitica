@@ -1,21 +1,25 @@
-import Head from 'next/head'
-import UserPanel from '../features/user/UserPanel'
-import PartyPanel from '../features/party/PartyPanel'
+import { useUser } from '../lib/hooks'
+import SignupForm from '../components/SignupForm'
+import LoginForm from '../components/LoginForm'
 
 export default function Home (props) {
-  return (
-    <div className='container'>
-      <Head>
-        <title>Create Next App ？？？</title>
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
+  const user = useUser()
 
-      <main>
-        <h1 className='text-5xl'>bubble gogo</h1>
-        <UserPanel />
-        <PartyPanel />
-      </main>
-
-    </div>
-  )
+  if (user === undefined) {
+    return <div>loading...</div>
+  } else if (user === null) {
+    return (
+      <>
+        <SignupForm />
+        <LoginForm />
+      </>
+    )
+  } else {
+    return (
+      <>
+        <div>currently login as { user?.user_name }</div>
+        <a href='/api/logout'>logout</a>
+      </>
+    )
+  }
 }

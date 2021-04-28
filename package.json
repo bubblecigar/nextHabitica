@@ -8,17 +8,25 @@
     "start": "next start"
   },
   "dependencies": {
+    "@hapi/iron": "^6.0.0",
     "@reduxjs/toolkit": "^1.5.1",
     "axios": "^0.21.1",
+    "cookie": "^0.4.1",
+    "crypto": "^1.0.1",
     "dgram": "^1.0.1",
     "dns": "^0.2.2",
     "next": "^10.0.0",
+    "next-connect": "^0.10.1",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
     "pg": "^8.6.0",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-preset-env": "^6.7.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "react-redux": "^7.2.3"
+    "react-redux": "^7.2.3",
+    "swr": "^0.5.5",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.2.5",
