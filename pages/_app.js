@@ -6,13 +6,7 @@ import Link from 'next/link'
 export default function App ({ Component, pageProps }) {
   return (
     <Provider store={store}>
-      <Link href='/'>index</Link>
-      <Link href='/signup'>signup</Link>
-      <Link href='/login'>login</Link>
-      <Link href='/user'>user</Link>
-      <Link href='/tasks'>tasks</Link>
-      <Link href='/shop'>shop</Link>
-      <Link href='/part'>party</Link>
+      <Link href='/'>Account</Link>
       <Component {...pageProps} />
     </Provider>)
 }
