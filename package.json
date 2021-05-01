@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@hapi/iron": "^6.0.0",
+    "@headlessui/react": "^1.1.1",
     "@heroicons/react": "^1.0.1",
     "@reduxjs/toolkit": "^1.5.1",
     "axios": "^0.21.1",
