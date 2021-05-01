@@ -2,7 +2,7 @@ import { Fragment } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+import { MinusSmIcon, PlusIcon } from '@heroicons/react/solid'
 import { useUser } from '../lib/hooks'
 
 const navigation = ['Sleep', 'Eat', 'Exercise']
@@ -57,13 +57,13 @@ const NavigationBar = () => {
                       {({ open }) => (
                         <>
                           <div>
-                            <Menu.Button className='max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'>
-                              <span className='sr-only'>Open user menu</span>
-                              <img
-                                className='h-8 w-8 rounded-full'
-                                src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-                                alt=''
-                              />
+                            <Menu.Button className='max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none'>
+                              <span className='text-gray-300 px-3 py-2 rounded-md text-sm font-medium'>{user ? user.user_name : ''}</span>
+                              {
+                                open
+                                  ? <MinusSmIcon className='text-gray-300 h-5 w-5' />
+                                  : <PlusIcon className='text-gray-300 h-5 w-5' />
+                              }
                             </Menu.Button>
                           </div>
                           <Transition
@@ -78,7 +78,7 @@ const NavigationBar = () => {
                           >
                             <Menu.Items
                               static
-                              className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'
+                              className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 outline-none'
                             >
                               <Menu.Item>
                                 {({ active }) => (
