@@ -14,7 +14,7 @@ export default function Home (props) {
     return (
       <>
         <div>currently login as { user?.user_name }</div>
-          <a href='/api/logout'>logout</a>
+        <a href='/api/logout'>logout</a>
       </>
     )
   }
