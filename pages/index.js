@@ -1,6 +1,5 @@
 import { useUser } from '../lib/hooks'
-import SignupForm from '../components/SignupForm'
-import LoginForm from '../components/LoginForm'
+import AccountForm from '../components/AccountForm'
 
 export default function Home (props) {
   const user = useUser()
@@ -9,10 +8,7 @@ export default function Home (props) {
     return <div>loading...</div>
   } else if (user === null) {
     return (
-      <>
-        <SignupForm />
-        <LoginForm />
-      </>
+        <AccountForm />
     )
   } else {
     return (
