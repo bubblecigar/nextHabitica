@@ -7,10 +7,6 @@ import { useUser } from '../lib/hooks'
 
 const navigation = ['Sleep', 'Eat', 'Exercise']
 
-function classNames (...classes) {
-  return classes.filter(Boolean).join(' ')
-}
-
 const unSelectedPage = 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
 const selectedPage = 'bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium'
 
@@ -84,10 +80,11 @@ const NavigationBar = () => {
                                 {({ active }) => (
                                   <a
                                     href='/api/logout'
-                                    className={classNames(
-                                      active ? 'bg-gray-100' : '',
-                                      'block px-4 py-2 text-sm text-gray-700'
-                                    )}
+                                    className={
+                                      active
+                                        ? 'bg-gray-100'
+                                        : 'bg-gray-100 block px-4 py-2 text-sm text-gray-700'
+                                    }
                                   >
                                     Log out
                                   </a>
