@@ -2,6 +2,7 @@ import React from 'react'
 import { useSleep } from '../lib/hooks'
 import { format } from 'date-fns-tz'
 import zhTWLocale from 'date-fns/locale/zh-TW'
+import { PlusCircleIcon } from '@heroicons/react/solid'
 
 export default function Sleep (props) {
   const sleep = useSleep()
@@ -85,6 +86,11 @@ export default function Sleep (props) {
                     </td>
                   </tr>
                 ))}
+                <tr>
+                  <td colSpan='5' className='px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500  text-indigo-300'>
+                    <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
