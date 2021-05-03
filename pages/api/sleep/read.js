@@ -6,6 +6,7 @@ const readSleepRows = async (userId) => {
     db.query(`
       SELECT * FROM sleep
       WHERE user_id = $1
+      ORDER BY start DESC
     `
     , [userId]
     , (err, dbRes) => {
