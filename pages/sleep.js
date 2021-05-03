@@ -1,4 +1,5 @@
 import React from 'react'
+import { mutate } from 'swr'
 import { useSleep } from '../lib/hooks'
 import { format } from 'date-fns-tz'
 import zhTWLocale from 'date-fns/locale/zh-TW'
@@ -6,6 +7,14 @@ import { PlusCircleIcon } from '@heroicons/react/solid'
 
 export default function Sleep (props) {
   const sleep = useSleep()
+
+  const onCreate = async () => {
+    await window.fetch('/api/sleep/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    })
+    mutate('/api/sleep/read')
+  }
 
   return (
     <div className='flex flex-col'>
@@ -87,7 +96,7 @@ export default function Sleep (props) {
                   </tr>
                 ))}
                 <tr>
-                  <td colSpan='5' className='px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500  text-indigo-300'>
+                  <td colSpan='5' className='px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500  text-indigo-300' onClick={onCreate}>
                     <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
                   </td>
                 </tr>
