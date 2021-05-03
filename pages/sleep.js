@@ -1,16 +1,10 @@
 import React from 'react'
 import { useSleep } from '../lib/hooks'
-
-const people = [{}, {}]
+import { format } from 'date-fns-tz'
+import zhTWLocale from 'date-fns/locale/zh-TW'
 
 export default function Sleep (props) {
   const sleep = useSleep()
-  console.log('sleep:', sleep)
-
-  React.useEffect(() => {
-    const s = sleep[0]?.start
-    console.log('s:', Date(s))
-  }, [sleep])
 
   return (
     <div className='flex flex-col'>
@@ -53,21 +47,35 @@ export default function Sleep (props) {
                 {sleep.map((sl) => (
                   <tr key={sl.sleep_id}>
                     <td className='px-6 py-4 whitespace-nowrap'>
-                      <div className='flex items-center'>
-                        <div className='flex-shrink-0 h-10 w-10'>
-                          Date
-                        </div>
+                      <div className='text-sm text-gray-900'>
+                        {
+                          sl.start
+                            ? format(new Date(sl.start), 'MMMdo cccc', {
+                              locale: zhTWLocale
+                            })
+                            : '-'
+                        }
                       </div>
                     </td>
                     <td className='px-6 py-4 whitespace-nowrap'>
-                      <div className='text-sm text-gray-900'>{sl.start}</div>
+                      <div className='text-sm text-gray-900'>
+                        {
+                          sl.start
+                            ? format(new Date(sl.start), 'HH:mm:ss', {
+                              locale: zhTWLocale
+                            })
+                            : '-'
+                        }
+                      </div>
                     </td>
                     <td className='px-6 py-4 whitespace-nowrap'>
-                      <div className='text-sm text-gray-900'>{sl.end}</div>
+                      <div className='text-sm text-gray-900'>
+                        {sl.end ? format(new Date(sl.end), 'HH:mm:ss') : '-'}
+                      </div>
                     </td>
                     <td className='px-6 py-4 whitespace-nowrap'>
                       <span className='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800'>
-                        Total
+                        {(sl.start && sl.end) ? '?' : '-'}
                       </span>
                     </td>
                     <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
