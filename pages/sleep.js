@@ -1,11 +1,14 @@
 import React from 'react'
 import { mutate } from 'swr'
 import { useSleep } from '../lib/hooks'
+import intervalToDuration from 'date-fns/intervalToDuration'
 import { format } from 'date-fns-tz'
 import zhTWLocale from 'date-fns/locale/zh-TW'
 import { PlusCircleIcon } from '@heroicons/react/solid'
 
 const SleepEditor = (sl) => {
+  const duration = intervalToDuration({ start: new Date(sl.start), end: new Date(sl.end) })
+  console.log('duration:', duration)
   return (
     <tr key={sl.sleep_id}>
       <td className='px-6 py-4 whitespace-nowrap'>
@@ -37,7 +40,7 @@ const SleepEditor = (sl) => {
       </td>
       <td className='px-6 py-4 whitespace-nowrap'>
         <span className='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800'>
-          {(sl.start && sl.end) ? '?' : '-'}
+          {sl.start && sl.end ? `${duration.hours}hr ${duration.minutes}min` : ''}
         </span>
       </td>
       <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
