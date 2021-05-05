@@ -8,7 +8,7 @@ import { PlusCircleIcon } from '@heroicons/react/solid'
 
 const SleepEditor = (sl) => {
   const duration = intervalToDuration({ start: new Date(sl.start), end: new Date(sl.end) })
-  console.log('duration:', duration)
+
   return (
     <tr key={sl.sleep_id}>
       <td className='px-6 py-4 whitespace-nowrap'>
