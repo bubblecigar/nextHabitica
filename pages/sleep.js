@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
-import { SelectorIcon, PlusCircleIcon } from '@heroicons/react/solid'
+import { PlusCircleIcon } from '@heroicons/react/solid'
 import { mutate } from 'swr'
 import { useSleep } from '../lib/hooks'
 import intervalToDuration from 'date-fns/intervalToDuration'
@@ -103,7 +103,7 @@ const DatePicker = ({ value, onChange }) => {
   )
 
   return (
-    <div className='grid grid-cols-11 gap-4'>
+    <div className='grid grid-cols-11 gap-4 '>
       <SelectBox
         label='年'
         className='col-span-3'
@@ -193,7 +193,9 @@ const SleepEditor = (sl, setEditId) => {
   return (
     <tr key={sl.sleep_id}>
       <td colSpan='4' className='px-6 py-4 whitespace-nowrap text-sm font-medium'>
+        <div className='mb-2'>睡眠起始</div>
         <DatePicker value={new Date()} onChange={() => {}} />
+        <div className='mb-2 mt-3'>睡眠結束</div>
         <DatePicker value={new Date()} onChange={() => {}} />
       </td>
       <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
