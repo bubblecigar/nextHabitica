@@ -12,19 +12,18 @@ function classNames (...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const SelectBox = ({ value, onChange, label = '', options = [] }) => {
+const SelectBox = ({ value, onChange, label = '', options = [], className = '' }) => {
   return (
-    <Listbox value={value} onChange={onChange}>
+    <Listbox value={value} onChange={onChange} className={className}>
       {({ open }) => (
         <div>
-          <Listbox.Label className='block text-sm font-medium text-gray-700'>{label}</Listbox.Label>
           <div className='mt-1 relative'>
-            <Listbox.Button className='relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'>
-              <span className='flex items-center ml-3 block truncate'>
+            <Listbox.Button className='relative w-full bg-white border border-gray-300 rounded-md shadow-sm p-1 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'>
+              <span className='flex items-center ml-2 block truncate'>
                 {value}
               </span>
               <span className='ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>
-                <SelectorIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
+                {label}
               </span>
             </Listbox.Button>
             <Transition
@@ -43,7 +42,7 @@ const SelectBox = ({ value, onChange, label = '', options = [] }) => {
                     key={option}
                     className={({ active }) => classNames(
                       active ? 'text-white bg-indigo-600' : 'text-gray-900',
-                      'cursor-default select-none relative p-2'
+                      'cursor-default select-none relative p-1'
                     )}
                     value={option}
                   >
@@ -51,7 +50,7 @@ const SelectBox = ({ value, onChange, label = '', options = [] }) => {
                       <>
                         <div className='flex items-center'>
                           <span
-                            className='ml-3 block truncate'
+                            className='ml-2 block truncate'
                           >
                             {option}
                           </span>
@@ -104,34 +103,38 @@ const DatePicker = ({ value, onChange }) => {
   )
 
   return (
-    <div className='grid grid-cols-7 gap-4'>
-      <div />
+    <div className='grid grid-cols-11 gap-4'>
       <SelectBox
-        label='Year'
+        label='年'
+        className='col-span-3'
         value={year}
         onChange={setYear}
         options={yearOptions}
       />
       <SelectBox
-        label='Month'
+        label='月'
+        className='col-span-2'
         value={month}
         onChange={setMonth}
         options={monthOptions}
       />
       <SelectBox
-        label='Date'
+        label='日'
+        className='col-span-2'
         value={date}
         onChange={setDate}
         options={dateOptions}
       />
       <SelectBox
-        label='Hour'
+        label='時'
+        className='col-span-2'
         value={hour}
         onChange={setHour}
         options={hourOptions}
       />
       <SelectBox
-        label='Minute'
+        label='分'
+        className='col-span-2'
         value={minute}
         onChange={setMinute}
         options={minuteOptions}
@@ -140,7 +143,7 @@ const DatePicker = ({ value, onChange }) => {
   )
 }
 
-const SleepRow = sl => {
+const SleepRow = (sl, setEditId) => {
   const duration = intervalToDuration({ start: new Date(sl.start), end: new Date(sl.end) })
 
   return (
@@ -178,8 +181,27 @@ const SleepRow = sl => {
         </span>
       </td>
       <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
-        <a href='#' className='text-indigo-600 hover:text-indigo-900'>
+        <a onClick={() => setEditId(sl.sleep_id)} className='text-indigo-600 hover:text-indigo-900 cursor-pointer'>
             Edit
+        </a>
+      </td>
+    </tr>
+  )
+}
+
+const SleepEditor = (sl, setEditId) => {
+  return (
+    <tr key={sl.sleep_id}>
+      <td colSpan='4' className='px-6 py-4 whitespace-nowrap text-sm font-medium'>
+        <DatePicker value={new Date()} onChange={() => {}} />
+        <DatePicker value={new Date()} onChange={() => {}} />
+      </td>
+      <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
+        <a onClick={() => (sl.sleep_id)} className='text-indigo-600 hover:text-indigo-900 cursor-pointer block py-4'>
+          Save
+        </a>
+        <a onClick={() => setEditId(null)} className='text-indigo-600 hover:text-indigo-900 cursor-pointer block py-4'>
+          Cancel
         </a>
       </td>
     </tr>
@@ -196,6 +218,8 @@ export default function Sleep (props) {
     })
     mutate('/api/sleep/read')
   }
+
+  const [editId, setEditId] = React.useState(null)
 
   return (
     <div className='flex flex-col'>
@@ -235,7 +259,9 @@ export default function Sleep (props) {
                 </tr>
               </thead>
               <tbody className='bg-white divide-y divide-gray-200'>
-                {sleep.map(sl => SleepRow(sl))}
+                {sleep.map(sl => sl.sleep_id === editId
+                  ? SleepEditor(sl, setEditId)
+                  : SleepRow(sl, setEditId))}
                 <tr>
                   <td colSpan='5' className='px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500  text-indigo-300' onClick={onCreate}>
                     <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
