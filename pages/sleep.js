@@ -140,7 +140,7 @@ const DatePicker = ({ value, onChange }) => {
   )
 }
 
-const SleepRow = (sl) => {
+const SleepRow = sl => {
   const duration = intervalToDuration({ start: new Date(sl.start), end: new Date(sl.end) })
 
   return (
