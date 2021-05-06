@@ -70,7 +70,11 @@ const SelectBox = ({ value, onChange, label = '', options = [], className = '' }
 
 const DatePicker = ({ value, onChange }) => {
   const [year, setYear] = useState(value.getFullYear())
-  const yearOptions = [2020, 2021, 2022] //  todo: dynamic gen
+  const yearOptions = React.useMemo(() => {
+    const _year = value.getFullYear()
+    const yearOptions = [_year - 2, _year - 1, _year, _year + 1, _year + 2]
+    return yearOptions
+  }, [value])
   const [month, setMonth] = useState(value.getMonth() + 1)
   const monthOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
   const [date, setDate] = useState(value.getDate())
