@@ -196,19 +196,15 @@ const SleepRow = (sl, setEditId) => {
 const SleepEditor = (sl, setEditId) => {
   return (
     <tr key={sl.sleep_id}>
-      <td colSpan='4' className='px-6 py-4 whitespace-nowrap text-sm font-medium'>
+      <td colSpan='5' className='px-6 py-4 whitespace-nowrap text-sm font-medium'>
         <div className='mb-2'>睡眠起始</div>
         <DatePicker value={new Date()} onChange={() => {}} />
         <div className='mb-2 mt-3'>睡眠結束</div>
         <DatePicker value={new Date()} onChange={() => {}} />
-      </td>
-      <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
-        <a onClick={() => (sl.sleep_id)} className='text-indigo-600 hover:text-indigo-900 cursor-pointer block py-4'>
-          Save
-        </a>
-        <a onClick={() => setEditId(null)} className='text-indigo-600 hover:text-indigo-900 cursor-pointer block py-4'>
-          Cancel
-        </a>
+        <div className='text-right mt-5'>
+          <a onClick={() => (sl.sleep_id)} className='text-indigo-600 hover:text-indigo-900 cursor-pointer mr-4'>Save</a>
+          <a onClick={() => setEditId(null)} className='text-indigo-600 hover:text-indigo-900 cursor-pointer'>Cancel</a>
+        </div>
       </td>
     </tr>
   )
