@@ -107,7 +107,8 @@ const DatePicker = ({ value, onChange }) => {
   )
 
   return (
-    <div className='grid grid-cols-11 gap-4 '>
+    <div className='grid grid-cols-12 gap-4 '>
+      <div />
       <SelectBox
         label='年'
         className='col-span-3'
