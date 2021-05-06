@@ -202,8 +202,8 @@ const SleepEditor = (sl, setEditId) => {
         <div className='mb-2 mt-3'>睡眠結束</div>
         <DatePicker value={new Date()} onChange={() => {}} />
         <div className='text-right mt-5'>
-          <a onClick={() => (sl.sleep_id)} className='text-indigo-600 hover:text-indigo-900 cursor-pointer mr-4'>Save</a>
-          <a onClick={() => setEditId(null)} className='text-indigo-600 hover:text-indigo-900 cursor-pointer'>Cancel</a>
+          <a onClick={() => (sl.sleep_id)} className='text-indigo-600 hover:text-indigo-900 cursor-pointer mr-4 font-bold'>Save</a>
+          <a onClick={() => setEditId(null)} className='text-indigo-600 hover:text-indigo-900 cursor-pointer font-bold'>Cancel</a>
         </div>
       </td>
     </tr>
