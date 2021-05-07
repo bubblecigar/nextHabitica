@@ -241,10 +241,25 @@ const SleepEditor = ({ sl, setEditId }) => {
         <DatePicker value={start} onChange={setStart} />
         <div className='mb-2 mt-3'>睡眠結束</div>
         <DatePicker value={end} onChange={setEnd} />
-        <div className='text-right mt-5'>
-          <a onClick={onUpdate} className='text-indigo-600 hover:text-indigo-900 cursor-pointer mr-4 font-bold'>Save</a>
-          <a onClick={onDelete} className='text-indigo-600 hover:text-indigo-900 cursor-pointer mr-4 font-bold'>Delete</a>
-          <a onClick={() => setEditId(null)} className='text-indigo-600 hover:text-indigo-900 cursor-pointer font-bold'>Cancel</a>
+        <div className='mt-5 flex justify-end'>
+          <button
+            className='my-2 relative flex justify-center m-1 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none'
+            onClick={onUpdate}
+          >
+            Save
+          </button>
+          <button
+            className='my-2 relative flex justify-center my-1 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-400 hover:bg-red-500 focus:outline-none'
+            onClick={onDelete}
+          >
+            Delete
+          </button>
+          <button
+            className='my-2 relative flex justify-center my-1 py-1 pl-2 border border-transparent text-sm font-medium rounded-md text-indigo-600 hover:text-indigo-900 focus:outline-none'
+            onClick={() => setEditId(null)}
+          >
+            Cancel
+          </button>
         </div>
       </td>
     </tr>
