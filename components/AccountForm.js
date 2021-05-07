@@ -58,7 +58,7 @@ export default function AccountForm (props) {
   }
 
   return (
-    <div className='max-w-md w-full space-y-8'>
+    <div className='max-w-md w-full space-y-8 my-auto'>
       <div>
         <img
           className='mx-auto h-12 w-auto'
