@@ -4,11 +4,11 @@ import { getUserFromLoginSession } from '../user'
 const createSleepRow = async (userId) => {
   return new Promise((resolve, reject) => {
     db.query(`
-      INSERT INTO sleep(user_id, start)
-      VALUES ($1, $2)
+      INSERT INTO sleep(user_id, start, "end")
+      VALUES ($1, $2, $3)
       RETURNING *
     `
-    , [userId, new Date()]
+    , [userId, new Date(), new Date()]
     , (err, dbRes) => {
       if (err) {
         console.log('sleep/create err:', err)
