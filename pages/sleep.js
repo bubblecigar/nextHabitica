@@ -1,11 +1,12 @@
 import React, { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
-import { PlusCircleIcon } from '@heroicons/react/solid'
+import { PlusCircleIcon, ExclamationCircleIcon } from '@heroicons/react/solid'
 import { mutate } from 'swr'
 import { useSleep } from '../lib/hooks'
 import intervalToDuration from 'date-fns/intervalToDuration'
 import eachDayOfInterval from 'date-fns/eachDayOfInterval'
 import { format } from 'date-fns-tz'
+import isBefore from 'date-fns/isBefore'
 import zhTWLocale from 'date-fns/locale/zh-TW'
 
 function classNames (...classes) {
@@ -151,7 +152,7 @@ const DatePicker = ({ value, onChange }) => {
 const SleepRow = ({ sl, setEditId }) => {
   const { years, months, days, hours, minutes } = intervalToDuration({ start: new Date(sl.start), end: new Date(sl.end) })
   const validDuration = years === 0 && months === 0 && days === 0
-
+  const validOrder = isBefore(new Date(sl.start), new Date(sl.end))
   return (
     <tr key={sl.sleep_id}>
       <td className='px-6 py-4 whitespace-nowrap'>
@@ -181,10 +182,22 @@ const SleepRow = ({ sl, setEditId }) => {
           {sl.end ? format(new Date(sl.end), 'HH:mm') : '-'}
         </div>
       </td>
-      <td className='px-6 py-4 whitespace-nowrap'>
-        <span className='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800'>
-          {validDuration ? `${hours}hr ${minutes}min` : 'Invalid'}
-        </span>
+      <td className='px-6 py-4 whitespace-nowrap  text-center'>
+        {
+          (validDuration && validOrder)
+            ? (
+              <span className='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800'>
+                {`${hours}hr ${minutes}min`}
+              </span>
+            )
+            : (
+              <span className='px-2 inline-flex text-red-400 text-xs'>
+                <ExclamationCircleIcon className='mx-auto h-4 w-4 mr-1' aria-hidden='true' />
+                {validOrder ? 'Over 24hr' : 'End before start'}
+              </span>
+            )
+
+        }
       </td>
       <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
         <a onClick={() => setEditId(sl.sleep_id)} className='text-indigo-600 hover:text-indigo-900 cursor-pointer'>
@@ -279,7 +292,7 @@ export default function Sleep (props) {
                   </th>
                   <th
                     scope='col'
-                    className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                    className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
                     Total
                   </th>
