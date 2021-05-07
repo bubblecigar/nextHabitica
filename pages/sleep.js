@@ -148,7 +148,7 @@ const DatePicker = ({ value, onChange }) => {
   )
 }
 
-const SleepRow = (sl, setEditId) => {
+const SleepRow = ({ sl, setEditId }) => {
   const duration = intervalToDuration({ start: new Date(sl.start), end: new Date(sl.end) })
 
   return (
@@ -194,16 +194,30 @@ const SleepRow = (sl, setEditId) => {
   )
 }
 
-const SleepEditor = (sl, setEditId) => {
+const SleepEditor = ({ sl, setEditId }) => {
+  const [start, setStart] = React.useState(sl.start ? new Date(sl.start) : new Date())
+  const [end, setEnd] = React.useState(sl.end ? new Date(sl.end) : new Date())
+
+  const onUpdate = async () => {
+    const body = { start, end, sleepId: sl.sleep_id }
+    await window.fetch('/api/sleep/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    mutate('/api/sleep/read')
+    setEditId(null)
+  }
+
   return (
     <tr key={sl.sleep_id}>
       <td colSpan='5' className='px-6 py-4 whitespace-nowrap text-sm font-medium'>
         <div className='mb-2'>睡眠起始</div>
-        <DatePicker value={new Date()} onChange={() => {}} />
+        <DatePicker value={start} onChange={setStart} />
         <div className='mb-2 mt-3'>睡眠結束</div>
-        <DatePicker value={new Date()} onChange={() => {}} />
+        <DatePicker value={end} onChange={setEnd} />
         <div className='text-right mt-5'>
-          <a onClick={() => (sl.sleep_id)} className='text-indigo-600 hover:text-indigo-900 cursor-pointer mr-4 font-bold'>Save</a>
+          <a onClick={onUpdate} className='text-indigo-600 hover:text-indigo-900 cursor-pointer mr-4 font-bold'>Save</a>
           <a onClick={() => setEditId(null)} className='text-indigo-600 hover:text-indigo-900 cursor-pointer font-bold'>Cancel</a>
         </div>
       </td>
@@ -263,8 +277,9 @@ export default function Sleep (props) {
               </thead>
               <tbody className='bg-white divide-y divide-gray-200'>
                 {sleep.map(sl => sl.sleep_id === editId
-                  ? SleepEditor(sl, setEditId)
-                  : SleepRow(sl, setEditId))}
+                  ? <SleepEditor key={sl.sleep_id} sl={sl} setEditId={setEditId} />
+                  : <SleepRow key={sl.sleep_id} sl={sl} setEditId={setEditId} />
+                )}
                 <tr>
                   <td colSpan='5' className='px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500  text-indigo-300' onClick={onCreate}>
                     <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
