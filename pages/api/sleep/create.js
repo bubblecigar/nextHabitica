@@ -14,7 +14,7 @@ const createSleepRow = async (userId) => {
         console.log('sleep/create err:', err)
         reject(err)
       } else {
-        resolve(dbRes)
+        resolve(dbRes.rows[0])
       }
     })
   })
@@ -23,8 +23,8 @@ const createSleepRow = async (userId) => {
 export default async function create (req, res) {
   try {
     const user = await getUserFromLoginSession(req)
-    await createSleepRow(user.user_id)
-    res.status(200).send({ done: true })
+    const createdRow = await createSleepRow(user.user_id)
+    res.status(200).send({ done: true, sleepId: createdRow.sleep_id })
   } catch (error) {
 
   }

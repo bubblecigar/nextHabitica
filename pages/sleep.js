@@ -255,10 +255,12 @@ export default function Sleep (props) {
   const sleep = useSleep()
 
   const onCreate = async () => {
-    await window.fetch('/api/sleep/create', {
+    const res = await window.fetch('/api/sleep/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
     })
+    const { sleepId } = await res.json()
+    setEditId(sleepId)
     mutate('/api/sleep/read')
   }
 
