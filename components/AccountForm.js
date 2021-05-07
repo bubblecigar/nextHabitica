@@ -3,13 +3,13 @@ import { LockClosedIcon } from '@heroicons/react/solid'
 
 export const login = async body => {
   try {
-    const res = await fetch('api/login', {
+    const res = await window.fetch('api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
     if (res.status === 200) {
-      location.reload()
+      window.location.reload()
     } else {
       throw new Error(await res.text())
     }
@@ -21,7 +21,7 @@ export const login = async body => {
 
 export const signup = async body => {
   try {
-    const res = await fetch('/api/signup', {
+    const res = await window.fetch('/api/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
