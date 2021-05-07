@@ -149,7 +149,8 @@ const DatePicker = ({ value, onChange }) => {
 }
 
 const SleepRow = ({ sl, setEditId }) => {
-  const duration = intervalToDuration({ start: new Date(sl.start), end: new Date(sl.end) })
+  const { years, months, days, hours, minutes } = intervalToDuration({ start: new Date(sl.start), end: new Date(sl.end) })
+  const validDuration = years === 0 && months === 0 && days === 0
 
   return (
     <tr key={sl.sleep_id}>
@@ -182,7 +183,7 @@ const SleepRow = ({ sl, setEditId }) => {
       </td>
       <td className='px-6 py-4 whitespace-nowrap'>
         <span className='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800'>
-          {sl.start && sl.end ? `${duration.hours}hr ${duration.minutes}min` : ''}
+          {validDuration ? `${hours}hr ${minutes}min` : 'Invalid'}
         </span>
       </td>
       <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
