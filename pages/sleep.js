@@ -210,6 +210,17 @@ const SleepEditor = ({ sl, setEditId }) => {
     setEditId(null)
   }
 
+  const onDelete = async () => {
+    const body = { sleepId: sl.sleep_id }
+    await window.fetch('/api/sleep/delete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    mutate('/api/sleep/read')
+    setEditId(null)
+  }
+
   return (
     <tr key={sl.sleep_id}>
       <td colSpan='5' className='px-6 py-4 whitespace-nowrap text-sm font-medium'>
@@ -219,6 +230,7 @@ const SleepEditor = ({ sl, setEditId }) => {
         <DatePicker value={end} onChange={setEnd} />
         <div className='text-right mt-5'>
           <a onClick={onUpdate} className='text-indigo-600 hover:text-indigo-900 cursor-pointer mr-4 font-bold'>Save</a>
+          <a onClick={onDelete} className='text-indigo-600 hover:text-indigo-900 cursor-pointer mr-4 font-bold'>Delete</a>
           <a onClick={() => setEditId(null)} className='text-indigo-600 hover:text-indigo-900 cursor-pointer font-bold'>Cancel</a>
         </div>
       </td>
