@@ -149,12 +149,21 @@ const DatePicker = ({ value, onChange }) => {
   )
 }
 
-const SleepRow = ({ sl, setEditId }) => {
+const SleepRow = ({ sl, setEditId, hint, setHintId }) => {
   const { years, months, days, hours, minutes } = intervalToDuration({ start: new Date(sl.start), end: new Date(sl.end) })
   const validDuration = years === 0 && months === 0 && days === 0
   const validOrder = isBefore(new Date(sl.start), new Date(sl.end))
+
+  React.useEffect(
+    () => {
+      setTimeout(
+        () => setHintId(null), 50
+      )
+    }, []
+  )
+
   return (
-    <tr key={sl.sleep_id}>
+    <tr key={sl.sleep_id} className={hint ? 'transition-colors duration-1000 bg-gray-100' : 'transition-colors duration-1000'}>
       <td className='px-6 py-4 whitespace-nowrap'>
         <div className='text-sm text-gray-900'>
           {
@@ -208,7 +217,7 @@ const SleepRow = ({ sl, setEditId }) => {
   )
 }
 
-const SleepEditor = ({ sl, setEditId }) => {
+const SleepEditor = ({ sl, setEditId, setHintId }) => {
   const [start, setStart] = React.useState(sl.start ? new Date(sl.start) : new Date())
   const [end, setEnd] = React.useState(sl.end ? new Date(sl.end) : new Date())
 
@@ -221,6 +230,7 @@ const SleepEditor = ({ sl, setEditId }) => {
     })
     mutate('/api/sleep/read')
     setEditId(null)
+    setHintId(sl.sleep_id)
   }
 
   const onDelete = async () => {
@@ -280,6 +290,7 @@ export default function Sleep (props) {
   }
 
   const [editId, setEditId] = React.useState(null)
+  const [hintId, setHintId] = React.useState(null)
 
   return (
     <div className='flex flex-col'>
@@ -320,8 +331,8 @@ export default function Sleep (props) {
               </thead>
               <tbody className='bg-white divide-y divide-gray-200'>
                 {sleep.map(sl => sl.sleep_id === editId
-                  ? <SleepEditor key={sl.sleep_id} sl={sl} setEditId={setEditId} />
-                  : <SleepRow key={sl.sleep_id} sl={sl} setEditId={setEditId} />
+                  ? <SleepEditor key={sl.sleep_id} sl={sl} setEditId={setEditId} setHintId={setHintId} />
+                  : <SleepRow key={sl.sleep_id} sl={sl} setEditId={setEditId} setHintId={setHintId} hint={hintId === sl.sleep_id} />
                 )}
                 <tr>
                   <td colSpan='5' className='px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500  text-indigo-300' onClick={onCreate}>
