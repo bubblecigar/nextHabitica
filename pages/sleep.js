@@ -296,35 +296,38 @@ export default function Sleep (props) {
     <div className='flex flex-col'>
       <div className='-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
         <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
-          <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg'>
+          <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg overflow-y-auto h-96'>
             <table className='min-w-full divide-y divide-gray-200'>
-              <thead className='bg-gray-50'>
-                <tr>
+              <thead className='sticky top-0'>
+                <tr className='sticky top-0'>
                   <th
                     scope='col'
-                    className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
                     Date
                   </th>
                   <th
                     scope='col'
-                    className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
                     Start
                   </th>
                   <th
                     scope='col'
-                    className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
                     End
                   </th>
                   <th
                     scope='col'
-                    className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                    className='bg-gray-50 sticky top-0 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
                     Total
                   </th>
-                  <th scope='col' className='relative px-6 py-3'>
+                  <th
+                    scope='col'
+                    className='bg-gray-50 sticky top-0 relative px-6 py-3'
+                  >
                     <span className='sr-only'>Edit</span>
                   </th>
                 </tr>
@@ -334,13 +337,11 @@ export default function Sleep (props) {
                   ? <SleepEditor key={sl.sleep_id} sl={sl} setEditId={setEditId} setHintId={setHintId} />
                   : <SleepRow key={sl.sleep_id} sl={sl} setEditId={setEditId} setHintId={setHintId} hint={hintId === sl.sleep_id} />
                 )}
-                <tr>
-                  <td colSpan='5' className='px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500  text-indigo-300' onClick={onCreate}>
-                    <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
-                  </td>
-                </tr>
               </tbody>
             </table>
+          </div>
+          <div colSpan='5' className='bg-gray-50 px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300' onClick={onCreate}>
+            <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
           </div>
         </div>
       </div>
