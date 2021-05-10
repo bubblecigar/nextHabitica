@@ -257,7 +257,7 @@ const SleepEditor = ({ sl, setHintId, setOpen, scrollRef }) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
-    mutate('/api/sleep/read', sleep.filter(s => s.sleep_id === sl.sleep_id ? null : s))
+    mutate('/api/sleep/read', sleep.map(s => s.sleep_id === sl.sleep_id ? null : s))
     setHintId(sl.sleep_id)
     setTimeout(() => {
       setHintId(null)
