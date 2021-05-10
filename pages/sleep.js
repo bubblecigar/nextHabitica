@@ -149,21 +149,18 @@ const DatePicker = ({ value, onChange }) => {
   )
 }
 
-const SleepRow = ({ sl, setEditSl, hint, setHintId, setOpen }) => {
+const SleepRow = ({ sl, setEditSl, hintId, setOpen }) => {
   const { years, months, days, hours, minutes } = intervalToDuration({ start: new Date(sl.start), end: new Date(sl.end) })
   const validDuration = years === 0 && months === 0 && days === 0
   const validOrder = isBefore(new Date(sl.start), new Date(sl.end))
 
-  React.useEffect(
-    () => {
-      setTimeout(
-        () => setHintId(null), 50
-      )
-    }, []
-  )
-
   return (
-    <tr key={sl.sleep_id} className={hint ? 'transition-colors duration-1000 bg-gray-100' : 'transition-colors duration-1000'}>
+    <tr
+      key={sl.sleep_id}
+      className={hintId === sl.sleep_id
+        ? 'transition-colors duration-1000 bg-indigo-100'
+        : 'transition-colors duration-1000'}
+    >
       <td className='px-6 py-4 whitespace-nowrap'>
         <div className='text-sm text-gray-900'>
           {
@@ -238,6 +235,9 @@ const SleepEditor = ({ sl, setHintId, setOpen }) => {
     const { sleepId } = await res.json()
     await mutate('/api/sleep/read')
     setHintId(sleepId)
+    setTimeout(() => {
+      setHintId(null)
+    }, 1000)
   }
 
   const onUpdate = async () => {
@@ -250,6 +250,9 @@ const SleepEditor = ({ sl, setHintId, setOpen }) => {
     })
     await mutate('/api/sleep/read')
     setHintId(sl.sleep_id)
+    setTimeout(() => {
+      setHintId(null)
+    }, 1000)
   }
 
   const onDelete = async () => {
@@ -261,6 +264,7 @@ const SleepEditor = ({ sl, setHintId, setOpen }) => {
       body: JSON.stringify(body)
     })
     await mutate('/api/sleep/read')
+    setHintId(null)
   }
 
   return (
@@ -344,8 +348,7 @@ export default function Sleep (props) {
                   <SleepRow
                     key={sl.sleep_id} sl={sl}
                     setEditSl={setEditSl}
-                    setHintId={setHintId}
-                    hint={hintId === sl.sleep_id}
+                    hintId={hintId}
                     setOpen={setOpen}
                   />
                 )
