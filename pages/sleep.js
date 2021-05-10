@@ -158,7 +158,7 @@ const SleepRow = ({ sl, setEditSl, hintId, setOpen }) => {
     <tr
       key={sl.sleep_id}
       className={hintId === sl.sleep_id
-        ? 'transition-colors duration-1000 bg-indigo-100'
+        ? 'transition-colors duration-1000 bg-indigo-50'
         : 'transition-colors duration-1000'}
     >
       <td className='px-6 py-4 whitespace-nowrap'>
@@ -228,6 +228,8 @@ const SleepEditor = ({ sl, setHintId, setOpen, scrollRef }) => {
   const validDuration = years === 0 && months === 0 && days === 0
   const validOrder = isBefore(new Date(start), new Date(end))
 
+  const sleep = useSleep()
+
   const onCreate = async () => {
     setOpen(false)
     const body = { start, end }
@@ -237,7 +239,7 @@ const SleepEditor = ({ sl, setHintId, setOpen, scrollRef }) => {
       body: JSON.stringify(body)
     })
     const { sleepId } = await res.json()
-    await mutate('/api/sleep/read')
+    await mutate('/api/sleep/read', [null, ...sleep])
     setHintId(sleepId)
     setTimeout(() => {
       setHintId(null)
@@ -255,7 +257,7 @@ const SleepEditor = ({ sl, setHintId, setOpen, scrollRef }) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
-    await mutate('/api/sleep/read')
+    mutate('/api/sleep/read', sleep.filter(s => s.sleep_id === sl.sleep_id ? null : s))
     setHintId(sl.sleep_id)
     setTimeout(() => {
       setHintId(null)
@@ -270,7 +272,7 @@ const SleepEditor = ({ sl, setHintId, setOpen, scrollRef }) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
-    await mutate('/api/sleep/read')
+    mutate('/api/sleep/read', sleep.filter(s => s.sleep_id !== sl.sleep_id))
     setHintId(null)
   }
 
@@ -371,13 +373,24 @@ export default function Sleep (props) {
                 </tr>
               </thead>
               <tbody className='bg-white divide-y divide-gray-200'>
-                {sleep.map(sl => (
-                  <SleepRow
-                    key={sl.sleep_id} sl={sl}
-                    setEditSl={setEditSl}
-                    hintId={hintId}
-                    setOpen={setOpen}
-                  />
+                {sleep.map((sl, i) => (
+                  sl
+                    ? (
+                      <SleepRow
+                        key={sl.sleep_id} sl={sl}
+                        setEditSl={setEditSl}
+                        hintId={hintId}
+                        setOpen={setOpen}
+                      />
+                    ) : (
+                      <tr key={i}>
+                        <td colSpan='5' className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
+                          <div className='text-sm text-gray-900 text-center'>
+                            updating...
+                          </div>
+                        </td>
+                      </tr>
+                    )
                 )
                 )}
               </tbody>
