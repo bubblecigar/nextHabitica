@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react'
-import { Listbox, Transition } from '@headlessui/react'
+import { Listbox, Transition, Dialog } from '@headlessui/react'
 import { PlusCircleIcon, ExclamationCircleIcon } from '@heroicons/react/solid'
 import { mutate } from 'swr'
 import { useSleep } from '../lib/hooks'
@@ -36,7 +36,7 @@ const SelectBox = ({ value, onChange, label = '', options = [], className = '' }
             >
               <Listbox.Options
                 static
-                className='absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'
+                className='absolute z-10 mt-1 w-full bg-white shadow-lg max-h-24 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'
               >
                 {options.map(option => (
                   <Listbox.Option
@@ -149,7 +149,7 @@ const DatePicker = ({ value, onChange }) => {
   )
 }
 
-const SleepRow = ({ sl, setEditId, hint, setHintId }) => {
+const SleepRow = ({ sl, setEditSl, hint, setHintId, setOpen }) => {
   const { years, months, days, hours, minutes } = intervalToDuration({ start: new Date(sl.start), end: new Date(sl.end) })
   const validDuration = years === 0 && months === 0 && days === 0
   const validOrder = isBefore(new Date(sl.start), new Date(sl.end))
@@ -209,7 +209,13 @@ const SleepRow = ({ sl, setEditId, hint, setHintId }) => {
         }
       </td>
       <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
-        <a onClick={() => setEditId(sl.sleep_id)} className='text-indigo-600 hover:text-indigo-900 cursor-pointer'>
+        <a
+          onClick={() => {
+            setEditSl(sl)
+            setOpen(true)
+          }}
+          className='text-indigo-600 hover:text-indigo-900 cursor-pointer'
+        >
             Edit
         </a>
       </td>
@@ -217,31 +223,44 @@ const SleepRow = ({ sl, setEditId, hint, setHintId }) => {
   )
 }
 
-const SleepEditor = ({ sl, setEditId, setHintId }) => {
+const SleepEditor = ({ sl, setHintId, setOpen }) => {
   const [start, setStart] = React.useState(sl.start ? new Date(sl.start) : new Date())
   const [end, setEnd] = React.useState(sl.end ? new Date(sl.end) : new Date())
 
+  const onCreate = async () => {
+    setOpen(false)
+    const body = { start, end }
+    const res = await window.fetch('/api/sleep/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    const { sleepId } = await res.json()
+    await mutate('/api/sleep/read')
+    setHintId(sleepId)
+  }
+
   const onUpdate = async () => {
+    setOpen(false)
     const body = { start, end, sleepId: sl.sleep_id }
     await window.fetch('/api/sleep/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
-    mutate('/api/sleep/read')
-    setEditId(null)
+    await mutate('/api/sleep/read')
     setHintId(sl.sleep_id)
   }
 
   const onDelete = async () => {
+    setOpen(false)
     const body = { sleepId: sl.sleep_id }
     await window.fetch('/api/sleep/delete', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
-    mutate('/api/sleep/read')
-    setEditId(null)
+    await mutate('/api/sleep/read')
   }
 
   return (
@@ -251,25 +270,22 @@ const SleepEditor = ({ sl, setEditId, setHintId }) => {
         <DatePicker value={start} onChange={setStart} />
         <div className='mb-2 mt-3'>睡眠結束</div>
         <DatePicker value={end} onChange={setEnd} />
-        <div className='mt-5 flex justify-end'>
+        <div className='mt-5 flex justify-end pt-8'>
           <button
             className='my-2 relative flex justify-center m-1 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none'
-            onClick={onUpdate}
+            onClick={sl.sleep_id ? onUpdate : onCreate}
           >
             Save
           </button>
-          <button
-            className='my-2 relative flex justify-center my-1 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-400 hover:bg-red-500 focus:outline-none'
-            onClick={onDelete}
-          >
-            Delete
-          </button>
-          <button
-            className='my-2 relative flex justify-center my-1 py-1 pl-2 border border-transparent text-sm font-medium rounded-md text-indigo-600 hover:text-indigo-900 focus:outline-none'
-            onClick={() => setEditId(null)}
-          >
-            Cancel
-          </button>
+          {sl.sleep_id
+            ? (
+              <button
+                className='my-2 relative flex justify-center my-1 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-400 hover:bg-red-500 focus:outline-none'
+                onClick={onDelete}
+              >
+                Delete
+              </button>
+            ) : null}
         </div>
       </td>
     </tr>
@@ -279,22 +295,13 @@ const SleepEditor = ({ sl, setEditId, setHintId }) => {
 export default function Sleep (props) {
   const sleep = useSleep()
 
-  const onCreate = async () => {
-    const res = await window.fetch('/api/sleep/create', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
-    })
-    const { sleepId } = await res.json()
-    setEditId(sleepId)
-    mutate('/api/sleep/read')
-  }
-
-  const [editId, setEditId] = React.useState(null)
+  const [editSl, setEditSl] = React.useState(null)
   const [hintId, setHintId] = React.useState(null)
+  const [open, setOpen] = React.useState(false)
 
   return (
     <div className='flex flex-col'>
-      <div className='-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
+      <div className=''>
         <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
           <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg overflow-y-auto h-96'>
             <table className='min-w-full divide-y divide-gray-200'>
@@ -333,14 +340,72 @@ export default function Sleep (props) {
                 </tr>
               </thead>
               <tbody className='bg-white divide-y divide-gray-200'>
-                {sleep.map(sl => sl.sleep_id === editId
-                  ? <SleepEditor key={sl.sleep_id} sl={sl} setEditId={setEditId} setHintId={setHintId} />
-                  : <SleepRow key={sl.sleep_id} sl={sl} setEditId={setEditId} setHintId={setHintId} hint={hintId === sl.sleep_id} />
+                {sleep.map(sl => (
+                  <SleepRow
+                    key={sl.sleep_id} sl={sl}
+                    setEditSl={setEditSl}
+                    setHintId={setHintId}
+                    hint={hintId === sl.sleep_id}
+                    setOpen={setOpen}
+                  />
+                )
                 )}
               </tbody>
             </table>
           </div>
-          <div colSpan='5' className='bg-gray-50 px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300' onClick={onCreate}>
+          <Transition.Root show={open} as={Fragment}>
+            <Dialog
+              as='div'
+              static
+              className='fixed z-10 inset-0 overflow-y-auto'
+              open={open}
+              onClose={setOpen}
+            >
+              <div className='flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
+                <Transition.Child
+                  as={Fragment}
+                  enter='ease-out duration-300'
+                  enterFrom='opacity-0'
+                  enterTo='opacity-100'
+                  leave='ease-in duration-200'
+                  leaveFrom='opacity-100'
+                  leaveTo='opacity-0'
+                >
+                  <Dialog.Overlay className='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity' />
+                </Transition.Child>
+
+                {/* This element is to trick the browser into centering the modal contents. */}
+                <span className='hidden sm:inline-block sm:align-middle sm:h-screen' aria-hidden='true'>&#8203;</span>
+                <Transition.Child
+                  as={Fragment}
+                  enter='ease-out duration-300'
+                  enterFrom='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
+                  enterTo='opacity-100 translate-y-0 sm:scale-100'
+                  leave='ease-in duration-200'
+                  leaveFrom='opacity-100 translate-y-0 sm:scale-100'
+                  leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
+                >
+                  <div className='inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full'>
+                    <table className='min-w-full divide-y divide-gray-200'>
+                      <tbody className='bg-white divide-y divide-gray-200'>
+                        <SleepEditor
+                          sl={editSl}
+                          setOpen={setOpen}
+                          setHintId={setHintId}
+                        />
+                      </tbody>
+                    </table>
+                  </div>
+                </Transition.Child>
+              </div>
+            </Dialog>
+          </Transition.Root>
+          <div
+            colSpan='5' className='bg-gray-50 px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300' onClick={() => {
+              setEditSl({})
+              setOpen(true)
+            }}
+          >
             <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
           </div>
         </div>
