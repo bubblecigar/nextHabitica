@@ -224,6 +224,10 @@ const SleepEditor = ({ sl, setHintId, setOpen, scrollRef }) => {
   const [start, setStart] = React.useState(sl.start ? new Date(sl.start) : new Date())
   const [end, setEnd] = React.useState(sl.end ? new Date(sl.end) : new Date())
 
+  const { years, months, days, hours, minutes } = intervalToDuration({ start: new Date(start), end: new Date(end) })
+  const validDuration = years === 0 && months === 0 && days === 0
+  const validOrder = isBefore(new Date(start), new Date(end))
+
   const onCreate = async () => {
     setOpen(false)
     const body = { start, end }
@@ -277,7 +281,22 @@ const SleepEditor = ({ sl, setHintId, setOpen, scrollRef }) => {
         <DatePicker value={start} onChange={setStart} />
         <div className='mb-2 mt-3'>睡眠結束</div>
         <DatePicker value={end} onChange={setEnd} />
-        <div className='mt-5 flex justify-end pt-8'>
+        <div className='mt-5 flex justify-end items-center pt-8'>
+          <div className='mr-auto'>{
+            validDuration && validOrder
+              ? (
+                <span className='px-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-green-100 text-green-800'>
+                  {`${hours}hr ${minutes}min`}
+                </span>
+              )
+              : (
+                <span className='px-2 inline-flex text-red-400 text-sm'>
+                  <ExclamationCircleIcon className='mx-auto h-5 w-5 mr-1' aria-hidden='true' />
+                  {validOrder ? 'Over 24hr' : 'End before start'}
+                </span>
+              )
+          }
+          </div>
           <button
             className='my-2 relative flex justify-center m-1 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none'
             onClick={sl.sleep_id ? onUpdate : onCreate}
