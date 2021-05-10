@@ -220,7 +220,7 @@ const SleepRow = ({ sl, setEditSl, hintId, setOpen }) => {
   )
 }
 
-const SleepEditor = ({ sl, setHintId, setOpen }) => {
+const SleepEditor = ({ sl, setHintId, setOpen, scrollRef }) => {
   const [start, setStart] = React.useState(sl.start ? new Date(sl.start) : new Date())
   const [end, setEnd] = React.useState(sl.end ? new Date(sl.end) : new Date())
 
@@ -238,6 +238,9 @@ const SleepEditor = ({ sl, setHintId, setOpen }) => {
     setTimeout(() => {
       setHintId(null)
     }, 1000)
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0
+    }
   }
 
   const onUpdate = async () => {
@@ -303,11 +306,16 @@ export default function Sleep (props) {
   const [hintId, setHintId] = React.useState(null)
   const [open, setOpen] = React.useState(false)
 
+  const scrollRef = React.useRef(null)
+
   return (
     <div className='flex flex-col'>
       <div className=''>
         <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
-          <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg overflow-y-auto h-96'>
+          <div
+            className='shadow border-b border-gray-200 sm:rounded-lg overflow-y-auto h-96'
+            ref={scrollRef}
+          >
             <table className='min-w-full divide-y divide-gray-200'>
               <thead className='sticky top-0'>
                 <tr className='sticky top-0'>
@@ -395,6 +403,7 @@ export default function Sleep (props) {
                           sl={editSl}
                           setOpen={setOpen}
                           setHintId={setHintId}
+                          scrollRef={scrollRef}
                         />
                       </tbody>
                     </table>
