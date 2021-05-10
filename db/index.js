@@ -3,7 +3,7 @@ const pool = new Pool({
   user: 'postgres',
   host: '104.199.219.31',
   database: 'guest',
-  password: '1234567',
+  password: 'qwebnm',
   port: 5432
 })
 module.exports = {
