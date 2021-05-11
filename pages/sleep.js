@@ -71,7 +71,7 @@ const SleepRow = ({ sl, setEditSl, hintId, setOpen }) => {
             setEditSl(sl)
             setOpen(true)
           }}
-          className='text-indigo-600 hover:text-indigo-900 cursor-pointer'
+          className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
         >
             Edit
         </a>
