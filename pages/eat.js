@@ -161,8 +161,62 @@ const EatEditor = ({ eat, setHintId, setOpen, scrollRef }) => {
   )
 }
 
+const EatRow = ({ eat }) => {
+  console.log('eat:', eat)
+  return (
+    <>
+      {
+        eat.foods.map(
+          (f, i) => (
+            <tr key={f.id}>
+              {i === 0 ? (
+                <>
+                  <td rowSpan={eat.foods.length}>
+                    {
+                      format(new Date(eat.time), 'MMMdo', {
+                        locale: zhTWLocale
+                      })
+                    }
+                  </td>
+                  <td rowSpan={eat.foods.length}>
+                    {
+                      format(new Date(eat.time), 'HH:mm', {
+                        locale: zhTWLocale
+                      })
+                    }
+                  </td>
+                </>
+              ) : null}
+              <td>
+                {f.food}
+              </td>
+              <td>
+                {f.amount}
+              </td>
+              <td>
+                ?
+              </td>
+              <td>
+                ?
+              </td>
+              {
+                i === 0 ? (
+                  <td rowSpan={eat.foods.length}>
+                edit
+                  </td>
+                ) : null
+              }
+            </tr>
+          )
+        )
+      }
+    </>
+  )
+}
+
 export default function Eat (props) {
   const eat = useEat()
+  console.log('eat:', eat)
   const [editEat, setEditEat] = React.useState(null)
   const [hintId, setHintId] = React.useState(null)
   const [open, setOpen] = React.useState(false)
@@ -190,25 +244,25 @@ export default function Eat (props) {
                     scope='col'
                     className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
+                    Time
+                  </th>
+                  <th
+                    scope='col'
+                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  >
                     Foods
                   </th>
                   <th
                     scope='col'
                     className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
-                    Carbon
+                    Amount
                   </th>
                   <th
                     scope='col'
                     className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
                     Protein
-                  </th>
-                  <th
-                    scope='col'
-                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                  >
-                    Fat
                   </th>
                   <th
                     scope='col'
@@ -225,12 +279,13 @@ export default function Eat (props) {
                 </tr>
               </thead>
               <tbody className='bg-white divide-y divide-gray-200'>
-                {/* {sleep.map((sl, i) => (
-                  sl
+                {eat.map((e, i) => (
+                  e
                     ? (
-                      <SleepRow
-                        key={sl.sleep_id} sl={sl}
-                        setEditSl={setEditSl}
+                      <EatRow
+                        key={e.eat_id}
+                        eat={e}
+                        setEditSl={setEditEat}
                         hintId={hintId}
                         setOpen={setOpen}
                       />
@@ -244,7 +299,7 @@ export default function Eat (props) {
                       </tr>
                     )
                 )
-                )} */}
+                )}
               </tbody>
             </table>
           </div>
