@@ -53,24 +53,24 @@ const FoodEditor = ({ id, onChange = () => {}, onDelete }) => {
 const EatEditor = ({ eat, setHintId, setOpen, scrollRef }) => {
   const [time, setTime] = React.useState(eat.time ? new Date(eat.time) : new Date())
   const [foods, setFoods] = React.useState([])
-
+  const eats = useEat()
   const onCreate = async () => {
-    // setOpen(false)
-    // const body = { start, end }
-    // const res = await window.fetch('/api/sleep/create', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(body)
-    // })
-    // const { sleepId } = await res.json()
-    // await mutate('/api/sleep/read', [null, ...sleep])
-    // setHintId(sleepId)
-    // setTimeout(() => {
-    //   setHintId(null)
-    // }, 1000)
-    // if (scrollRef.current) {
-    //   scrollRef.current.scrollTop = 0
-    // }
+    setOpen(false)
+    const body = { time, foods }
+    const res = await window.fetch('/api/eat/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    const { eatId } = await res.json()
+    await mutate('/api/eat/read', [null, ...eats])
+    setHintId(eatId)
+    setTimeout(() => {
+      setHintId(null)
+    }, 1000)
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0
+    }
   }
 
   const onUpdate = async () => {
@@ -163,7 +163,6 @@ const EatEditor = ({ eat, setHintId, setOpen, scrollRef }) => {
 
 export default function Eat (props) {
   const eat = useEat()
-
   const [editEat, setEditEat] = React.useState(null)
   const [hintId, setHintId] = React.useState(null)
   const [open, setOpen] = React.useState(false)
