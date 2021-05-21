@@ -162,7 +162,6 @@ const EatEditor = ({ eat, setHintId, setOpen, scrollRef }) => {
 }
 
 const EatRow = ({ eat, hintId }) => {
-  console.log('eat:', eat)
   return (
     <>
       {
@@ -220,7 +219,6 @@ const EatRow = ({ eat, hintId }) => {
 
 export default function Eat (props) {
   const eat = useEat()
-  console.log('eat:', eat)
   const [editEat, setEditEat] = React.useState(null)
   const [hintId, setHintId] = React.useState(null)
   const [open, setOpen] = React.useState(false)
