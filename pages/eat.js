@@ -13,10 +13,10 @@ import { v4 as uuidv4 } from 'uuid'
 const foods = ['白飯', '雞蛋']
 const units = ['公克', '毫升']
 
-const FoodEditor = ({ id, onChange = () => {}, onDelete }) => {
-  const [food, setFood] = React.useState(foods[0])
-  const [amount, setAmount] = React.useState(0)
-  const [unit, setUnit] = React.useState(units[0])
+const FoodEditor = ({ id, value, onChange = () => {}, onDelete }) => {
+  const [food, setFood] = React.useState(value.food || foods[0])
+  const [amount, setAmount] = React.useState(value.amount || 0)
+  const [unit, setUnit] = React.useState(value.unit || units[0])
   React.useEffect(() => {
     onChange({ food, amount, unit, id })
   }, [food, amount, unit])
@@ -52,7 +52,7 @@ const FoodEditor = ({ id, onChange = () => {}, onDelete }) => {
 
 const EatEditor = ({ eat, setHintId, setOpen, scrollRef }) => {
   const [time, setTime] = React.useState(eat.time ? new Date(eat.time) : new Date())
-  const [foods, setFoods] = React.useState([])
+  const [foods, setFoods] = React.useState(eat.foods ? eat.foods : [])
   const eats = useEat()
   const onCreate = async () => {
     setOpen(false)
@@ -115,6 +115,7 @@ const EatEditor = ({ eat, setHintId, setOpen, scrollRef }) => {
               <FoodEditor
                 key={food.id}
                 id={food.id}
+                value={food}
                 onChange={data => {
                   const _f = foods.slice(0)
                   _f[i] = data
@@ -161,7 +162,7 @@ const EatEditor = ({ eat, setHintId, setOpen, scrollRef }) => {
   )
 }
 
-const EatRow = ({ eat, hintId }) => {
+const EatRow = ({ eat, hintId, setEditEat, setOpen }) => {
   return (
     <>
       {
@@ -204,8 +205,16 @@ const EatRow = ({ eat, hintId }) => {
               </td>
               {
                 i === 0 ? (
-                  <td className='px-6 py-4 whitespace-nowrap' rowSpan={eat.foods.length}>
-                edit
+                  <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
+                    <a
+                      onClick={() => {
+                        setEditEat(eat)
+                        setOpen(true)
+                      }}
+                      className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
+                    >
+                      Edit
+                    </a>
                   </td>
                 ) : null
               }
@@ -287,7 +296,7 @@ export default function Eat (props) {
                       <EatRow
                         key={e.eat_id}
                         eat={e}
-                        setEditSl={setEditEat}
+                        setEditEat={setEditEat}
                         hintId={hintId}
                         setOpen={setOpen}
                       />
