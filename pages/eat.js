@@ -161,24 +161,28 @@ const EatEditor = ({ eat, setHintId, setOpen, scrollRef }) => {
   )
 }
 
-const EatRow = ({ eat }) => {
+const EatRow = ({ eat, hintId }) => {
   console.log('eat:', eat)
   return (
     <>
       {
         eat.foods.map(
           (f, i) => (
-            <tr key={f.id}>
+            <tr
+              key={f.id} className={hintId === eat.eat_id
+                ? 'transition-colors duration-1000 bg-indigo-50'
+                : 'transition-colors duration-1000'}
+            >
               {i === 0 ? (
                 <>
-                  <td rowSpan={eat.foods.length}>
+                  <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap'>
                     {
                       format(new Date(eat.time), 'MMMdo', {
                         locale: zhTWLocale
                       })
                     }
                   </td>
-                  <td rowSpan={eat.foods.length}>
+                  <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap'>
                     {
                       format(new Date(eat.time), 'HH:mm', {
                         locale: zhTWLocale
@@ -187,21 +191,21 @@ const EatRow = ({ eat }) => {
                   </td>
                 </>
               ) : null}
-              <td>
+              <td className='px-6 py-4 whitespace-nowrap'>
                 {f.food}
               </td>
-              <td>
+              <td className='px-6 py-4 whitespace-nowrap'>
                 {f.amount}
               </td>
-              <td>
+              <td className='px-6 py-4 whitespace-nowrap'>
                 ?
               </td>
-              <td>
+              <td className='px-6 py-4 whitespace-nowrap'>
                 ?
               </td>
               {
                 i === 0 ? (
-                  <td rowSpan={eat.foods.length}>
+                  <td className='px-6 py-4 whitespace-nowrap' rowSpan={eat.foods.length}>
                 edit
                   </td>
                 ) : null
@@ -278,7 +282,7 @@ export default function Eat (props) {
                   </th>
                 </tr>
               </thead>
-              <tbody className='bg-white divide-y divide-gray-200'>
+              <tbody className='bg-white divide-y divide-gray-200 text-sm'>
                 {eat.map((e, i) => (
                   e
                     ? (
