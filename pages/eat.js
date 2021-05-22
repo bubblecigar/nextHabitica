@@ -8,12 +8,18 @@ import zhTWLocale from 'date-fns/locale/zh-TW'
 import DatePicker from '../components/DatePicker'
 import SelectBox from '../components/SelectBox'
 import { v4 as uuidv4 } from 'uuid'
-const foods = ['白飯', '雞蛋']
-const units = ['公克', '毫升']
+import foods from '../lib/foods.json'
+
+const foodOptions = Object.keys(foods)
 
 const FoodEditor = ({ id, value, onChange = () => {}, onDelete }) => {
-  const [food, setFood] = React.useState(value.food || foods[0])
+  const [food, setFood] = React.useState(value.food || foodOptions[0])
   const [amount, setAmount] = React.useState(value.amount || 0)
+  const units = React.useMemo(
+    () => {
+      return foods[food] ? Object.keys(foods[food].units) : []
+    }, [food]
+  )
   const [unit, setUnit] = React.useState(value.unit || units[0])
   React.useEffect(() => {
     onChange({ food, amount, unit, id })
@@ -29,7 +35,7 @@ const FoodEditor = ({ id, value, onChange = () => {}, onDelete }) => {
         className='col-span-4'
         value={food}
         onChange={setFood}
-        options={foods}
+        options={foodOptions}
       />
       <input
         type='number'
@@ -39,7 +45,7 @@ const FoodEditor = ({ id, value, onChange = () => {}, onDelete }) => {
       />
       <SelectBox
         label=''
-        className='col-span-2'
+        className='col-span-3'
         value={unit}
         onChange={setUnit}
         options={units}
