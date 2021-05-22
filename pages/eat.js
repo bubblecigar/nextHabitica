@@ -89,15 +89,15 @@ const EatEditor = ({ eat, setHintId, setOpen, scrollRef }) => {
   }
 
   const onDelete = async () => {
-    // setOpen(false)
-    // const body = { sleepId: sl.sleep_id }
-    // await window.fetch('/api/sleep/delete', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(body)
-    // })
-    // mutate('/api/sleep/read', sleep.filter(s => s.sleep_id !== sl.sleep_id))
-    // setHintId(null)
+    setOpen(false)
+    const body = { eatId: eat.eat_id }
+    await window.fetch('/api/eat/delete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    mutate('/api/eat/read', eats.filter(e => e.eat_id !== eat.eat_id))
+    setHintId(null)
   }
   return (
     <>
