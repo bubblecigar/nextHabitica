@@ -302,7 +302,7 @@ export default function Eat (props) {
                       />
                     ) : (
                       <tr key={i}>
-                        <td colSpan='5' className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
+                        <td colSpan='7' className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
                           <div className='text-sm text-gray-900 text-center'>
                             updating...
                           </div>
