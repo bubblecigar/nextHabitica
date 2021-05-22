@@ -191,59 +191,72 @@ const EatRow = ({ eat, hintId, setEditEat, setOpen }) => {
     <>
       {
         eat.foods.map(
-          (f, i) => (
-            <tr
-              key={f.id} className={hintId === eat.eat_id
-                ? 'transition-colors duration-1000 bg-indigo-50'
-                : 'transition-colors duration-1000'}
-            >
-              {i === 0 ? (
-                <>
-                  <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap'>
-                    {
-                      format(new Date(eat.time), 'MMMdo', {
-                        locale: zhTWLocale
-                      })
-                    }
-                  </td>
-                  <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap'>
-                    {
-                      format(new Date(eat.time), 'HH:mm', {
-                        locale: zhTWLocale
-                      })
-                    }
-                  </td>
-                </>
-              ) : null}
-              <td className='px-6 py-4 whitespace-nowrap'>
-                {f.food}
-              </td>
-              <td className='px-6 py-4 whitespace-nowrap'>
-                {f.amount} {f.unit}
-              </td>
-              <td className='px-6 py-4 whitespace-nowrap'>
-                ?
-              </td>
-              <td className='px-6 py-4 whitespace-nowrap'>
-                ?
-              </td>
-              {
-                i === 0 ? (
-                  <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
-                    <a
-                      onClick={() => {
-                        setEditEat(eat)
-                        setOpen(true)
-                      }}
-                      className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
-                    >
+          (f, i) => {
+            const nutritionPerUnit = foods[f.food].units[f.unit]
+            const carbon = (nutritionPerUnit.carbon * f.amount).toFixed(2)
+            const protein = (nutritionPerUnit.protein * f.amount).toFixed(2)
+            const fat = (nutritionPerUnit.fat * f.amount).toFixed(2)
+            const calories = (nutritionPerUnit.calories * f.amount.toFixed(2))
+            return (
+              <tr
+                key={f.id} className={hintId === eat.eat_id
+                  ? 'transition-colors duration-1000 bg-indigo-50'
+                  : 'transition-colors duration-1000'}
+              >
+                {i === 0 ? (
+                  <>
+                    <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap'>
+                      {
+                        format(new Date(eat.time), 'MMMdo', {
+                          locale: zhTWLocale
+                        })
+                      }
+                    </td>
+                    <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap'>
+                      {
+                        format(new Date(eat.time), 'HH:mm', {
+                          locale: zhTWLocale
+                        })
+                      }
+                    </td>
+                  </>
+                ) : null}
+                <td className='px-6 py-4 whitespace-nowrap'>
+                  {f.food}
+                </td>
+                <td className='px-6 py-4 whitespace-nowrap'>
+                  {f.amount} {f.unit}
+                </td>
+                <td className='px-6 py-4 whitespace-nowrap'>
+                  {carbon} 公克
+                </td>
+                <td className='px-6 py-4 whitespace-nowrap'>
+                  {protein} 公克
+                </td>
+                <td className='px-6 py-4 whitespace-nowrap'>
+                  {fat} 公克
+                </td>
+                <td className='px-6 py-4 whitespace-nowrap'>
+                  {calories} 卡
+                </td>
+                {
+                  i === 0 ? (
+                    <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
+                      <a
+                        onClick={() => {
+                          setEditEat(eat)
+                          setOpen(true)
+                        }}
+                        className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
+                      >
                       Edit
-                    </a>
-                  </td>
-                ) : null
-              }
-            </tr>
-          )
+                      </a>
+                    </td>
+                  ) : null
+                }
+              </tr>
+            )
+          }
         )
       }
     </>
@@ -297,7 +310,19 @@ export default function Eat (props) {
                     scope='col'
                     className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
+                    Carbon
+                  </th>
+                  <th
+                    scope='col'
+                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  >
                     Protein
+                  </th>
+                  <th
+                    scope='col'
+                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  >
+                    Fat
                   </th>
                   <th
                     scope='col'
@@ -326,7 +351,7 @@ export default function Eat (props) {
                       />
                     ) : (
                       <tr key={i}>
-                        <td colSpan='7' className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
+                        <td colSpan='9' className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
                           <div className='text-sm text-gray-900 text-center'>
                             updating...
                           </div>
