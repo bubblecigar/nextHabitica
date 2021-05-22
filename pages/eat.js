@@ -56,7 +56,7 @@ const FoodEditor = ({ id, value, onChange = () => {}, onDelete }) => {
 
 const EatEditor = ({ eat, setHintId, setOpen, scrollRef }) => {
   const [time, setTime] = React.useState(eat.time ? new Date(eat.time) : new Date())
-  const [foods, setFoods] = React.useState(eat.foods ? eat.foods : [])
+  const [foods, setFoods] = React.useState(eat.foods ? eat.foods : [{ id: uuidv4() }])
   const eats = useEat()
   const onCreate = async () => {
     setOpen(false)
