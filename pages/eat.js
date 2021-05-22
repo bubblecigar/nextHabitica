@@ -74,18 +74,18 @@ const EatEditor = ({ eat, setHintId, setOpen, scrollRef }) => {
   }
 
   const onUpdate = async () => {
-    // setOpen(false)
-    // const body = { start, end, sleepId: sl.sleep_id }
-    // await window.fetch('/api/sleep/update', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(body)
-    // })
-    // mutate('/api/sleep/read', sleep.map(s => s.sleep_id === sl.sleep_id ? null : s))
-    // setHintId(sl.sleep_id)
-    // setTimeout(() => {
-    //   setHintId(null)
-    // }, 1000)
+    setOpen(false)
+    const body = { time, foods, eatId: eat.eat_id }
+    await window.fetch('/api/eat/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    mutate('/api/eat/read', eats.map(e => e.eat_id === eat.eat_id ? null : e))
+    setHintId(eat.eat_id)
+    setTimeout(() => {
+      setHintId(null)
+    }, 1000)
   }
 
   const onDelete = async () => {
@@ -143,7 +143,7 @@ const EatEditor = ({ eat, setHintId, setOpen, scrollRef }) => {
         <td>
           <button
             className='my-2 relative flex justify-center m-6 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none'
-            onClick={eat.sleep_id ? onUpdate : onCreate}
+            onClick={eat.eat_id ? onUpdate : onCreate}
           >
             Save
           </button>
