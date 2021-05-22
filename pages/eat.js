@@ -247,7 +247,7 @@ const EatRow = ({ eat, hintId, setEditEat, setOpen }) => {
 }
 
 export default function Eat (props) {
-  const eat = useEat()
+  const eats = useEat()
   const [editEat, setEditEat] = React.useState(null)
   const [hintId, setHintId] = React.useState(null)
   const [open, setOpen] = React.useState(false)
@@ -310,7 +310,7 @@ export default function Eat (props) {
                 </tr>
               </thead>
               <tbody className='bg-white divide-y divide-gray-200 text-sm'>
-                {eat.map((e, i) => (
+                {eats.map((e, i) => (
                   e
                     ? (
                       <EatRow
