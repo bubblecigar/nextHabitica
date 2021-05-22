@@ -213,7 +213,7 @@ const EatRow = ({ eat, hintId, setEditEat, setOpen }) => {
                 {f.food}
               </td>
               <td className='px-6 py-4 whitespace-nowrap'>
-                {f.amount}
+                {f.amount} {f.unit}
               </td>
               <td className='px-6 py-4 whitespace-nowrap'>
                 ?
