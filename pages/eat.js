@@ -157,23 +157,25 @@ const EatEditor = ({ eat, setHintId, setOpen, scrollRef }) => {
           </div>
         </td>
       </tr>
-      <tr className='flex justify-end items-center pt-8 pb-4'>
+      <tr className='flex justify-end items-center py-4'>
         <td>
-          <button
-            className='my-2 relative flex justify-center m-6 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none'
-            onClick={onSave}
-          >
+          <div className='flex justify-end items-center pr-6'>
+            <button
+              className='relative flex justify-center mr-1 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none'
+              onClick={onSave}
+            >
             Save
-          </button>
-          {eat.eat_id
-            ? (
-              <button
-                className='my-2 relative flex justify-center my-1 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-400 hover:bg-red-500 focus:outline-none'
-                onClick={onDelete}
-              >
+            </button>
+            {eat.eat_id
+              ? (
+                <button
+                  className='my-2 relative flex justify-center my-1 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-400 hover:bg-red-500 focus:outline-none'
+                  onClick={onDelete}
+                >
                 Delete
-              </button>
-            ) : null}
+                </button>
+              ) : null}
+          </div>
         </td>
       </tr>
     </>
