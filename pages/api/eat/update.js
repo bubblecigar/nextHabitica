@@ -7,7 +7,7 @@ const updateEatRow = async (eatId, foods, time) => {
       SET foods = $1, time = $2
       WHERE eat_id = $3
     `
-    , [foods, time, eatId]
+    , [foods, new Date(time), eatId]
     , (err, dbRes) => {
       if (err) {
         console.log('eat/update err:', err)

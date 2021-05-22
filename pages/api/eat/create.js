@@ -8,7 +8,7 @@ const createEatRow = async (userId, time, foods) => {
       VALUES ($1, $2, $3)
       RETURNING *
     `
-    , [userId, foods, time]
+    , [userId, foods, new Date(time)]
     , (err, dbRes) => {
       if (err) {
         console.log('eat/create err:', err)

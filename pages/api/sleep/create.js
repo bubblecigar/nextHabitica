@@ -8,7 +8,7 @@ const createSleepRow = async (userId, start, end) => {
       VALUES ($1, $2, $3)
       RETURNING *
     `
-    , [userId, start, end]
+    , [userId, new Date(start), new Date(end)]
     , (err, dbRes) => {
       if (err) {
         console.log('sleep/create err:', err)
