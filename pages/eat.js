@@ -99,6 +99,24 @@ const EatEditor = ({ eat, setHintId, setOpen, scrollRef }) => {
     mutate('/api/eat/read', eats.filter(e => e.eat_id !== eat.eat_id))
     setHintId(null)
   }
+
+  const onSave = async () => {
+    if (eat.eat_id) {
+      if (foods.length) {
+        onUpdate()
+      } else {
+        onDelete()
+      }
+    } else {
+      if (foods.length) {
+        onCreate()
+      } else {
+        setOpen(false)
+        setHintId(null)
+      }
+    }
+  }
+
   return (
     <>
       <tr>
@@ -143,7 +161,7 @@ const EatEditor = ({ eat, setHintId, setOpen, scrollRef }) => {
         <td>
           <button
             className='my-2 relative flex justify-center m-6 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none'
-            onClick={eat.eat_id ? onUpdate : onCreate}
+            onClick={onSave}
           >
             Save
           </button>
