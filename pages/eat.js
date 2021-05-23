@@ -1,5 +1,4 @@
-import React, { Fragment } from 'react'
-import { Transition, Dialog } from '@headlessui/react'
+import React from 'react'
 import { PlusCircleIcon, MinusCircleIcon } from '@heroicons/react/solid'
 import { mutate } from 'swr'
 import { useEat } from '../lib/hooks'
@@ -31,6 +30,130 @@ const _foodOptions = [
     amount: 0
   }
 ]
+
+const EatRecord = () => {
+  const eats = useEat()
+  const [editEat, setEditEat] = React.useState(null)
+  const [hintId, setHintId] = React.useState(null)
+  const [open, setOpen] = React.useState(false)
+
+  const scrollRef = React.useRef(null)
+  return (
+    <div className=''>
+      <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
+        <div
+          className='shadow border-b border-gray-200 sm:rounded-lg overflow-y-auto max-h-75v'
+          ref={scrollRef}
+        >
+          <table className='min-w-full divide-y divide-gray-200'>
+            <thead className='sticky top-0'>
+              <tr className='sticky top-0'>
+                <th
+                  scope='col'
+                  className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                >
+                    Date
+                </th>
+                <th
+                  scope='col'
+                  className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                >
+                    Time
+                </th>
+                <th
+                  scope='col'
+                  className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                >
+                    Foods
+                </th>
+                <th
+                  scope='col'
+                  className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                >
+                    Amount
+                </th>
+                <th
+                  scope='col'
+                  className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                >
+                    Carbon
+                </th>
+                <th
+                  scope='col'
+                  className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                >
+                    Protein
+                </th>
+                <th
+                  scope='col'
+                  className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                >
+                    Fat
+                </th>
+                <th
+                  scope='col'
+                  className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                >
+                    Calorie
+                </th>
+                <th
+                  scope='col'
+                  className='bg-gray-50 sticky top-0 relative px-6 py-3'
+                >
+                  <span className='sr-only'>Edit</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody className='bg-white divide-y divide-gray-200 text-sm'>
+              {eats.map((e, i) => (
+                e
+                  ? (
+                    <EatRow
+                      key={e.eat_id}
+                      eat={e}
+                      setEditEat={setEditEat}
+                      hintId={hintId}
+                      setOpen={setOpen}
+                    />
+                  ) : (
+                    <tr key={i}>
+                      <td colSpan='9' className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
+                        <div className='text-sm text-gray-900 text-center'>
+                            updating...
+                        </div>
+                      </td>
+                    </tr>
+                  )
+              )
+              )}
+            </tbody>
+          </table>
+        </div>
+        <DialogBox open={open} setOpen={setOpen}>
+          <table className='min-w-full divide-y divide-gray-200'>
+            <tbody className='bg-white divide-y divide-gray-200'>
+              <EatEditor
+                eat={editEat}
+                setOpen={setOpen}
+                setHintId={setHintId}
+                scrollRef={scrollRef}
+              />
+            </tbody>
+          </table>
+        </DialogBox>
+        <div
+          colSpan='5' className='bg-gray-50 px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300' onClick={() => {
+            setEditEat({})
+            setOpen(true)
+          }}
+        >
+          <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
+        </div>
+      </div>
+    </div>
+
+  )
+}
 
 const FoodEditor = ({ id, value, onChange = () => {}, onDelete }) => {
   const [amount, setAmount] = React.useState(value.amount || 0)
@@ -296,127 +419,9 @@ const EatRow = ({ eat, hintId, setEditEat, setOpen }) => {
 }
 
 export default function Eat (props) {
-  const eats = useEat()
-  const [editEat, setEditEat] = React.useState(null)
-  const [hintId, setHintId] = React.useState(null)
-  const [open, setOpen] = React.useState(false)
-
-  const scrollRef = React.useRef(null)
-
   return (
     <div className='flex flex-col'>
-      <div className=''>
-        <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
-          <div
-            className='shadow border-b border-gray-200 sm:rounded-lg overflow-y-auto max-h-75v'
-            ref={scrollRef}
-          >
-            <table className='min-w-full divide-y divide-gray-200'>
-              <thead className='sticky top-0'>
-                <tr className='sticky top-0'>
-                  <th
-                    scope='col'
-                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                  >
-                    Date
-                  </th>
-                  <th
-                    scope='col'
-                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                  >
-                    Time
-                  </th>
-                  <th
-                    scope='col'
-                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                  >
-                    Foods
-                  </th>
-                  <th
-                    scope='col'
-                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                  >
-                    Amount
-                  </th>
-                  <th
-                    scope='col'
-                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                  >
-                    Carbon
-                  </th>
-                  <th
-                    scope='col'
-                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                  >
-                    Protein
-                  </th>
-                  <th
-                    scope='col'
-                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                  >
-                    Fat
-                  </th>
-                  <th
-                    scope='col'
-                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                  >
-                    Calorie
-                  </th>
-                  <th
-                    scope='col'
-                    className='bg-gray-50 sticky top-0 relative px-6 py-3'
-                  >
-                    <span className='sr-only'>Edit</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody className='bg-white divide-y divide-gray-200 text-sm'>
-                {eats.map((e, i) => (
-                  e
-                    ? (
-                      <EatRow
-                        key={e.eat_id}
-                        eat={e}
-                        setEditEat={setEditEat}
-                        hintId={hintId}
-                        setOpen={setOpen}
-                      />
-                    ) : (
-                      <tr key={i}>
-                        <td colSpan='9' className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
-                          <div className='text-sm text-gray-900 text-center'>
-                            updating...
-                          </div>
-                        </td>
-                      </tr>
-                    )
-                )
-                )}
-              </tbody>
-            </table>
-          </div>
-          <DialogBox open={open} setOpen={setOpen}>
-            <table className='min-w-full divide-y divide-gray-200'>
-              <tbody className='bg-white divide-y divide-gray-200'>
-                <EatEditor
-                  eat={editEat}
-                  setOpen={setOpen}
-                  setHintId={setHintId}
-                  scrollRef={scrollRef}
-                />
-              </tbody>
-            </table>
-          </DialogBox>
-          <div
-            colSpan='5' className='bg-gray-50 px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300' onClick={() => {
-              setEditEat({})
-              setOpen(true)
-            }}
-          >
-            <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
-          </div>
-        </div>
-      </div>
+      <EatRecord />
     </div>
   )
 }
