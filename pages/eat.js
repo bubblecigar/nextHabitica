@@ -8,22 +8,53 @@ import zhTWLocale from 'date-fns/locale/zh-TW'
 import DatePicker from '../components/DatePicker'
 import SelectBox from '../components/SelectBox'
 import { v4 as uuidv4 } from 'uuid'
-import foods from '../lib/foods.json'
 
-const foodOptions = Object.keys(foods)
+const _foodOptions = [
+  {
+    foodName: '白飯',
+    units: {
+      公克: {
+        protein: 0.027,
+        carbon: 0.28,
+        fat: 0.003,
+        calories: 1.3
+      },
+      '碗(90克)': {
+        protein: 2.43,
+        carbon: 25.2,
+        fat: 0.27,
+        calories: 117
+      }
+    },
+    unit: '公克',
+    amount: 0
+  }
+]
 
 const FoodEditor = ({ id, value, onChange = () => {}, onDelete }) => {
-  const [food, setFood] = React.useState(value.food || foodOptions[0])
   const [amount, setAmount] = React.useState(value.amount || 0)
-  const units = React.useMemo(
+  const foodNames = _foodOptions.map(op => op.foodName)
+  const [foodName, setFoodName] = React.useState(value.foodName || foodNames[0])
+  const unitOptions = React.useMemo(
     () => {
-      return foods[food] ? Object.keys(foods[food].units) : []
-    }, [food]
+      const food = _foodOptions.find(op => op.foodName === foodName)
+      const units = food ? food.units : []
+      const options = Object.keys(units)
+      return options
+    }, [foodName]
   )
-  const [unit, setUnit] = React.useState(value.unit || units[0])
+  const [unit, setUnit] = React.useState(value.unit || unitOptions[0])
   React.useEffect(() => {
-    onChange({ food, amount, unit, id })
-  }, [food, amount, unit])
+    if (unitOptions.includes(unit)) {
+      // do nothing
+    } else {
+      setUnit(unitOptions[0])
+    }
+  }, [unitOptions])
+  React.useEffect(() => {
+    const food = _foodOptions.find(op => op.foodName === foodName)
+    onChange({ ...food, ...value, amount, unit })
+  }, [foodName, amount, unit])
 
   return (
     <div className='grid grid-cols-12 gap-4 items-baseline'>
@@ -33,9 +64,9 @@ const FoodEditor = ({ id, value, onChange = () => {}, onDelete }) => {
       <SelectBox
         label=''
         className='col-span-4'
-        value={food}
-        onChange={setFood}
-        options={foodOptions}
+        value={foodName}
+        onChange={setFoodName}
+        options={foodNames}
       />
       <input
         type='number'
@@ -48,7 +79,7 @@ const FoodEditor = ({ id, value, onChange = () => {}, onDelete }) => {
         className='col-span-3'
         value={unit}
         onChange={setUnit}
-        options={units}
+        options={unitOptions}
       />
     </div>
   )
@@ -192,16 +223,16 @@ const EatRow = ({ eat, hintId, setEditEat, setOpen }) => {
       {
         eat.foods.map(
           (f, i) => {
-            const nutritionPerUnit = foods[f.food].units[f.unit]
+            const nutritionPerUnit = f.units[f.unit]
             const carbon = (nutritionPerUnit.carbon * f.amount).toFixed(2)
             const protein = (nutritionPerUnit.protein * f.amount).toFixed(2)
             const fat = (nutritionPerUnit.fat * f.amount).toFixed(2)
-            const calories = (nutritionPerUnit.calories * f.amount.toFixed(2))
+            const calories = (nutritionPerUnit.calories * f.amount).toFixed(0)
             return (
               <tr
                 key={f.id} className={hintId === eat.eat_id
-                  ? 'transition-colors duration-1000 bg-indigo-50'
-                  : 'transition-colors duration-1000'}
+                  ? 'transition-colors duration-1000 bg-indigo-50 text-right'
+                  : 'transition-colors duration-1000  text-right'}
               >
                 {i === 0 ? (
                   <>
@@ -222,7 +253,7 @@ const EatRow = ({ eat, hintId, setEditEat, setOpen }) => {
                   </>
                 ) : null}
                 <td className='px-6 py-4 whitespace-nowrap'>
-                  {f.food}
+                  {f.foodName}
                 </td>
                 <td className='px-6 py-4 whitespace-nowrap'>
                   {f.amount} {f.unit}
