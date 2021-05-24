@@ -31,6 +31,230 @@ const _foodOptions = [
   }
 ]
 
+const StyledInput = ({ value, onChange, type, classNames }) => {
+  return (
+    <input
+      type={type}
+      className={'w-20 col-span-2 bg-white border border-gray-300 rounded-md shadow-sm p-1 pl-3 text-left focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames}
+      value={value}
+      onChange={e => onChange(e.target.value)}
+    />
+  )
+}
+
+const FoodOptionEditor = ({ onClose }) => {
+  const [foodName, setFoodName] = React.useState('')
+  const [unitName, setUnitName] = React.useState('')
+  const [carbon, setCarbon] = React.useState(0)
+  const [protein, setProtein] = React.useState(0)
+  const [fat, setFat] = React.useState(0)
+  const [calorie, setCalorie] = React.useState(0)
+
+  const onCreate = async () => {
+    // setOpen(false)
+    // const body = { time, foods }
+    // const res = await window.fetch('/api/eat/create', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(body)
+    // })
+    // const { eatId } = await res.json()
+    // await mutate('/api/eat/read', [null, ...eats])
+    // setHintId(eatId)
+    // setTimeout(() => {
+    //   setHintId(null)
+    // }, 1000)
+    // if (scrollRef.current) {
+    //   scrollRef.current.scrollTop = 0
+    // }
+  }
+
+  const onUpdate = async () => {
+    // setOpen(false)
+    // const body = { time, foods, eatId: eat.eat_id }
+    // await window.fetch('/api/eat/update', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(body)
+    // })
+    // mutate('/api/eat/read', eats.map(e => e.eat_id === eat.eat_id ? null : e))
+    // setHintId(eat.eat_id)
+    // setTimeout(() => {
+    //   setHintId(null)
+    // }, 1000)
+  }
+
+  const onDelete = async () => {
+    // setOpen(false)
+    // const body = { eatId: eat.eat_id }
+    // await window.fetch('/api/eat/delete', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(body)
+    // })
+    // mutate('/api/eat/read', eats.filter(e => e.eat_id !== eat.eat_id))
+    // setHintId(null)
+  }
+
+  const onSave = async () => {
+    // if (eat.eat_id) {
+    //   if (foods.length) {
+    //     onUpdate()
+    //   } else {
+    //     onDelete()
+    //   }
+    // } else {
+    //   if (foods.length) {
+    //     onCreate()
+    //   } else {
+    //     setOpen(false)
+    //     setHintId(null)
+    //   }
+    // }
+  }
+
+  return (
+    <>
+      <tr>
+        <td
+          scope='col'
+          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+        >
+          <StyledInput
+            classNames='w-32'
+            type='text'
+            value={foodName}
+            onChange={setFoodName}
+          />
+        </td>
+        <td
+          scope='col'
+          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+        >
+          <StyledInput type='text' value={unitName} onChange={setUnitName} />
+        </td>
+        <td
+          scope='col'
+          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+        >
+          <StyledInput type='number' value={carbon} onChange={setCarbon} />
+        </td>
+        <td
+          scope='col'
+          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+        >
+          <StyledInput type='number' value={protein} onChange={setProtein} />
+        </td>
+        <td
+          scope='col'
+          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+        >
+          <StyledInput type='number' value={fat} onChange={setFat} />
+        </td>
+        <td
+          scope='col'
+          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+        >
+          <StyledInput type='number' value={calorie} onChange={setCalorie} />
+        </td>
+        <td
+          scope='col'
+          className='bg-gray-50 px-6 py-4 whitespace-nowrap text-right text-sm font-medium'
+        >
+          <a
+            onClick={() => { }}
+            className='mr-3 text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
+          >
+            Save
+          </a>
+          <a
+            onClick={onClose}
+            className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
+          >
+            Cancel
+          </a>
+        </td>
+      </tr>
+    </>
+  )
+}
+
+const FoodOptions = () => {
+  const [open, setOpen] = React.useState(false)
+  return (
+    <div className=''>
+      <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
+        <div
+          className='shadow border-b border-gray-200 sm:rounded-lg overflow-y-auto max-h-75v'
+        >
+          <table className='min-w-full divide-y divide-gray-200'>
+            <thead className='sticky top-0'>
+              <tr className='sticky top-0'>
+                <th
+                  scope='col'
+                  className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                >
+                    Foods
+                </th>
+                <th
+                  scope='col'
+                  className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                >
+                    units
+                </th>
+                <th
+                  scope='col'
+                  className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                >
+                    Carbon
+                </th>
+                <th
+                  scope='col'
+                  className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                >
+                    Protein
+                </th>
+                <th
+                  scope='col'
+                  className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                >
+                    Fat
+                </th>
+                <th
+                  scope='col'
+                  className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                >
+                    Calorie
+                </th>
+                <th
+                  scope='col'
+                  className='bg-gray-50 sticky top-0 relative px-3 py-3'
+                >
+                  <span className='sr-only'>Edit</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody className='bg-white divide-y divide-gray-200 text-sm'>
+              {open ? <FoodOptionEditor onClose={() => setOpen(false)} /> : null}
+            </tbody>
+          </table>
+        </div>
+        {
+          open ? null : (
+            <div
+              colSpan='5' className='bg-gray-50 px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300' onClick={() => {
+                setOpen(true)
+              }}
+            >
+              <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
+            </div>
+          )
+        }
+      </div>
+    </div>
+  )
+}
+
 const EatRecord = () => {
   const eats = useEat()
   const [editEat, setEditEat] = React.useState(null)
@@ -422,6 +646,7 @@ export default function Eat (props) {
   return (
     <div className='flex flex-col'>
       <EatRecord />
+      <FoodOptions />
     </div>
   )
 }
