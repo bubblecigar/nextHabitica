@@ -32,12 +32,13 @@ const _foodOptions = [
 ]
 
 const StyledInput = ({ value, onChange, type, classNames }) => {
+  const typeTransform = value => type === 'number' ? Number(value) : value
   return (
     <input
       type={type}
       className={'w-20 col-span-2 bg-white border border-gray-300 rounded-md shadow-sm p-1 pl-3 text-left focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames}
       value={value}
-      onChange={e => onChange(e.target.value)}
+      onChange={e => onChange(typeTransform(e.target.value))}
     />
   )
 }
@@ -647,6 +648,15 @@ export default function Eat (props) {
     <div className='flex flex-col'>
       <EatRecord />
       <FoodOptions />
+      <button onClick={async () => {
+        const res = await window.fetch('/api/eat/options/read', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        })
+        console.log('res.json:', await res.json())
+      }}
+      >dsadvflibu
+      </button>
     </div>
   )
 }
