@@ -418,15 +418,9 @@ const FoodEditor = ({ id, value, onChange = () => {}, onDelete }) => {
   const unitOptions = React.useMemo(
     () => {
       const food = _foodOptions.find(op => op.foodName === foodName)
-      if (food) {
-        const units = food ? food.units : []
-        const options = Object.keys(units)
-        return options
-      } else {
-        if (value.units) {
-          return Object.keys(value.units)
-        }
-      }
+      const units = food ? food.units : (value.units || {})
+      const options = Object.keys(units)
+      return options
     }, [foodName]
   )
   const [unit, setUnit] = React.useState(value.unit || unitOptions[0])
@@ -439,7 +433,7 @@ const FoodEditor = ({ id, value, onChange = () => {}, onDelete }) => {
   }, [unitOptions])
   React.useEffect(() => {
     const food = _foodOptions.find(op => op.foodName === foodName)
-    onChange({ ...food, ...value, amount, unit })
+    onChange({ ...(food || value), id: value.id, amount, unit })
   }, [foodName, amount, unit])
 
   return (
@@ -613,7 +607,7 @@ const EatRow = ({ eat, hintId, setEditEat, setOpen }) => {
             const carbon = (nutritionPerUnit.carbon * f.amount).toFixed(2)
             const protein = (nutritionPerUnit.protein * f.amount).toFixed(2)
             const fat = (nutritionPerUnit.fat * f.amount).toFixed(2)
-            const calories = (nutritionPerUnit.calories * f.amount).toFixed(0)
+            const calories = (nutritionPerUnit.calorie * f.amount).toFixed(0)
             return (
               <tr
                 key={f.id} className={hintId === eat.eat_id
