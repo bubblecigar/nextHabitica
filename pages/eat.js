@@ -142,6 +142,7 @@ const FoodOptionEditor = ({ onClose }) => {
       })
       mutate('/api/eat/options/read', [..._foodOptions, foodOption])
     }
+    onClose()
   }
 
   return (
