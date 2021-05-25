@@ -100,6 +100,10 @@ const FoodOptionEditor = ({ onClose }) => {
   }
 
   const onSave = async () => {
+    if (!foodName) {
+      onClose()
+      return
+    }
     const foodOption = {
       foodName,
       units: {
