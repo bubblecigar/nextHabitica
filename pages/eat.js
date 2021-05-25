@@ -1,7 +1,7 @@
 import React from 'react'
 import { PlusCircleIcon, MinusCircleIcon } from '@heroicons/react/solid'
 import { mutate } from 'swr'
-import { useEat } from '../lib/hooks'
+import { useEat, useFoodOptions } from '../lib/hooks'
 import { format } from 'date-fns-tz'
 import zhTWLocale from 'date-fns/locale/zh-TW'
 import DatePicker from '../components/DatePicker'
@@ -9,27 +9,27 @@ import SelectBox from '../components/SelectBox'
 import DialogBox from '../components/DialogBox'
 import { v4 as uuidv4 } from 'uuid'
 
-const _foodOptions = [
-  {
-    foodName: '白飯',
-    units: {
-      公克: {
-        protein: 0.027,
-        carbon: 0.28,
-        fat: 0.003,
-        calories: 1.3
-      },
-      '碗(90克)': {
-        protein: 2.43,
-        carbon: 25.2,
-        fat: 0.27,
-        calories: 117
-      }
-    },
-    unit: '公克',
-    amount: 0
-  }
-]
+// const _foodOptions = [
+//   {
+//     foodName: '白飯',
+//     units: {
+//       公克: {
+//         protein: 0.027,
+//         carbon: 0.28,
+//         fat: 0.003,
+//         calories: 1.3
+//       },
+//       '碗(90克)': {
+//         protein: 2.43,
+//         carbon: 25.2,
+//         fat: 0.27,
+//         calories: 117
+//       }
+//     },
+//     unit: '公克',
+//     amount: 0
+//   }
+// ]
 
 const StyledInput = ({ value, onChange, type, classNames }) => {
   const typeTransform = value => type === 'number' ? Number(value) : value
@@ -44,6 +44,8 @@ const StyledInput = ({ value, onChange, type, classNames }) => {
 }
 
 const FoodOptionEditor = ({ onClose }) => {
+  const _foodOptions = useFoodOptions()
+
   const [foodName, setFoodName] = React.useState('')
   const [unitName, setUnitName] = React.useState('')
   const [carbon, setCarbon] = React.useState(0)
@@ -381,15 +383,21 @@ const EatRecord = () => {
 }
 
 const FoodEditor = ({ id, value, onChange = () => {}, onDelete }) => {
+  const _foodOptions = useFoodOptions()
+
   const [amount, setAmount] = React.useState(value.amount || 0)
   const foodNames = _foodOptions.map(op => op.foodName)
   const [foodName, setFoodName] = React.useState(value.foodName || foodNames[0])
   const unitOptions = React.useMemo(
     () => {
-      const food = _foodOptions.find(op => op.foodName === foodName)
-      const units = food ? food.units : []
-      const options = Object.keys(units)
-      return options
+      if (value.units) {
+        return Object.keys(value.units)
+      } else {
+        const food = _foodOptions.find(op => op.foodName === foodName)
+        const units = food ? food.units : []
+        const options = Object.keys(units)
+        return options
+      }
     }, [foodName]
   )
   const [unit, setUnit] = React.useState(value.unit || unitOptions[0])
