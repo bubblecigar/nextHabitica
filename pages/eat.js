@@ -9,28 +9,6 @@ import SelectBox from '../components/SelectBox'
 import DialogBox from '../components/DialogBox'
 import { v4 as uuidv4 } from 'uuid'
 
-// const _foodOptions = [
-//   {
-//     foodName: '白飯',
-//     units: {
-//       公克: {
-//         protein: 0.027,
-//         carbon: 0.28,
-//         fat: 0.003,
-//         calories: 1.3
-//       },
-//       '碗(90克)': {
-//         protein: 2.43,
-//         carbon: 25.2,
-//         fat: 0.27,
-//         calories: 117
-//       }
-//     },
-//     unit: '公克',
-//     amount: 0
-//   }
-// ]
-
 const StyledInput = ({ value, onChange, type, classNames }) => {
   const typeTransform = value => type === 'number' ? Number(value) : value
   return (
