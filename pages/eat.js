@@ -100,20 +100,48 @@ const FoodOptionEditor = ({ onClose }) => {
   }
 
   const onSave = async () => {
-    // if (eat.eat_id) {
-    //   if (foods.length) {
-    //     onUpdate()
-    //   } else {
-    //     onDelete()
-    //   }
-    // } else {
-    //   if (foods.length) {
-    //     onCreate()
-    //   } else {
-    //     setOpen(false)
-    //     setHintId(null)
-    //   }
-    // }
+    const foodOption = {
+      foodName,
+      units: {
+        [unitName]: {
+          carbon,
+          protein,
+          fat,
+          calorie
+        }
+      },
+      unit: unitName,
+      amount: 0
+    }
+    // merge with current _foodOptions
+    const existOptions = _foodOptions.find(op => op.foodName === foodName)
+    if (existOptions) {
+      // merge old food option with new unit
+      const mergedOption = {
+        foodName,
+        units: {
+          ...existOptions.units,
+          ...foodOption.units
+        },
+        unit: unitName,
+        amount: 0
+      }
+      const mergedOptions = _foodOptions.map(op => op.foodName === foodName ? mergedOption : op)
+      const res = await window.fetch('/api/eat/options/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ foodOptions: mergedOptions })
+      })
+      mutate('/api/eat/options/read', mergedOptions)
+    } else {
+      // add new food option
+      const res = await window.fetch('/api/eat/options/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ foodOptions: [..._foodOptions, foodOption] })
+      })
+      mutate('/api/eat/options/read', [..._foodOptions, foodOption])
+    }
   }
 
   return (
@@ -165,7 +193,7 @@ const FoodOptionEditor = ({ onClose }) => {
           className='bg-gray-50 px-6 py-4 whitespace-nowrap text-right text-sm font-medium'
         >
           <a
-            onClick={() => { }}
+            onClick={onSave}
             className='mr-3 text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
           >
             Save
@@ -184,6 +212,7 @@ const FoodOptionEditor = ({ onClose }) => {
 
 const FoodOptions = () => {
   const [open, setOpen] = React.useState(false)
+  const _foodOptions = useFoodOptions()
   return (
     <div className=''>
       <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
@@ -238,6 +267,67 @@ const FoodOptions = () => {
               </tr>
             </thead>
             <tbody className='bg-white divide-y divide-gray-200 text-sm'>
+              {
+                _foodOptions.map((op, j) => {
+                  const units = Object.keys(op.units)
+                  return (
+                    <React.Fragment key={j}>
+                      {units.map(
+                        (unit, i) => (
+                          <React.Fragment key={unit + i}>
+                            <tr>
+                              {
+                                i === 0 ? (
+                                  <td
+                                    scope='col'
+                                    className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider' rowSpan={units.length}
+                                  >
+                                    {op.foodName}
+                                  </td>
+                                ) : null
+                              }
+                              <td
+                                scope='col'
+                                className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                              >
+                                {unit}
+                              </td>
+                              <td
+                                scope='col'
+                                className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                              >
+                                {op.units[unit].carbon}
+                              </td>
+                              <td
+                                scope='col'
+                                className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                              >
+                                {op.units[unit].protein}
+                              </td>
+                              <td
+                                scope='col'
+                                className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                              >
+                                {op.units[unit].fat}
+                              </td>
+                              <td
+                                scope='col'
+                                className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                              >
+                                {op.units[unit].calorie}
+                              </td>
+                              <td
+                                scope='col'
+                                className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                              />
+                            </tr>
+                          </React.Fragment>
+                        )
+                      )}
+                    </React.Fragment>
+                  )
+                })
+              }
               {open ? <FoodOptionEditor onClose={() => setOpen(false)} /> : null}
             </tbody>
           </table>
@@ -390,13 +480,15 @@ const FoodEditor = ({ id, value, onChange = () => {}, onDelete }) => {
   const [foodName, setFoodName] = React.useState(value.foodName || foodNames[0])
   const unitOptions = React.useMemo(
     () => {
-      if (value.units) {
-        return Object.keys(value.units)
-      } else {
-        const food = _foodOptions.find(op => op.foodName === foodName)
+      const food = _foodOptions.find(op => op.foodName === foodName)
+      if (food) {
         const units = food ? food.units : []
         const options = Object.keys(units)
         return options
+      } else {
+        if (value.units) {
+          return Object.keys(value.units)
+        }
       }
     }, [foodName]
   )
@@ -580,7 +672,7 @@ const EatRow = ({ eat, hintId, setEditEat, setOpen }) => {
       {
         eat.foods.map(
           (f, i) => {
-            const nutritionPerUnit = f.units[f.unit]
+            const nutritionPerUnit = f.units[f.unit] || {}
             const carbon = (nutritionPerUnit.carbon * f.amount).toFixed(2)
             const protein = (nutritionPerUnit.protein * f.amount).toFixed(2)
             const fat = (nutritionPerUnit.fat * f.amount).toFixed(2)
@@ -656,15 +748,6 @@ export default function Eat (props) {
     <div className='flex flex-col'>
       <EatRecord />
       <FoodOptions />
-      <button onClick={async () => {
-        const res = await window.fetch('/api/eat/options/read', {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' }
-        })
-        console.log('res.json:', await res.json())
-      }}
-      >dsadvflibu
-      </button>
     </div>
   )
 }
