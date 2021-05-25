@@ -53,52 +53,6 @@ const FoodOptionEditor = ({ onClose }) => {
   const [fat, setFat] = React.useState(0)
   const [calorie, setCalorie] = React.useState(0)
 
-  const onCreate = async () => {
-    // setOpen(false)
-    // const body = { time, foods }
-    // const res = await window.fetch('/api/eat/create', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(body)
-    // })
-    // const { eatId } = await res.json()
-    // await mutate('/api/eat/read', [null, ...eats])
-    // setHintId(eatId)
-    // setTimeout(() => {
-    //   setHintId(null)
-    // }, 1000)
-    // if (scrollRef.current) {
-    //   scrollRef.current.scrollTop = 0
-    // }
-  }
-
-  const onUpdate = async () => {
-    // setOpen(false)
-    // const body = { time, foods, eatId: eat.eat_id }
-    // await window.fetch('/api/eat/update', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(body)
-    // })
-    // mutate('/api/eat/read', eats.map(e => e.eat_id === eat.eat_id ? null : e))
-    // setHintId(eat.eat_id)
-    // setTimeout(() => {
-    //   setHintId(null)
-    // }, 1000)
-  }
-
-  const onDelete = async () => {
-    // setOpen(false)
-    // const body = { eatId: eat.eat_id }
-    // await window.fetch('/api/eat/delete', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(body)
-    // })
-    // mutate('/api/eat/read', eats.filter(e => e.eat_id !== eat.eat_id))
-    // setHintId(null)
-  }
-
   const onSave = async () => {
     if (!foodName) {
       onClose()
