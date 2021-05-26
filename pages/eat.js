@@ -16,7 +16,7 @@ const StyledInput = ({ value, onChange, type, classNames, show }) => {
       type={type}
       readOnly={!show}
       disabled={!show}
-      className={'w-20 col-span-2 bg-white border border-gray-300 rounded-md shadow-sm p-1 pl-3 text-left focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames + ' ' + (show ? '' : 'opacity-0')}
+      className={'relative w-20 col-span-2 bg-white border border-gray-300 rounded-md shadow-sm p-1 pl-3 text-left focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames + ' ' + (show ? '' : 'opacity-0')}
       value={value}
       onChange={e => onChange(typeTransform(e.target.value))}
     />
@@ -85,7 +85,7 @@ const FoodOptionEditor = ({ show, onClose }) => {
 
   return (
     <>
-      <tr className='relative'>
+      <tr>
         <td
           scope='col'
           className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
@@ -268,7 +268,10 @@ const FoodOptions = () => {
                   )
                 })
               }
-              <FoodOptionEditor show={open} onClose={() => setOpen(false)} />
+              <FoodOptionEditor
+                show={open}
+                onClose={() => setOpen(false)}
+              />
             </tbody>
           </table>
         </div>
@@ -276,7 +279,7 @@ const FoodOptions = () => {
           open ? null : (
             <div
               colSpan='5'
-              className='bg-gray-50 px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300'
+              className='-mt-12 relative  pt-3 mx-2 bg-gray-50 h-12 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300'
               onClick={() => {
                 setOpen(true)
               }}
