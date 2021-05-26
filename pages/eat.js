@@ -18,7 +18,7 @@ const StyledInput = ({ value, onChange, type, classNames, show }) => {
   )
 }
 
-const FoodOptionEditor = ({ show, setOpen }) => {
+const FoodOptionCreator = ({ show, setOpen }) => {
   const _foodOptions = useFoodOptions()
 
   const [foodName, setFoodName] = React.useState('')
@@ -351,7 +351,7 @@ const FoodOptionList = () => {
               {
                 _foodOptions.map((op, j) => <FoodOptionRow key={j} option={op} />)
               }
-              <FoodOptionEditor
+              <FoodOptionCreator
                 show={open}
                 setOpen={setOpen}
               />
