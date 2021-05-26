@@ -691,7 +691,7 @@ const EatRow = ({ eat, hintId, setEditEat, setOpen }) => {
                         }}
                         className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
                       >
-                      Edit
+                        Edit
                       </a>
                     </td>
                   ) : null
