@@ -176,17 +176,34 @@ const UnitEditor = ({ option, unit, i }) => {
       fat,
       calorie
     }
-    const mergedOptions = _foodOptions.map(op => op.foodName === option.foodName ? _option : op)
+    const updatedOption = _foodOptions.map(op => op.foodName === option.foodName ? _option : op)
     await window.fetch('/api/eat/options/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ foodOptions: mergedOptions })
+      body: JSON.stringify({ foodOptions: updatedOption })
     })
-    await mutate('/api/eat/options/read', mergedOptions)
+    await mutate('/api/eat/options/read', updatedOption)
+    setOnEdit(false)
+  }
+  const onDelete = async () => {
+    const _option = { ...option, units: { ...option.units } }
+    delete _option.units[unit]
+    let updatedOption = []
+    if (Object.keys(_option.units).length === 0) {
+      updatedOption = _foodOptions.filter(op => op.foodName !== option.foodName)
+    } else {
+      updatedOption = _foodOptions.map(op => op.foodName === option.foodName ? _option : op)
+    }
+    
+    await window.fetch('/api/eat/options/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ foodOptions: updatedOption })
+    })
+    await mutate('/api/eat/options/read', updatedOption)
     setOnEdit(false)
   }
   const onCancel = () => { setOnEdit(false) }
-  const onDelete = () => {}
 
   return (
     <React.Fragment key={unit + i}>
