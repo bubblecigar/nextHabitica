@@ -291,7 +291,7 @@ const FoodOptionRow = ({ option }) => {
   )
 }
 
-const FoodOptions = () => {
+const FoodOptionList = () => {
   const [open, setOpen] = React.useState(false)
   const _foodOptions = useFoodOptions()
   return (
@@ -380,7 +380,7 @@ export default function Eat (props) {
   return (
     <div className='flex flex-col'>
       <EatRecord />
-      <FoodOptions />
+      <FoodOptionList />
     </div>
   )
 }
