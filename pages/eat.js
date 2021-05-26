@@ -11,7 +11,7 @@ const StyledInput = ({ value, onChange, type, classNames, show }) => {
       type={type}
       readOnly={!show}
       disabled={!show}
-      className={'relative w-20 col-span-2 bg-white border border-gray-300 rounded-md shadow-sm p-1 pl-3 text-left focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames + ' ' + (show ? '' : 'opacity-0')}
+      className={'relative w-20 col-span-2 bg-white border border-gray-300 rounded-md shadow-sm p-1 pl-2 text-left focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames + ' ' + (show ? '' : 'opacity-0')}
       value={value}
       onChange={e => onChange(typeTransform(e.target.value))}
     />
@@ -156,6 +156,7 @@ const FoodOptionEditor = ({ show, setOpen }) => {
 }
 
 const UnitEditor = ({ option, unit, i }) => {
+  const [onEdit, setOnEdit] = React.useState(false)
   const units = Object.keys(option.units)
 
   return (
@@ -165,7 +166,7 @@ const UnitEditor = ({ option, unit, i }) => {
           i === 0 ? (
             <td
               scope='col'
-              className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider' rowSpan={units.length}
+              className='bg-gray-50  top-0 pl-3 p-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider' rowSpan={units.length}
             >
               {option.foodName}
             </td>
@@ -173,25 +174,25 @@ const UnitEditor = ({ option, unit, i }) => {
         }
         <td
           scope='col'
-          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+          className='bg-gray-50 top-0 p-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
           {unit}
         </td>
         <td
           scope='col'
-          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
-          {option.units[unit].carbon}
+          {onEdit ? <StyledInput show value={option.units[unit].carbon} onChange={() => {}} /> : option.units[unit].carbon}
         </td>
         <td
           scope='col'
-          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
           {option.units[unit].protein}
         </td>
         <td
           scope='col'
-          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
           {option.units[unit].fat}
         </td>
@@ -207,7 +208,7 @@ const UnitEditor = ({ option, unit, i }) => {
           className='bg-gray-50 top-0 p-3 pr-6 text-xs font-medium text-gray-500 tracking-wider text-right'
         >
           <a
-            onClick={() => {}}
+            onClick={() => setOnEdit(!onEdit)}
             className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
           >
             Edit
