@@ -167,6 +167,7 @@ const UnitEditor = ({ option, unit, i }) => {
 
   const onSave = () => {}
   const onCancel = () => { setOnEdit(false) }
+  const onDelete = () => {}
 
   return (
     <React.Fragment key={unit + i}>
@@ -244,6 +245,12 @@ const UnitEditor = ({ option, unit, i }) => {
             onEdit ? (
               <>
                 <a
+                  onClick={onDelete}
+                  className='mr-3 text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
+                >
+                 Del
+                </a>
+                <a
                   onClick={onSave}
                   className='mr-3 text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
                 >
@@ -253,7 +260,7 @@ const UnitEditor = ({ option, unit, i }) => {
                   onClick={onCancel}
                   className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
                 >
-                  Cancel
+                  x
                 </a>
               </>
             ) : (
