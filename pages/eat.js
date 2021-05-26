@@ -157,6 +157,12 @@ const FoodOptionEditor = ({ show, setOpen }) => {
 
 const UnitEditor = ({ option, unit, i }) => {
   const [onEdit, setOnEdit] = React.useState(false)
+  const [unitName, setUnitName] = React.useState(unit)
+  const [carbon, setCarbon] = React.useState(option.units[unit].carbon)
+  const [protein, setProtein] = React.useState(option.units[unit].protein)
+  const [fat, setFat] = React.useState(option.units[unit].fat)
+  const [calorie, setCalorie] = React.useState(option.units[unit].calorie)
+
   const units = Object.keys(option.units)
 
   return (
@@ -176,33 +182,57 @@ const UnitEditor = ({ option, unit, i }) => {
           scope='col'
           className='bg-gray-50 top-0 p-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
-          {unit}
+          {
+            onEdit
+              ? (
+                <StyledInput show value={unitName} onChange={setUnitName} />
+              ) : unit
+          }
         </td>
         <td
           scope='col'
           className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
-          {onEdit ? <StyledInput show value={option.units[unit].carbon} onChange={() => {}} /> : option.units[unit].carbon}
+          {
+            onEdit
+              ? (
+                <StyledInput show value={carbon} type='number' onChange={setCarbon} />
+              ) : option.units[unit].carbon
+          }
         </td>
         <td
           scope='col'
           className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
-          {option.units[unit].protein}
+          {
+            onEdit
+              ? (
+                <StyledInput show value={protein} type='number' onChange={setProtein} />
+              ) : option.units[unit].protein
+          }
         </td>
         <td
           scope='col'
           className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
-          {option.units[unit].fat}
+          {
+            onEdit
+              ? (
+                <StyledInput show value={fat} type='number' onChange={setFat} />
+              ) : option.units[unit].fat
+          }
         </td>
         <td
           scope='col'
           className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
-          {option.units[unit].calorie}
+          {
+            onEdit
+              ? (
+                <StyledInput show value={calorie} type='number' onChange={setCalorie} />
+              ) : option.units[unit].calorie
+          }
         </td>
-
         <td
           scope='col'
           className='bg-gray-50 top-0 p-3 pr-6 text-xs font-medium text-gray-500 tracking-wider text-right'
