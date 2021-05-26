@@ -204,9 +204,9 @@ const EatRow = ({ eat, hintId, setEditEat, setOpen }) => {
         eat.foods.map(
           (f, i) => {
             const nutritionPerUnit = f.units[f.unit] || {}
-            const carbon = (nutritionPerUnit.carbon * f.amount).toFixed(2)
-            const protein = (nutritionPerUnit.protein * f.amount).toFixed(2)
-            const fat = (nutritionPerUnit.fat * f.amount).toFixed(2)
+            const carbon = (nutritionPerUnit.carbon * f.amount).toFixed(0)
+            const protein = (nutritionPerUnit.protein * f.amount).toFixed(0)
+            const fat = (nutritionPerUnit.fat * f.amount).toFixed(0)
             const calories = (nutritionPerUnit.calorie * f.amount).toFixed(0)
             return (
               <tr
