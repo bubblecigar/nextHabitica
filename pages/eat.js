@@ -165,6 +165,9 @@ const UnitEditor = ({ option, unit, i }) => {
 
   const units = Object.keys(option.units)
 
+  const onSave = () => {}
+  const onCancel = () => { setOnEdit(false) }
+
   return (
     <React.Fragment key={unit + i}>
       <tr>
@@ -237,12 +240,31 @@ const UnitEditor = ({ option, unit, i }) => {
           scope='col'
           className='bg-gray-50 top-0 p-3 pr-6 text-xs font-medium text-gray-500 tracking-wider text-right'
         >
-          <a
-            onClick={() => setOnEdit(!onEdit)}
-            className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
-          >
-            Edit
-          </a>
+          {
+            onEdit ? (
+              <>
+                <a
+                  onClick={onSave}
+                  className='mr-3 text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
+                >
+                 Save
+                </a>
+                <a
+                  onClick={onCancel}
+                  className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
+                >
+                  Cancel
+                </a>
+              </>
+            ) : (
+              <a
+                onClick={() => setOnEdit(!onEdit)}
+                className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
+              >
+                Edit
+              </a>
+            )
+          }
         </td>
       </tr>
     </React.Fragment>
