@@ -155,71 +155,76 @@ const FoodOptionEditor = ({ show, setOpen }) => {
   )
 }
 
+const UnitEditor = ({ option, unit, i }) => {
+  const units = Object.keys(option.units)
+
+  return (
+    <React.Fragment key={unit + i}>
+      <tr>
+        {
+          i === 0 ? (
+            <td
+              scope='col'
+              className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider' rowSpan={units.length}
+            >
+              {option.foodName}
+            </td>
+          ) : null
+        }
+        <td
+          scope='col'
+          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+        >
+          {unit}
+        </td>
+        <td
+          scope='col'
+          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+        >
+          {option.units[unit].carbon}
+        </td>
+        <td
+          scope='col'
+          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+        >
+          {option.units[unit].protein}
+        </td>
+        <td
+          scope='col'
+          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+        >
+          {option.units[unit].fat}
+        </td>
+        <td
+          scope='col'
+          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+        >
+          {option.units[unit].calorie}
+        </td>
+
+        <td
+          scope='col'
+          className='bg-gray-50 top-0 p-3 pr-6 text-xs font-medium text-gray-500 tracking-wider text-right'
+        >
+          <a
+            onClick={() => {}}
+            className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
+          >
+            Edit
+          </a>
+        </td>
+      </tr>
+    </React.Fragment>
+  )
+}
+
 const FoodOptionRow = ({ option }) => {
   const units = Object.keys(option.units)
 
   return (
     <>
       {units.map(
-        (unit, i) => (
-          <React.Fragment key={unit + i}>
-            <tr>
-              {
-                i === 0 ? (
-                  <td
-                    scope='col'
-                    className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider' rowSpan={units.length}
-                  >
-                    {option.foodName}
-                  </td>
-                ) : null
-              }
-              <td
-                scope='col'
-                className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-              >
-                {unit}
-              </td>
-              <td
-                scope='col'
-                className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-              >
-                {option.units[unit].carbon}
-              </td>
-              <td
-                scope='col'
-                className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-              >
-                {option.units[unit].protein}
-              </td>
-              <td
-                scope='col'
-                className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-              >
-                {option.units[unit].fat}
-              </td>
-              <td
-                scope='col'
-                className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-              >
-                {option.units[unit].calorie}
-              </td>
-
-              <td
-                scope='col'
-                className='bg-gray-50 top-0 p-3 pr-6 text-xs font-medium text-gray-500 tracking-wider text-right'
-              >
-                <a
-                  onClick={() => {
-                  }}
-                  className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
-                >
-                    Edit
-                </a>
-              </td>
-            </tr>
-          </React.Fragment>
-        )
+        (unit, i) => <UnitEditor key={unit + i} option={option} unit={unit} i={i} />
       )}
     </>
 
