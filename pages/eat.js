@@ -156,16 +156,35 @@ const FoodOptionCreator = ({ show, setOpen }) => {
 }
 
 const UnitEditor = ({ option, unit, i }) => {
+  const _foodOptions = useFoodOptions()
+
   const [onEdit, setOnEdit] = React.useState(false)
   const [unitName, setUnitName] = React.useState(unit)
-  const [carbon, setCarbon] = React.useState(option.units[unit].carbon)
-  const [protein, setProtein] = React.useState(option.units[unit].protein)
-  const [fat, setFat] = React.useState(option.units[unit].fat)
-  const [calorie, setCalorie] = React.useState(option.units[unit].calorie)
+  const [carbon, setCarbon] = React.useState(option.units[unit]?.carbon)
+  const [protein, setProtein] = React.useState(option.units[unit]?.protein)
+  const [fat, setFat] = React.useState(option.units[unit]?.fat)
+  const [calorie, setCalorie] = React.useState(option.units[unit]?.calorie)
 
   const units = Object.keys(option.units)
 
-  const onSave = () => {}
+  const onSave = async () => {
+    const _option = { ...option, units: { ...option.units } }
+    delete _option.units[unit]
+    _option.units[unitName] = {
+      carbon,
+      protein,
+      fat,
+      calorie
+    }
+    const mergedOptions = _foodOptions.map(op => op.foodName === option.foodName ? _option : op)
+    await window.fetch('/api/eat/options/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ foodOptions: mergedOptions })
+    })
+    await mutate('/api/eat/options/read', mergedOptions)
+    setOnEdit(false)
+  }
   const onCancel = () => { setOnEdit(false) }
   const onDelete = () => {}
 
