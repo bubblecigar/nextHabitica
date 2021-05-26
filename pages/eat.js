@@ -155,6 +155,77 @@ const FoodOptionEditor = ({ show, setOpen }) => {
   )
 }
 
+const FoodOptionRow = ({ option }) => {
+  const units = Object.keys(option.units)
+
+  return (
+    <>
+      {units.map(
+        (unit, i) => (
+          <React.Fragment key={unit + i}>
+            <tr>
+              {
+                i === 0 ? (
+                  <td
+                    scope='col'
+                    className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider' rowSpan={units.length}
+                  >
+                    {option.foodName}
+                  </td>
+                ) : null
+              }
+              <td
+                scope='col'
+                className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+              >
+                {unit}
+              </td>
+              <td
+                scope='col'
+                className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+              >
+                {option.units[unit].carbon}
+              </td>
+              <td
+                scope='col'
+                className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+              >
+                {option.units[unit].protein}
+              </td>
+              <td
+                scope='col'
+                className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+              >
+                {option.units[unit].fat}
+              </td>
+              <td
+                scope='col'
+                className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+              >
+                {option.units[unit].calorie}
+              </td>
+
+              <td
+                scope='col'
+                className='bg-gray-50 top-0 p-3 pr-6 text-xs font-medium text-gray-500 tracking-wider text-right'
+              >
+                <a
+                  onClick={() => {
+                  }}
+                  className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
+                >
+                    Edit
+                </a>
+              </td>
+            </tr>
+          </React.Fragment>
+        )
+      )}
+    </>
+
+  )
+}
+
 const FoodOptions = () => {
   const [open, setOpen] = React.useState(false)
   const _foodOptions = useFoodOptions()
@@ -213,74 +284,7 @@ const FoodOptions = () => {
             </thead>
             <tbody className='bg-white divide-y divide-gray-200 text-sm'>
               {
-                _foodOptions.map((op, j) => {
-                  const units = Object.keys(op.units)
-                  return (
-                    <React.Fragment key={j}>
-                      {units.map(
-                        (unit, i) => (
-                          <React.Fragment key={unit + i}>
-                            <tr>
-                              {
-                                i === 0 ? (
-                                  <td
-                                    scope='col'
-                                    className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider' rowSpan={units.length}
-                                  >
-                                    {op.foodName}
-                                  </td>
-                                ) : null
-                              }
-                              <td
-                                scope='col'
-                                className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                              >
-                                {unit}
-                              </td>
-                              <td
-                                scope='col'
-                                className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                              >
-                                {op.units[unit].carbon}
-                              </td>
-                              <td
-                                scope='col'
-                                className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                              >
-                                {op.units[unit].protein}
-                              </td>
-                              <td
-                                scope='col'
-                                className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                              >
-                                {op.units[unit].fat}
-                              </td>
-                              <td
-                                scope='col'
-                                className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                              >
-                                {op.units[unit].calorie}
-                              </td>
-
-                              <td
-                                scope='col'
-                                className='bg-gray-50 top-0 p-3 pr-6 text-xs font-medium text-gray-500 tracking-wider text-right'
-                              >
-                                <a
-                                  onClick={() => {
-                                  }}
-                                  className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
-                                >
-                                  Edit
-                                </a>
-                              </td>
-                            </tr>
-                          </React.Fragment>
-                        )
-                      )}
-                    </React.Fragment>
-                  )
-                })
+                _foodOptions.map((op, j) => <FoodOptionRow key={j} option={op} />)
               }
               <FoodOptionEditor
                 show={open}
