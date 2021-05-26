@@ -9,19 +9,21 @@ import SelectBox from '../components/SelectBox'
 import DialogBox from '../components/DialogBox'
 import { v4 as uuidv4 } from 'uuid'
 
-const StyledInput = ({ value, onChange, type, classNames }) => {
+const StyledInput = ({ value, onChange, type, classNames, show }) => {
   const typeTransform = value => type === 'number' ? Number(value) : value
   return (
     <input
       type={type}
-      className={'w-20 col-span-2 bg-white border border-gray-300 rounded-md shadow-sm p-1 pl-3 text-left focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames}
+      readOnly={!show}
+      disabled={!show}
+      className={'w-20 col-span-2 bg-white border border-gray-300 rounded-md shadow-sm p-1 pl-3 text-left focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames + ' ' + (show ? '' : 'opacity-0')}
       value={value}
       onChange={e => onChange(typeTransform(e.target.value))}
     />
   )
 }
 
-const FoodOptionEditor = ({ onClose }) => {
+const FoodOptionEditor = ({ show, onClose }) => {
   const _foodOptions = useFoodOptions()
 
   const [foodName, setFoodName] = React.useState('')
@@ -83,14 +85,15 @@ const FoodOptionEditor = ({ onClose }) => {
 
   return (
     <>
-      <tr>
+      <tr className='relative'>
         <td
           scope='col'
-          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
           <StyledInput
             classNames='w-32'
             type='text'
+            show={show}
             value={foodName}
             onChange={setFoodName}
           />
@@ -99,31 +102,31 @@ const FoodOptionEditor = ({ onClose }) => {
           scope='col'
           className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
-          <StyledInput type='text' value={unitName} onChange={setUnitName} />
+          <StyledInput show={show} type='text' value={unitName} onChange={setUnitName} />
         </td>
         <td
           scope='col'
           className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
-          <StyledInput type='number' value={carbon} onChange={setCarbon} />
+          <StyledInput show={show} type='number' value={carbon} onChange={setCarbon} />
         </td>
         <td
           scope='col'
           className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
-          <StyledInput type='number' value={protein} onChange={setProtein} />
+          <StyledInput show={show} type='number' value={protein} onChange={setProtein} />
         </td>
         <td
           scope='col'
           className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
-          <StyledInput type='number' value={fat} onChange={setFat} />
+          <StyledInput show={show} type='number' value={fat} onChange={setFat} />
         </td>
         <td
           scope='col'
           className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
-          <StyledInput type='number' value={calorie} onChange={setCalorie} />
+          <StyledInput show={show} type='number' value={calorie} onChange={setCalorie} />
         </td>
         <td
           scope='col'
@@ -131,13 +134,13 @@ const FoodOptionEditor = ({ onClose }) => {
         >
           <a
             onClick={onSave}
-            className='mr-3 text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
+            className={'mr-3 text-xs text-indigo-600 hover:text-indigo-900' + (show ? '  cursor-pointer' : ' pointer-events-none opacity-0')}
           >
             Save
           </a>
           <a
             onClick={onClose}
-            className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
+            className={'text-xs text-indigo-600 hover:text-indigo-900' + (show ? '  cursor-pointer' : ' pointer-events-none opacity-0')}
           >
             Cancel
           </a>
@@ -265,14 +268,16 @@ const FoodOptions = () => {
                   )
                 })
               }
-              {open ? <FoodOptionEditor onClose={() => setOpen(false)} /> : null}
+              <FoodOptionEditor show={open} onClose={() => setOpen(false)} />
             </tbody>
           </table>
         </div>
         {
           open ? null : (
             <div
-              colSpan='5' className='bg-gray-50 px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300' onClick={() => {
+              colSpan='5'
+              className='bg-gray-50 px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300'
+              onClick={() => {
                 setOpen(true)
               }}
             >
