@@ -266,23 +266,19 @@ const FoodOptions = () => {
                               >
                                 {op.units[unit].calorie}
                               </td>
-                              {
-                                i === 0 ? (
-                                  <td
-                                    scope='col'
-                                    rowSpan={units.length}
-                                    className='bg-gray-50 top-0 p-3 pr-6 text-xs font-medium text-gray-500 tracking-wider text-right'
-                                  >
-                                    <a
-                                      onClick={() => {
-                                      }}
-                                      className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
-                                    >
+
+                              <td
+                                scope='col'
+                                className='bg-gray-50 top-0 p-3 pr-6 text-xs font-medium text-gray-500 tracking-wider text-right'
+                              >
+                                <a
+                                  onClick={() => {
+                                  }}
+                                  className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
+                                >
                                   Edit
-                                    </a>
-                                  </td>
-                                ) : null
-                              }
+                                </a>
+                              </td>
                             </tr>
                           </React.Fragment>
                         )
