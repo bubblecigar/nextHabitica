@@ -23,7 +23,7 @@ const StyledInput = ({ value, onChange, type, classNames, show }) => {
   )
 }
 
-const FoodOptionEditor = ({ show, onClose }) => {
+const FoodOptionEditor = ({ show, setOpen }) => {
   const _foodOptions = useFoodOptions()
 
   const [foodName, setFoodName] = React.useState('')
@@ -35,7 +35,7 @@ const FoodOptionEditor = ({ show, onClose }) => {
 
   const onSave = async () => {
     if (!foodName) {
-      onClose()
+      onCancel()
       return
     }
     const foodOption = {
@@ -80,7 +80,17 @@ const FoodOptionEditor = ({ show, onClose }) => {
       })
       mutate('/api/eat/options/read', [..._foodOptions, foodOption])
     }
-    onClose()
+    onCancel()
+  }
+
+  const onCancel = () => {
+    setFoodName('')
+    setUnitName('')
+    setCarbon(0)
+    setProtein(0)
+    setFat(0)
+    setCalorie(0)
+    setOpen(false)
   }
 
   return (
@@ -139,7 +149,7 @@ const FoodOptionEditor = ({ show, onClose }) => {
             Save
           </a>
           <a
-            onClick={onClose}
+            onClick={onCancel}
             className={'text-xs text-indigo-600 hover:text-indigo-900' + (show ? '  cursor-pointer' : ' pointer-events-none opacity-0')}
           >
             Cancel
@@ -270,7 +280,7 @@ const FoodOptions = () => {
               }
               <FoodOptionEditor
                 show={open}
-                onClose={() => setOpen(false)}
+                setOpen={setOpen}
               />
             </tbody>
           </table>
