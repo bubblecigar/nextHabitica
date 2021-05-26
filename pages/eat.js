@@ -65,7 +65,7 @@ const FoodOptionEditor = ({ show, setOpen }) => {
         amount: 0
       }
       const mergedOptions = _foodOptions.map(op => op.foodName === foodName ? mergedOption : op)
-      const res = await window.fetch('/api/eat/options/update', {
+      await window.fetch('/api/eat/options/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ foodOptions: mergedOptions })
@@ -73,7 +73,7 @@ const FoodOptionEditor = ({ show, setOpen }) => {
       mutate('/api/eat/options/read', mergedOptions)
     } else {
       // add new food option
-      const res = await window.fetch('/api/eat/options/update', {
+      await window.fetch('/api/eat/options/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ foodOptions: [..._foodOptions, foodOption] })
@@ -176,13 +176,13 @@ const FoodOptions = () => {
                   scope='col'
                   className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
-                    Foods
+                    Food
                 </th>
                 <th
                   scope='col'
                   className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
-                    units
+                    unit
                 </th>
                 <th
                   scope='col'
