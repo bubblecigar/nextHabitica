@@ -295,49 +295,49 @@ const EatRecord = () => {
                   scope='col'
                   className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
-                      Date
+                  Date
                 </th>
                 <th
                   scope='col'
                   className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
-                      Time
+                  Time
                 </th>
                 <th
                   scope='col'
                   className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
-                      Foods
+                  Foods
                 </th>
                 <th
                   scope='col'
                   className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
-                      Amount
+                  Amount
                 </th>
                 <th
                   scope='col'
                   className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
-                      Carbon
+                  Carbon
                 </th>
                 <th
                   scope='col'
                   className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
-                      Protein
+                  Protein
                 </th>
                 <th
                   scope='col'
                   className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
-                      Fat
+                  Fat
                 </th>
                 <th
                   scope='col'
                   className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
-                      Calorie
+                  Calorie
                 </th>
                 <th
                   scope='col'
