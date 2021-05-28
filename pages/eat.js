@@ -1,10 +1,12 @@
-import { useUser } from '../lib/hooks'
+import React from 'react'
+import EatRecord from '../components/EatRecord'
+import FoodOptionList from '../components/FoodOptionList'
 
 export default function Eat (props) {
-  const user = useUser({ redirectTo: '/' })
   return (
-    <div>
-      eat
+    <div className='flex flex-col'>
+      <EatRecord />
+      <FoodOptionList />
     </div>
   )
 }
