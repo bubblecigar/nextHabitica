@@ -282,7 +282,7 @@ const UnitEditor = ({ option, unit, i }) => {
               <>
                 <a
                   onClick={onDelete}
-                  className='mr-3 text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
+                  className='mr-3 text-xs text-red-400 hover:text-red-500 cursor-pointer'
                 >
                  Del
                 </a>
