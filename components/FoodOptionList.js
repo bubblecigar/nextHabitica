@@ -30,8 +30,8 @@ const EditableField = ({ onEdit, staticValue, value, onChange, type, classNames 
             onChange={e => onChange(typeTransform(e.target.value))}
           />
         ) : (
-          <span className='block px-2 p-1'>{staticValue}</span>
-        )
+            <span className='block px-2 p-1'>{staticValue}</span>
+          )
       }
     </div>
   )
@@ -307,13 +307,13 @@ const UnitEditor = ({ option, unit, i }) => {
                   onClick={onDelete}
                   className='mr-3 text-xs text-red-400 hover:text-red-500 cursor-pointer'
                 >
-                 Del
+                  Del
                 </a>
                 <a
                   onClick={onSave}
                   className='mr-3 text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
                 >
-                 Save
+                  Save
                 </a>
                 <a
                   onClick={onCancel}
@@ -323,13 +323,13 @@ const UnitEditor = ({ option, unit, i }) => {
                 </a>
               </div>
             ) : (
-              <a
-                onClick={() => setOnEdit(!onEdit)}
-                className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
-              >
-                Edit
+                <a
+                  onClick={() => setOnEdit(!onEdit)}
+                  className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
+                >
+                  Edit
               </a>
-            )
+              )
           }
         </td>
       </tr>
@@ -375,37 +375,37 @@ const FoodOptionList = () => {
                   scope='col'
                   className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
-                    Food
+                  Food
                 </th>
                 <th
                   scope='col'
                   className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
-                    unit
+                  unit
                 </th>
                 <th
                   scope='col'
                   className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
-                    Carbon
+                  Carbon
                 </th>
                 <th
                   scope='col'
                   className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
-                    Protein
+                  Protein
                 </th>
                 <th
                   scope='col'
                   className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
-                    Fat
+                  Fat
                 </th>
                 <th
                   scope='col'
                   className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
-                    Calorie
+                  Calorie
                 </th>
                 <th
                   scope='col'
