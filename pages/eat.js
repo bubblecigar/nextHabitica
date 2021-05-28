@@ -111,7 +111,7 @@ const FoodOptionCreator = ({ show, setOpen }) => {
       <tr>
         <td
           scope='col'
-          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 tracking-wider'
         >
           <StyledInput
             classNames='w-32'
@@ -123,31 +123,31 @@ const FoodOptionCreator = ({ show, setOpen }) => {
         </td>
         <td
           scope='col'
-          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 tracking-wider'
         >
           <StyledInput show={show} type='text' value={unitName} onChange={setUnitName} />
         </td>
         <td
           scope='col'
-          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 tracking-wider'
         >
           <StyledInput show={show} type='number' value={carbon} onChange={setCarbon} />
         </td>
         <td
           scope='col'
-          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 tracking-wider'
         >
           <StyledInput show={show} type='number' value={protein} onChange={setProtein} />
         </td>
         <td
           scope='col'
-          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 tracking-wider'
         >
           <StyledInput show={show} type='number' value={fat} onChange={setFat} />
         </td>
         <td
           scope='col'
-          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 tracking-wider'
         >
           <StyledInput show={show} type='number' value={calorie} onChange={setCalorie} />
         </td>
@@ -230,7 +230,7 @@ const UnitEditor = ({ option, unit, i }) => {
           i === 0 ? (
             <td
               scope='col'
-              className='bg-gray-50  top-0 pl-3 p-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider' rowSpan={units.length}
+              className='bg-gray-50  top-0 pl-3 p-1 text-left text-xs font-medium text-gray-500 tracking-wider' rowSpan={units.length}
             >
               {option.foodName}
             </td>
@@ -238,7 +238,7 @@ const UnitEditor = ({ option, unit, i }) => {
         }
         <td
           scope='col'
-          className='bg-gray-50 top-0 p-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+          className='bg-gray-50 top-0 p-1 text-left text-xs font-medium text-gray-500 tracking-wider'
         >
           <EditableField 
             onEdit={onEdit}
@@ -249,7 +249,7 @@ const UnitEditor = ({ option, unit, i }) => {
         </td>
         <td
           scope='col'
-          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500  tracking-wider'
         >
           <EditableField 
             onEdit={onEdit}
@@ -261,7 +261,7 @@ const UnitEditor = ({ option, unit, i }) => {
         </td>
         <td
           scope='col'
-          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500  tracking-wider'
         >
           <EditableField 
             onEdit={onEdit}
@@ -273,7 +273,7 @@ const UnitEditor = ({ option, unit, i }) => {
         </td>
         <td
           scope='col'
-          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500  tracking-wider'
         >
           <EditableField
             onEdit={onEdit}
@@ -285,7 +285,7 @@ const UnitEditor = ({ option, unit, i }) => {
         </td>
         <td
           scope='col'
-          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500  tracking-wider'
         >
           <EditableField
             onEdit={onEdit}
