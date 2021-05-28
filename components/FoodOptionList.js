@@ -84,7 +84,7 @@ const FoodOptionCreator = ({ show, setOpen }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ foodOptions: mergedOptions })
       })
-      mutate('/api/eat/options/read', mergedOptions)
+      mutate('/api/eat/options/read', _foodOptions.map(op => op.foodName === foodName ? null : op))
     } else {
       // add new food option
       await window.fetch('/api/eat/options/update', {
@@ -201,7 +201,7 @@ const UnitEditor = ({ option, unit, i }) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ foodOptions: updatedOption })
     })
-    await mutate('/api/eat/options/read', updatedOption)
+    await mutate('/api/eat/options/read', _foodOptions.map(op => op.foodName === option.foodName ? null : op))
     setOnEdit(false)
   }
   const onDelete = async () => {
@@ -417,7 +417,13 @@ const FoodOptionList = () => {
             </thead>
             <tbody className='bg-white divide-y divide-gray-200 text-sm'>
               {
-                _foodOptions.map((op, j) => <FoodOptionRow key={j} option={op} />)
+                _foodOptions.map((op, j) => op ? <FoodOptionRow key={j} option={op} /> : <tr key={Math.random()}>
+                  <td colSpan='7' className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
+                    <div className='text-sm text-gray-900 text-center'>
+                      updating...
+                  </div>
+                  </td>
+                </tr>)
               }
               <FoodOptionCreator
                 show={open}
