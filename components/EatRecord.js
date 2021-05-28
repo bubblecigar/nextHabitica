@@ -285,7 +285,7 @@ const EatRecord = () => {
     <div className=''>
       <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
         <div
-          className='shadow border-b border-gray-200 sm:rounded-lg overflow-y-auto max-h-75v'
+          className='shadow border-gray-200 sm:rounded-lg overflow-y-auto max-h-75v'
           ref={scrollRef}
         >
           <table className='min-w-full divide-y divide-gray-200'>
@@ -370,6 +370,18 @@ const EatRecord = () => {
               )
               )}
             </tbody>
+            <tfoot>
+              <tr>
+                <td
+                  colSpan='9' className='bg-gray-50 px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300' onClick={() => {
+                    setEditEat({})
+                    setOpen(true)
+                  }}
+                >
+                  <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
+                </td>
+              </tr>
+            </tfoot>
           </table>
         </div>
         <DialogBox open={open} setOpen={setOpen}>
@@ -384,14 +396,6 @@ const EatRecord = () => {
             </tbody>
           </table>
         </DialogBox>
-        <div
-          colSpan='5' className='bg-gray-50 px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300' onClick={() => {
-            setEditEat({})
-            setOpen(true)
-          }}
-        >
-          <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
-        </div>
       </div>
     </div>
 
