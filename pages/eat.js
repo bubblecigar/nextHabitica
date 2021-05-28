@@ -1,5 +1,5 @@
 import React from 'react'
-import { PlusCircleIcon } from '@heroicons/react/solid'
+import { PlusCircleIcon, StarIcon } from '@heroicons/react/solid'
 import { mutate } from 'swr'
 import { useFoodOptions } from '../lib/hooks'
 import EatRecord from '../components/EatRecord'
@@ -327,12 +327,21 @@ const FoodOptionRow = ({ option }) => {
   )
 }
 
+const FoodOptionHint = () => {
+  return (
+    <div className='text-right py-3 text-sm flex justify-end items-center text-indigo-400'>
+      <StarIcon className='inline w-3 h-3 mr-2' /> Gram of nutrition per unit
+    </div>
+  )
+}
+
 const FoodOptionList = () => {
   const [open, setOpen] = React.useState(false)
   const _foodOptions = useFoodOptions()
   return (
     <div className=''>
       <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
+        <FoodOptionHint />
         <div
           className='shadow border-b border-gray-200 sm:rounded-lg overflow-y-auto max-h-75v'
         >
