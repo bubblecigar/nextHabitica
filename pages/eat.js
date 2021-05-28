@@ -1,5 +1,5 @@
 import React from 'react'
-import { PlusCircleIcon, StarIcon } from '@heroicons/react/solid'
+import { PlusCircleIcon, StarIcon, ReplyIcon } from '@heroicons/react/solid'
 import { mutate } from 'swr'
 import { useFoodOptions } from '../lib/hooks'
 import EatRecord from '../components/EatRecord'
@@ -279,7 +279,7 @@ const UnitEditor = ({ option, unit, i }) => {
         >
           {
             onEdit ? (
-              <>
+              <div className='flex items-end justify-end'>
                 <a
                   onClick={onDelete}
                   className='mr-3 text-xs text-red-400 hover:text-red-500 cursor-pointer'
@@ -296,9 +296,9 @@ const UnitEditor = ({ option, unit, i }) => {
                   onClick={onCancel}
                   className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
                 >
-                  x
+                  <ReplyIcon className='transform rotate-180 w-3 h-3 inline'/>
                 </a>
-              </>
+              </div>
             ) : (
               <a
                 onClick={() => setOnEdit(!onEdit)}
