@@ -9,7 +9,7 @@ import SelectBox from '../components/SelectBox'
 import DialogBox from '../components/DialogBox'
 import { v4 as uuidv4 } from 'uuid'
 
-const FoodEditor = ({ id, value, onChange = () => {}, onDelete }) => {
+const FoodEditor = ({ id, value, onChange = () => { }, onDelete }) => {
   const _foodOptions = useFoodOptions()
 
   const [amount, setAmount] = React.useState(value.amount || 0)
@@ -260,7 +260,7 @@ const EatRow = ({ eat, hintId, setEditEat, setOpen }) => {
                         }}
                         className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
                       >
-                          Edit
+                        Edit
                       </a>
                     </td>
                   ) : null
@@ -362,7 +362,7 @@ const EatRecord = () => {
                     <tr key={i}>
                       <td colSpan='9' className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
                         <div className='text-sm text-gray-900 text-center'>
-                              updating...
+                          updating...
                         </div>
                       </td>
                     </tr>
