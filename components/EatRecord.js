@@ -289,59 +289,59 @@ const EatRecord = () => {
           ref={scrollRef}
         >
           <table className='min-w-full divide-y divide-gray-200'>
-            <thead className='sticky top-0'>
-              <tr className='sticky top-0'>
+            <thead className='top-0'>
+              <tr className='top-0'>
                 <th
                   scope='col'
-                  className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
                   Date
                 </th>
                 <th
                   scope='col'
-                  className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
                   Time
                 </th>
                 <th
                   scope='col'
-                  className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
                   Foods
                 </th>
                 <th
                   scope='col'
-                  className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
                   Amount
                 </th>
                 <th
                   scope='col'
-                  className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
                   Carbon
                 </th>
                 <th
                   scope='col'
-                  className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
                   Protein
                 </th>
                 <th
                   scope='col'
-                  className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
                   Fat
                 </th>
                 <th
                   scope='col'
-                  className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
                   Calorie
                 </th>
                 <th
                   scope='col'
-                  className='bg-gray-50 sticky top-0 relative px-6 py-3'
+                  className='bg-gray-50 top-0 px-6 py-3'
                 >
                   <span className='sr-only'>Edit</span>
                 </th>
