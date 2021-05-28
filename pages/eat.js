@@ -18,6 +18,24 @@ const StyledInput = ({ value, onChange, type, classNames, show }) => {
   )
 }
 
+const EditableField = ({ onEdit, staticValue, value, onChange, type, classNames }) => {
+  const typeTransform = value => type === 'number' ? Number(value) : value
+  return <div className='h-5 flex items-center justify-start'>
+    {
+      onEdit ? (
+      <input
+        type={type}
+        className={'relative w-20 col-span-2 bg-white border border-gray-300 rounded-md shadow-sm p-1 pl-2 text-left focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames}
+        value={value}
+        onChange={e => onChange(typeTransform(e.target.value))}
+      />
+    ) : (
+      <span className='block px-2 p-1'>{staticValue}</span>
+    )
+  }
+  </div>
+}
+
 const FoodOptionCreator = ({ show, setOpen }) => {
   const _foodOptions = useFoodOptions()
 
@@ -222,56 +240,60 @@ const UnitEditor = ({ option, unit, i }) => {
           scope='col'
           className='bg-gray-50 top-0 p-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
-          {
-            onEdit
-              ? (
-                <StyledInput show value={unitName} onChange={setUnitName} />
-              ) : unit
-          }
+          <EditableField 
+            onEdit={onEdit}
+            staticValue={unit} 
+            value={unitName} 
+            onChange={setUnitName}  
+          />
         </td>
         <td
           scope='col'
           className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
-          {
-            onEdit
-              ? (
-                <StyledInput show value={carbon} type='number' onChange={setCarbon} />
-              ) : option.units[unit].carbon
-          }
+          <EditableField 
+            onEdit={onEdit}
+            staticValue={option.units[unit].carbon}
+            value={carbon}
+            type='number'
+            onChange={setCarbon}  
+          />
         </td>
         <td
           scope='col'
           className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
-          {
-            onEdit
-              ? (
-                <StyledInput show value={protein} type='number' onChange={setProtein} />
-              ) : option.units[unit].protein
-          }
+          <EditableField 
+            onEdit={onEdit}
+            staticValue={option.units[unit].protein}
+            value={protein}
+            type='number'
+            onChange={setProtein}  
+          />
         </td>
         <td
           scope='col'
           className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
-          {
-            onEdit
-              ? (
-                <StyledInput show value={fat} type='number' onChange={setFat} />
-              ) : option.units[unit].fat
-          }
+          <EditableField
+            onEdit={onEdit}
+            staticValue={option.units[unit].fat}
+            value={fat}
+            type='number'
+            onChange={setFat}  
+          />
         </td>
         <td
           scope='col'
           className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
         >
-          {
-            onEdit
-              ? (
-                <StyledInput show value={calorie} type='number' onChange={setCalorie} />
-              ) : option.units[unit].calorie
-          }
+          <EditableField
+            onEdit={onEdit}
+            staticValue={option.units[unit].calorie}
+            value={calorie}
+            type='number'
+            onChange={setCalorie}  
+          />
         </td>
         <td
           scope='col'
