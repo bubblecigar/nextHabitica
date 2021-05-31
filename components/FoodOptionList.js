@@ -79,20 +79,22 @@ const FoodOptionCreator = ({ show, setOpen }) => {
         amount: 0
       }
       const mergedOptions = _foodOptions.map(op => op.foodName === foodName ? mergedOption : op)
-      window.fetch('/api/eat/options/update', {
+      mutate('/api/eat/options/read', mergedOptions, false)
+      await window.fetch('/api/eat/options/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ foodOptions: mergedOptions })
       })
-      mutate('/api/eat/options/read', mergedOptions)
+      mutate('/api/eat/options/read')
     } else {
       // add new food option
-      window.fetch('/api/eat/options/update', {
+      mutate('/api/eat/options/read', [..._foodOptions, foodOption], false)
+      await window.fetch('/api/eat/options/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ foodOptions: [..._foodOptions, foodOption] })
       })
-      mutate('/api/eat/options/read', [..._foodOptions, foodOption])
+      mutate('/api/eat/options/read')
     }
     onCancel()
   }
@@ -196,12 +198,13 @@ const UnitEditor = ({ option, unit, i }) => {
       calorie
     }
     const updatedOption = _foodOptions.map(op => op.foodName === option.foodName ? _option : op)
-    window.fetch('/api/eat/options/update', {
+    mutate('/api/eat/options/read', updatedOption, false)
+    await window.fetch('/api/eat/options/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ foodOptions: updatedOption })
     })
-    mutate('/api/eat/options/read', updatedOption)
+    mutate('/api/eat/options/read')
     setOnEdit(false)
   }
   const onDelete = async () => {
@@ -213,13 +216,13 @@ const UnitEditor = ({ option, unit, i }) => {
     } else {
       updatedOption = _foodOptions.map(op => op.foodName === option.foodName ? _option : op)
     }
-
-    window.fetch('/api/eat/options/update', {
+    mutate('/api/eat/options/read', updatedOption, false)
+    await window.fetch('/api/eat/options/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ foodOptions: updatedOption })
     })
-    mutate('/api/eat/options/read', updatedOption)
+    mutate('/api/eat/options/read')
     setOnEdit(false)
   }
   const onCancel = () => { setOnEdit(false) }

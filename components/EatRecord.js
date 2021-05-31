@@ -72,13 +72,14 @@ const EatEditor = ({ eat, setHintId, setOpen }) => {
   const onCreate = async () => {
     setOpen(false)
     const body = { time, foods }
+    mutate('/api/eat/read', [{ time, foods, eat_id: eatId, isUpdating: true }, ...eats], false)
     const res = await window.fetch('/api/eat/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
     const { eatId } = await res.json()
-    mutate('/api/eat/read', [{ time, foods, eat_id: eatId, isUpdating: true }, ...eats])
+    mutate('/api/eat/read')
 
     setHintId(eatId)
     setTimeout(() => {
@@ -89,12 +90,13 @@ const EatEditor = ({ eat, setHintId, setOpen }) => {
   const onUpdate = async () => {
     setOpen(false)
     const body = { time, foods, eatId: eat.eat_id }
-    window.fetch('/api/eat/update', {
+    mutate('/api/eat/read', eats.map(e => e.eat_id === eat.eat_id ? { ...e, time, foods, isUpdating: true } : e), false)
+    await window.fetch('/api/eat/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
-    mutate('/api/eat/read', eats.map(e => e.eat_id === eat.eat_id ? { ...e, time, foods, isUpdating: true } : e))
+    mutate('/api/eat/read')
     setHintId(eat.eat_id)
     setTimeout(() => {
       setHintId(null)
@@ -104,12 +106,13 @@ const EatEditor = ({ eat, setHintId, setOpen }) => {
   const onDelete = async () => {
     setOpen(false)
     const body = { eatId: eat.eat_id }
-    window.fetch('/api/eat/delete', {
+    mutate('/api/eat/read', eats.filter(e => e.eat_id !== eat.eat_id), false)
+    await window.fetch('/api/eat/delete', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
-    mutate('/api/eat/read', eats.filter(e => e.eat_id !== eat.eat_id))
+    mutate('/api/eat/read')
     setHintId(null)
   }
 
