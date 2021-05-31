@@ -194,8 +194,7 @@ const EatEditor = ({ eat, setHintId, setOpen }) => {
   )
 }
 
-const FoodRow = (props) => {
-  const { eat, food, dayHead, timeHead, totalRowsCount } = props
+const FoodRow = ({ eat, food, dayHead, timeHead, totalRowsCount, setOpen, setEditEat }) => {
   const nutritionPerUnit = food.units[food.unit] || {}
   const carbon = (nutritionPerUnit.carbon * food.amount).toFixed(0)
   const protein = (nutritionPerUnit.protein * food.amount).toFixed(0)
@@ -249,7 +248,10 @@ const FoodRow = (props) => {
             timeHead ? (
               <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
                 <a
-                  onClick={() => { }}
+                  onClick={() => {
+                    setEditEat(eat)
+                    setOpen(true)
+                  }}
                   className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
                 >
                   Edit
@@ -280,7 +282,8 @@ const EatRecords = (props) => {
   )
 }
 
-const DayGroup = ({ group }) => {
+const DayGroup = (props) => {
+  const { group } = props
   const totalRowsCount = group.reduce((acc, cur) => (acc + cur.foods.length), 0)
   return (
     <>
@@ -288,7 +291,7 @@ const DayGroup = ({ group }) => {
         group.map(
           (eat, i) => {
             return (
-              <EatRecords key={i} eat={eat} dayHead={i === 0} totalRowsCount={totalRowsCount} />
+              <EatRecords key={i} {...props} eat={eat} dayHead={i === 0} totalRowsCount={totalRowsCount} />
             )
           }
         )
@@ -371,7 +374,12 @@ const EatRecord = () => {
             <tbody className='bg-white divide-y divide-gray-200 text-sm'>
               {
                 eatGroups.map(
-                  (group, i) => <DayGroup key={i} group={group} />
+                  (group, i) => <DayGroup
+                    key={i}
+                    group={group}
+                    setOpen={setOpen}
+                    setEditEat={setEditEat}
+                  />
                 )
               }
             </tbody>
