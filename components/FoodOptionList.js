@@ -79,22 +79,26 @@ const FoodOptionCreator = ({ show, setOpen }) => {
         amount: 0
       }
       const mergedOptions = _foodOptions.map(op => op.foodName === foodName ? mergedOption : op)
+      mutate('/api/eat/options/read', mergedOptions, false)
+      onCancel()
       await window.fetch('/api/eat/options/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ foodOptions: mergedOptions })
       })
-      mutate('/api/eat/options/read', _foodOptions.map(op => op.foodName === foodName ? null : op))
+      mutate('/api/eat/options/read')
     } else {
       // add new food option
+      const newOptions = [..._foodOptions, foodOption]
+      mutate('/api/eat/options/read', newOptions, false)
+      onCancel()
       await window.fetch('/api/eat/options/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ foodOptions: [..._foodOptions, foodOption] })
+        body: JSON.stringify({ foodOptions: newOptions })
       })
-      mutate('/api/eat/options/read', [..._foodOptions, foodOption])
+      mutate('/api/eat/options/read')
     }
-    onCancel()
   }
 
   const onCancel = () => {
@@ -196,13 +200,14 @@ const UnitEditor = ({ option, unit, i }) => {
       calorie
     }
     const updatedOption = _foodOptions.map(op => op.foodName === option.foodName ? _option : op)
+    mutate('/api/eat/options/read', updatedOption, false)
+    setOnEdit(false)
     await window.fetch('/api/eat/options/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ foodOptions: updatedOption })
     })
-    await mutate('/api/eat/options/read', _foodOptions.map(op => op.foodName === option.foodName ? null : op))
-    setOnEdit(false)
+    mutate('/api/eat/options/read')
   }
   const onDelete = async () => {
     const _option = { ...option, units: { ...option.units } }
@@ -213,14 +218,14 @@ const UnitEditor = ({ option, unit, i }) => {
     } else {
       updatedOption = _foodOptions.map(op => op.foodName === option.foodName ? _option : op)
     }
-
+    mutate('/api/eat/options/read', updatedOption, false)
+    setOnEdit(false)
     await window.fetch('/api/eat/options/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ foodOptions: updatedOption })
     })
-    await mutate('/api/eat/options/read', updatedOption)
-    setOnEdit(false)
+    mutate('/api/eat/options/read')
   }
   const onCancel = () => { setOnEdit(false) }
 

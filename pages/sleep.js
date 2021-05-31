@@ -73,7 +73,7 @@ const SleepRow = ({ sl, setEditSl, hintId, setOpen }) => {
           }}
           className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
         >
-            Edit
+          Edit
         </a>
       </td>
     </tr>
@@ -93,13 +93,14 @@ const SleepEditor = ({ sl, setHintId, setOpen, scrollRef }) => {
   const onCreate = async () => {
     setOpen(false)
     const body = { start, end }
+    mutate('/api/sleep/read', [null, ...sleep], false)
     const res = await window.fetch('/api/sleep/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
     const { sleepId } = await res.json()
-    await mutate('/api/sleep/read', [null, ...sleep])
+    mutate('/api/sleep/read')
     setHintId(sleepId)
     setTimeout(() => {
       setHintId(null)
@@ -112,12 +113,13 @@ const SleepEditor = ({ sl, setHintId, setOpen, scrollRef }) => {
   const onUpdate = async () => {
     setOpen(false)
     const body = { start, end, sleepId: sl.sleep_id }
+    mutate('/api/sleep/read', sleep.map(s => s.sleep_id === sl.sleep_id ? null : s), false)
     await window.fetch('/api/sleep/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
-    mutate('/api/sleep/read', sleep.map(s => s.sleep_id === sl.sleep_id ? null : s))
+    mutate('/api/sleep/read')
     setHintId(sl.sleep_id)
     setTimeout(() => {
       setHintId(null)
@@ -127,12 +129,13 @@ const SleepEditor = ({ sl, setHintId, setOpen, scrollRef }) => {
   const onDelete = async () => {
     setOpen(false)
     const body = { sleepId: sl.sleep_id }
+    mutate('/api/sleep/read', sleep.filter(s => s.sleep_id !== sl.sleep_id), false)
     await window.fetch('/api/sleep/delete', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
-    mutate('/api/sleep/read', sleep.filter(s => s.sleep_id !== sl.sleep_id))
+    mutate('/api/sleep/read')
     setHintId(null)
   }
 
@@ -180,7 +183,7 @@ const SleepEditor = ({ sl, setHintId, setOpen, scrollRef }) => {
   )
 }
 
-export default function Sleep (props) {
+export default function Sleep(props) {
   const sleep = useSleep()
 
   const [editSl, setEditSl] = React.useState(null)
@@ -198,35 +201,35 @@ export default function Sleep (props) {
             ref={scrollRef}
           >
             <table className='min-w-full divide-y divide-gray-200'>
-              <thead className='sticky top-0'>
-                <tr className='sticky top-0'>
+              <thead>
+                <tr>
                   <th
                     scope='col'
-                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                    className='bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
                     Date
                   </th>
                   <th
                     scope='col'
-                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                    className='bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
                     Start
                   </th>
                   <th
                     scope='col'
-                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                    className='bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
                     End
                   </th>
                   <th
                     scope='col'
-                    className='bg-gray-50 sticky top-0 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-48'
+                    className='bg-gray-50 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-48'
                   >
                     Duration
                   </th>
                   <th
                     scope='col'
-                    className='bg-gray-50 sticky top-0 relative px-6 py-3'
+                    className='bg-gray-50 px-6 py-3'
                   >
                     <span className='sr-only'>Edit</span>
                   </th>
