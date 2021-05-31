@@ -79,15 +79,15 @@ const FoodOptionCreator = ({ show, setOpen }) => {
         amount: 0
       }
       const mergedOptions = _foodOptions.map(op => op.foodName === foodName ? mergedOption : op)
-      await window.fetch('/api/eat/options/update', {
+      window.fetch('/api/eat/options/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ foodOptions: mergedOptions })
       })
-      mutate('/api/eat/options/read', _foodOptions.map(op => op.foodName === foodName ? null : op))
+      mutate('/api/eat/options/read', mergedOptions)
     } else {
       // add new food option
-      await window.fetch('/api/eat/options/update', {
+      window.fetch('/api/eat/options/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ foodOptions: [..._foodOptions, foodOption] })
