@@ -80,6 +80,7 @@ const FoodOptionCreator = ({ show, setOpen }) => {
       }
       const mergedOptions = _foodOptions.map(op => op.foodName === foodName ? mergedOption : op)
       mutate('/api/eat/options/read', mergedOptions, false)
+      onCancel()
       await window.fetch('/api/eat/options/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -89,6 +90,7 @@ const FoodOptionCreator = ({ show, setOpen }) => {
     } else {
       // add new food option
       mutate('/api/eat/options/read', [..._foodOptions, foodOption], false)
+      onCancel()
       await window.fetch('/api/eat/options/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -96,7 +98,6 @@ const FoodOptionCreator = ({ show, setOpen }) => {
       })
       mutate('/api/eat/options/read')
     }
-    onCancel()
   }
 
   const onCancel = () => {
@@ -199,13 +200,13 @@ const UnitEditor = ({ option, unit, i }) => {
     }
     const updatedOption = _foodOptions.map(op => op.foodName === option.foodName ? _option : op)
     mutate('/api/eat/options/read', updatedOption, false)
+    setOnEdit(false)
     await window.fetch('/api/eat/options/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ foodOptions: updatedOption })
     })
     mutate('/api/eat/options/read')
-    setOnEdit(false)
   }
   const onDelete = async () => {
     const _option = { ...option, units: { ...option.units } }
@@ -217,13 +218,13 @@ const UnitEditor = ({ option, unit, i }) => {
       updatedOption = _foodOptions.map(op => op.foodName === option.foodName ? _option : op)
     }
     mutate('/api/eat/options/read', updatedOption, false)
+    setOnEdit(false)
     await window.fetch('/api/eat/options/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ foodOptions: updatedOption })
     })
     mutate('/api/eat/options/read')
-    setOnEdit(false)
   }
   const onCancel = () => { setOnEdit(false) }
 
