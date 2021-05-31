@@ -1,7 +1,7 @@
 import React from 'react'
 import { PlusCircleIcon, MinusCircleIcon } from '@heroicons/react/solid'
 import { mutate } from 'swr'
-import { useEat, useFoodOptions, useGroupByDateEat } from '../lib/hooks'
+import { useFoodOptions, useGroupByDateEat } from '../lib/hooks'
 import { format } from 'date-fns-tz'
 import zhTWLocale from 'date-fns/locale/zh-TW'
 import DatePicker from '../components/DatePicker'
@@ -197,83 +197,6 @@ const EatEditor = ({ eat, setHintId, setOpen, scrollRef }) => {
   )
 }
 
-const EatRow = ({ eat, hintId, setEditEat, setOpen }) => {
-  return (
-    <>
-      {
-        eat.foods.map(
-          (f, i) => {
-            const nutritionPerUnit = f.units[f.unit] || {}
-            const carbon = (nutritionPerUnit.carbon * f.amount).toFixed(0)
-            const protein = (nutritionPerUnit.protein * f.amount).toFixed(0)
-            const fat = (nutritionPerUnit.fat * f.amount).toFixed(0)
-            const calories = (nutritionPerUnit.calorie * f.amount).toFixed(0)
-            return (
-              <tr
-                key={f.id} className={hintId === eat.eat_id
-                  ? 'transition-colors duration-1000 bg-indigo-50 text-right'
-                  : 'transition-colors duration-1000  text-right'}
-              >
-                {i === 0 ? (
-                  <>
-                    <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap'>
-                      {
-                        format(new Date(eat.time), 'MMMdo', {
-                          locale: zhTWLocale
-                        })
-                      }
-                    </td>
-                    <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap'>
-                      {
-                        format(new Date(eat.time), 'HH:mm', {
-                          locale: zhTWLocale
-                        })
-                      }
-                    </td>
-                  </>
-                ) : null}
-                <td className='px-6 py-4 whitespace-nowrap'>
-                  {f.foodName}
-                </td>
-                <td className='px-6 py-4 whitespace-nowrap'>
-                  {f.amount} {f.unit}
-                </td>
-                <td className='px-6 py-4 whitespace-nowrap'>
-                  {carbon} 公克
-                </td>
-                <td className='px-6 py-4 whitespace-nowrap'>
-                  {protein} 公克
-                </td>
-                <td className='px-6 py-4 whitespace-nowrap'>
-                  {fat} 公克
-                </td>
-                <td className='px-6 py-4 whitespace-nowrap'>
-                  {calories} 卡
-                </td>
-                {
-                  i === 0 ? (
-                    <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
-                      <a
-                        onClick={() => {
-                          setEditEat(eat)
-                          setOpen(true)
-                        }}
-                        className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
-                      >
-                        Edit
-                      </a>
-                    </td>
-                  ) : null
-                }
-              </tr>
-            )
-          }
-        )
-      }
-    </>
-  )
-}
-
 const FoodRow = (props) => {
   const { eat, food, dayHead, timeHead, totalRowsCount } = props
   const nutritionPerUnit = food.units[food.unit] || {}
@@ -378,7 +301,6 @@ const DayGroup = ({ group }) => {
 }
 
 const EatRecord = () => {
-  const eats = useEat()
   const eatGroups = useGroupByDateEat()
   const [editEat, setEditEat] = React.useState(null)
   const [hintId, setHintId] = React.useState(null)
@@ -452,30 +374,6 @@ const EatRecord = () => {
               </tr>
             </thead>
             <tbody className='bg-white divide-y divide-gray-200 text-sm'>
-              {eats.map((e, i) => (
-                e
-                  ? (
-                    <EatRow
-                      key={e.eat_id}
-                      eat={e}
-                      setEditEat={setEditEat}
-                      hintId={hintId}
-                      setOpen={setOpen}
-                    />
-                  ) : (
-                    <tr key={i}>
-                      <td colSpan='9' className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
-                        <div className='text-sm text-gray-900 text-center'>
-                          updating...
-                        </div>
-                      </td>
-                    </tr>
-                  )
-              )
-              )}
-            </tbody>
-
-            <tbody className='bg-white divide-y divide-gray-200 text-sm'>
               {
                 eatGroups.map(
                   (group, i) => {
@@ -486,7 +384,6 @@ const EatRecord = () => {
                 )
               }
             </tbody>
-
             <tfoot>
               <tr>
                 <td
