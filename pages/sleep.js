@@ -201,35 +201,35 @@ export default function Sleep(props) {
             ref={scrollRef}
           >
             <table className='min-w-full divide-y divide-gray-200'>
-              <thead className='sticky top-0'>
-                <tr className='sticky top-0'>
+              <thead>
+                <tr>
                   <th
                     scope='col'
-                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                    className='bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
                     Date
                   </th>
                   <th
                     scope='col'
-                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                    className='bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
                     Start
                   </th>
                   <th
                     scope='col'
-                    className='bg-gray-50 sticky top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                    className='bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
                     End
                   </th>
                   <th
                     scope='col'
-                    className='bg-gray-50 sticky top-0 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-48'
+                    className='bg-gray-50 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-48'
                   >
                     Duration
                   </th>
                   <th
                     scope='col'
-                    className='bg-gray-50 sticky top-0 relative px-6 py-3'
+                    className='bg-gray-50 px-6 py-3'
                   >
                     <span className='sr-only'>Edit</span>
                   </th>
