@@ -1,7 +1,7 @@
 import React from 'react'
 import { PlusCircleIcon, MinusCircleIcon } from '@heroicons/react/solid'
 import { mutate } from 'swr'
-import { useFoodOptions, useGroupByDateEat } from '../lib/hooks'
+import { useFoodOptions, useGroupByDateEat, useEat } from '../lib/hooks'
 import { format } from 'date-fns-tz'
 import zhTWLocale from 'date-fns/locale/zh-TW'
 import DatePicker from '../components/DatePicker'
@@ -65,7 +65,7 @@ const FoodEditor = ({ id, value, onChange = () => { }, onDelete }) => {
   )
 }
 
-const EatEditor = ({ eat, setHintId, setOpen, scrollRef }) => {
+const EatEditor = ({ eat, setHintId, setOpen }) => {
   const [time, setTime] = React.useState(eat.time ? new Date(eat.time) : new Date())
   const [foods, setFoods] = React.useState(eat.foods ? eat.foods : [{ id: uuidv4() }])
   const eats = useEat()
@@ -83,9 +83,6 @@ const EatEditor = ({ eat, setHintId, setOpen, scrollRef }) => {
     setTimeout(() => {
       setHintId(null)
     }, 1000)
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = 0
-    }
   }
 
   const onUpdate = async () => {
@@ -306,13 +303,11 @@ const EatRecord = () => {
   const [hintId, setHintId] = React.useState(null)
   const [open, setOpen] = React.useState(false)
 
-  const scrollRef = React.useRef(null)
   return (
     <div className=''>
       <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
         <div
           className='shadow border-gray-200 sm:rounded-lg overflow-y-auto max-h-75v'
-          ref={scrollRef}
         >
           <table className='min-w-full divide-y divide-gray-200'>
             <thead className='top-0'>
@@ -376,11 +371,7 @@ const EatRecord = () => {
             <tbody className='bg-white divide-y divide-gray-200 text-sm'>
               {
                 eatGroups.map(
-                  (group, i) => {
-                    return (
-                      <DayGroup key={i} group={group} />
-                    )
-                  }
+                  (group, i) => <DayGroup key={i} group={group} />
                 )
               }
             </tbody>
@@ -405,7 +396,6 @@ const EatRecord = () => {
                 eat={editEat}
                 setOpen={setOpen}
                 setHintId={setHintId}
-                scrollRef={scrollRef}
               />
             </tbody>
           </table>
