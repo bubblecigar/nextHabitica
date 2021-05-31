@@ -78,7 +78,8 @@ const EatEditor = ({ eat, setHintId, setOpen }) => {
       body: JSON.stringify(body)
     })
     const { eatId } = await res.json()
-    await mutate('/api/eat/read', [null, ...eats])
+    mutate('/api/eat/read', [{ time, foods, eat_id: eatId, isUpdating: true }, ...eats])
+
     setHintId(eatId)
     setTimeout(() => {
       setHintId(null)
@@ -88,12 +89,12 @@ const EatEditor = ({ eat, setHintId, setOpen }) => {
   const onUpdate = async () => {
     setOpen(false)
     const body = { time, foods, eatId: eat.eat_id }
-    await window.fetch('/api/eat/update', {
+    window.fetch('/api/eat/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
-    mutate('/api/eat/read', eats.map(e => e.eat_id === eat.eat_id ? null : e))
+    mutate('/api/eat/read', eats.map(e => e.eat_id === eat.eat_id ? { ...e, time, foods, isUpdating: true } : e))
     setHintId(eat.eat_id)
     setTimeout(() => {
       setHintId(null)
@@ -103,7 +104,7 @@ const EatEditor = ({ eat, setHintId, setOpen }) => {
   const onDelete = async () => {
     setOpen(false)
     const body = { eatId: eat.eat_id }
-    await window.fetch('/api/eat/delete', {
+    window.fetch('/api/eat/delete', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
