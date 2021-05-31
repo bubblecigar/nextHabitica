@@ -89,12 +89,13 @@ const FoodOptionCreator = ({ show, setOpen }) => {
       mutate('/api/eat/options/read')
     } else {
       // add new food option
-      mutate('/api/eat/options/read', [..._foodOptions, foodOption], false)
+      const newOptions = [..._foodOptions, foodOption]
+      mutate('/api/eat/options/read', newOptions, false)
       onCancel()
       await window.fetch('/api/eat/options/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ foodOptions: [..._foodOptions, foodOption] })
+        body: JSON.stringify({ foodOptions: newOptions })
       })
       mutate('/api/eat/options/read')
     }
