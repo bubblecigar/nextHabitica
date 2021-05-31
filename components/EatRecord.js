@@ -78,7 +78,7 @@ const EatEditor = ({ eat, setHintId, setOpen }) => {
       body: JSON.stringify(body)
     })
     const { eatId } = await res.json()
-    await mutate('/api/eat/read', [null, ...eats])
+    await mutate('/api/eat/read', [{ time, foods, eat_id: eatId, isUpdating: true }, ...eats])
     setHintId(eatId)
     setTimeout(() => {
       setHintId(null)
@@ -93,7 +93,7 @@ const EatEditor = ({ eat, setHintId, setOpen }) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
-    mutate('/api/eat/read', eats.map(e => e.eat_id === eat.eat_id ? null : e))
+    mutate('/api/eat/read', eats.map(e => e.eat_id === eat.eat_id ? { ...e, time, foods, isUpdating: true } : e))
     setHintId(eat.eat_id)
     setTimeout(() => {
       setHintId(null)
@@ -267,16 +267,29 @@ const FoodRow = ({ eat, food, dayHead, timeHead, totalRowsCount, setOpen, setEdi
 
 const EatRecords = (props) => {
   const { eat } = props
+  if (eat.isUpdating) {
+    console.log('hello')
+  }
   return (
     <>
       {
-        eat.foods.map(
-          (f, i) => {
-            return (
-              <FoodRow key={f.id} food={f} timeHead={i === 0}  {...props} />
-            )
-          }
-        )
+        eat.isUpdating
+          ? (
+            <tr>
+              <td colSpan='9' className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
+                <div className='text-sm text-gray-900 text-center'>
+                  updating...
+                </div>
+              </td>
+            </tr>
+          ) : (
+            eat.foods.map(
+              (f, i) => {
+                return (
+                  <FoodRow key={f.id} food={f} timeHead={i === 0}  {...props} />
+                )
+              }
+            ))
       }
     </>
   )
@@ -290,9 +303,14 @@ const DayGroup = (props) => {
       {
         group.map(
           (eat, i) => {
-            return (
-              <EatRecords key={i} {...props} eat={eat} dayHead={i === 0} totalRowsCount={totalRowsCount} />
-            )
+            return eat ? (
+              <EatRecords
+                key={i} {...props}
+                eat={eat}
+                dayHead={i === 0}
+                totalRowsCount={totalRowsCount}
+              />
+            ) : null
           }
         )
       }
