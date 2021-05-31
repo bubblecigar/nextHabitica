@@ -1,7 +1,7 @@
 import React from 'react'
 import { PlusCircleIcon, MinusCircleIcon } from '@heroicons/react/solid'
 import { mutate } from 'swr'
-import { useEat, useFoodOptions } from '../lib/hooks'
+import { useEat, useFoodOptions, useGroupByDateEat } from '../lib/hooks'
 import { format } from 'date-fns-tz'
 import zhTWLocale from 'date-fns/locale/zh-TW'
 import DatePicker from '../components/DatePicker'
@@ -274,8 +274,112 @@ const EatRow = ({ eat, hintId, setEditEat, setOpen }) => {
   )
 }
 
+const FoodRow = (props) => {
+  const { eat, food, dayHead, timeHead, totalRowsCount } = props
+  const nutritionPerUnit = food.units[food.unit] || {}
+  const carbon = (nutritionPerUnit.carbon * food.amount).toFixed(0)
+  const protein = (nutritionPerUnit.protein * food.amount).toFixed(0)
+  const fat = (nutritionPerUnit.fat * food.amount).toFixed(0)
+  const calories = (nutritionPerUnit.calorie * food.amount).toFixed(0)
+  return (
+    <tr>
+      {
+        (dayHead && timeHead) ? (
+          <td rowSpan={totalRowsCount} className='px-6 py-4 whitespace-nowrap'>
+            {
+              format(new Date(eat.time), 'MMMdo', {
+                locale: zhTWLocale
+              })
+            }
+          </td>
+        ) : null
+      }
+      {
+        (timeHead) ? (
+          <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap'>
+            {
+              format(new Date(eat.time), 'HH:mm', {
+                locale: zhTWLocale
+              })
+            }
+          </td>
+        ) : null
+      }
+      {
+        <>
+          <td className='px-6 py-4 whitespace-nowrap'>
+            {food.foodName}
+          </td>
+          <td className='px-6 py-4 whitespace-nowrap'>
+            {food.amount} {food.unit}
+          </td>
+          <td className='px-6 py-4 whitespace-nowrap'>
+            {carbon} 公克
+          </td>
+          <td className='px-6 py-4 whitespace-nowrap'>
+            {protein} 公克
+          </td>
+          <td className='px-6 py-4 whitespace-nowrap'>
+            {fat} 公克
+          </td>
+          <td className='px-6 py-4 whitespace-nowrap'>
+            {calories} 卡
+          </td>
+          {
+            timeHead ? (
+              <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
+                <a
+                  onClick={() => { }}
+                  className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
+                >
+                  Edit
+                </a>
+              </td>
+            ) : null
+          }
+        </>
+      }
+    </tr>
+  )
+}
+
+const EatRecords = (props) => {
+  const { eat } = props
+  return (
+    <>
+      {
+        eat.foods.map(
+          (f, i) => {
+            return (
+              <FoodRow key={f.id} food={f} timeHead={i === 0}  {...props} />
+            )
+          }
+        )
+      }
+    </>
+  )
+}
+
+const DayGroup = ({ group }) => {
+  const totalRowsCount = group.reduce((acc, cur) => (acc + cur.foods.length), 0)
+  return (
+    <>
+      {
+        group.map(
+          (eat, i) => {
+            return (
+              <EatRecords key={i} eat={eat} dayHead={i === 0} totalRowsCount={totalRowsCount} />
+            )
+          }
+        )
+      }
+    </>
+  )
+}
+
 const EatRecord = () => {
   const eats = useEat()
+  const eatGroups = useGroupByDateEat()
   const [editEat, setEditEat] = React.useState(null)
   const [hintId, setHintId] = React.useState(null)
   const [open, setOpen] = React.useState(false)
@@ -370,6 +474,19 @@ const EatRecord = () => {
               )
               )}
             </tbody>
+
+            <tbody className='bg-white divide-y divide-gray-200 text-sm'>
+              {
+                eatGroups.map(
+                  (group, i) => {
+                    return (
+                      <DayGroup key={i} group={group} />
+                    )
+                  }
+                )
+              }
+            </tbody>
+
             <tfoot>
               <tr>
                 <td
