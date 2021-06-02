@@ -10,7 +10,7 @@ const StyledInput = ({ value, onChange, type, classNames, show }) => {
       type={type}
       readOnly={!show}
       disabled={!show}
-      className={'relative w-20 col-span-2 bg-white border border-gray-300 rounded-md shadow-sm p-1 pl-2 text-left focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames + ' ' + (show ? '' : 'opacity-0')}
+      className={'w-20 col-span-2 bg-white border border-gray-300 rounded-md shadow-sm p-1 pl-2 text-left focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames + ' ' + (show ? '' : 'opacity-0')}
       value={value}
       onChange={e => onChange(typeTransform(e.target.value))}
     />
@@ -25,7 +25,7 @@ const EditableField = ({ onEdit, staticValue, value, onChange, type, classNames 
         onEdit ? (
           <input
             type={type}
-            className={'relative w-20 col-span-2 bg-white border border-gray-300 rounded-md shadow-sm p-1 pl-2 text-left focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames}
+            className={'w-20 col-span-2 bg-white border border-gray-300 rounded-md shadow-sm p-1 pl-2 text-left focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames}
             value={value}
             onChange={e => onChange(typeTransform(e.target.value))}
           />
@@ -414,7 +414,7 @@ const FoodOptionList = () => {
                 </th>
                 <th
                   scope='col'
-                  className='bg-gray-50  relative px-3 py-3'
+                  className='bg-gray-50 px-3 py-3'
                 >
                   <span className='sr-only'>Edit</span>
                 </th>
@@ -441,7 +441,7 @@ const FoodOptionList = () => {
           open ? null : (
             <div
               colSpan='5'
-              className='-mt-12 relative  pt-3 mx-2 bg-gray-50 h-12 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300'
+              className='-mt-12 pt-3 mx-2 bg-gray-50 h-12 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300'
               onClick={() => {
                 setOpen(true)
               }}
