@@ -10,7 +10,7 @@ const StyledInput = ({ value, onChange, type, classNames, show }) => {
       type={type}
       readOnly={!show}
       disabled={!show}
-      className={'relative w-20 col-span-2 bg-white border border-gray-300 rounded-md shadow-sm p-1 pl-2 text-left focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames + ' ' + (show ? '' : 'opacity-0')}
+      className={'w-20 col-span-2 bg-white border border-gray-300 rounded-md shadow-sm p-1 pl-2 text-left focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames + ' ' + (show ? '' : 'opacity-0')}
       value={value}
       onChange={e => onChange(typeTransform(e.target.value))}
     />
@@ -25,7 +25,7 @@ const EditableField = ({ onEdit, staticValue, value, onChange, type, classNames 
         onEdit ? (
           <input
             type={type}
-            className={'relative w-20 col-span-2 bg-white border border-gray-300 rounded-md shadow-sm p-1 pl-2 text-left focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames}
+            className={'w-20 col-span-2 bg-white border border-gray-300 rounded-md shadow-sm p-1 pl-2 text-left focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames}
             value={value}
             onChange={e => onChange(typeTransform(e.target.value))}
           />
@@ -116,7 +116,7 @@ const FoodOptionCreator = ({ show, setOpen }) => {
       <tr>
         <td
           scope='col'
-          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 tracking-wider'
+          className='bg-gray-50 p-3 text-left text-xs font-medium text-gray-500 tracking-wider'
         >
           <StyledInput
             classNames='w-32'
@@ -128,31 +128,31 @@ const FoodOptionCreator = ({ show, setOpen }) => {
         </td>
         <td
           scope='col'
-          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 tracking-wider'
+          className='bg-gray-50 p-3 text-left text-xs font-medium text-gray-500 tracking-wider'
         >
           <StyledInput show={show} type='text' value={unitName} onChange={setUnitName} />
         </td>
         <td
           scope='col'
-          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 tracking-wider'
+          className='bg-gray-50  p-3 text-left text-xs font-medium text-gray-500 tracking-wider'
         >
           <StyledInput show={show} type='number' value={carbon} onChange={setCarbon} />
         </td>
         <td
           scope='col'
-          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 tracking-wider'
+          className='bg-gray-50  p-3 text-left text-xs font-medium text-gray-500 tracking-wider'
         >
           <StyledInput show={show} type='number' value={protein} onChange={setProtein} />
         </td>
         <td
           scope='col'
-          className='bg-gray-50  top-0 p-3 text-left text-xs font-medium text-gray-500 tracking-wider'
+          className='bg-gray-50  p-3 text-left text-xs font-medium text-gray-500 tracking-wider'
         >
           <StyledInput show={show} type='number' value={fat} onChange={setFat} />
         </td>
         <td
           scope='col'
-          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500 tracking-wider'
+          className='bg-gray-50 p-3 text-left text-xs font-medium text-gray-500 tracking-wider'
         >
           <StyledInput show={show} type='number' value={calorie} onChange={setCalorie} />
         </td>
@@ -236,7 +236,7 @@ const UnitEditor = ({ option, unit, i }) => {
           i === 0 ? (
             <td
               scope='col'
-              className='bg-gray-50  top-0 pl-3 p-1 text-left text-xs font-medium text-gray-500 tracking-wider' rowSpan={units.length}
+              className='bg-gray-50  pl-3 p-1 text-left text-xs font-medium text-gray-500 tracking-wider' rowSpan={units.length}
             >
               {option.foodName}
             </td>
@@ -244,7 +244,7 @@ const UnitEditor = ({ option, unit, i }) => {
         }
         <td
           scope='col'
-          className='bg-gray-50 top-0 p-1 text-left text-xs font-medium text-gray-500 tracking-wider'
+          className='bg-gray-50 p-1 text-left text-xs font-medium text-gray-500 tracking-wider'
         >
           <EditableField
             onEdit={onEdit}
@@ -255,7 +255,7 @@ const UnitEditor = ({ option, unit, i }) => {
         </td>
         <td
           scope='col'
-          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500  tracking-wider'
+          className='bg-gray-50 p-3 text-left text-xs font-medium text-gray-500  tracking-wider'
         >
           <EditableField
             onEdit={onEdit}
@@ -267,7 +267,7 @@ const UnitEditor = ({ option, unit, i }) => {
         </td>
         <td
           scope='col'
-          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500  tracking-wider'
+          className='bg-gray-50 p-3 text-left text-xs font-medium text-gray-500  tracking-wider'
         >
           <EditableField
             onEdit={onEdit}
@@ -279,7 +279,7 @@ const UnitEditor = ({ option, unit, i }) => {
         </td>
         <td
           scope='col'
-          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500  tracking-wider'
+          className='bg-gray-50 p-3 text-left text-xs font-medium text-gray-500  tracking-wider'
         >
           <EditableField
             onEdit={onEdit}
@@ -291,7 +291,7 @@ const UnitEditor = ({ option, unit, i }) => {
         </td>
         <td
           scope='col'
-          className='bg-gray-50 top-0 p-3 text-left text-xs font-medium text-gray-500  tracking-wider'
+          className='bg-gray-50 p-3 text-left text-xs font-medium text-gray-500  tracking-wider'
         >
           <EditableField
             onEdit={onEdit}
@@ -303,7 +303,7 @@ const UnitEditor = ({ option, unit, i }) => {
         </td>
         <td
           scope='col'
-          className='bg-gray-50 top-0 p-3 pr-6 text-xs font-medium text-gray-500 tracking-wider text-right'
+          className='bg-gray-50 p-3 pr-6 text-xs font-medium text-gray-500 tracking-wider text-right'
         >
           {
             onEdit ? (
@@ -367,54 +367,54 @@ const FoodOptionList = () => {
   const [open, setOpen] = React.useState(false)
   const _foodOptions = useFoodOptions()
   return (
-    <div className=''>
+    <div>
       <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
         <FoodOptionHint />
         <div
           className='shadow border-b border-gray-200 sm:rounded-lg overflow-y-auto max-h-75v'
         >
           <table className='min-w-full divide-y divide-gray-200'>
-            <thead className='sticky top-0'>
-              <tr className='sticky top-0'>
+            <thead >
+              <tr >
                 <th
                   scope='col'
-                  className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className='bg-gray-50  px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
                   Food
                 </th>
                 <th
                   scope='col'
-                  className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className='bg-gray-50  px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
                   unit
                 </th>
                 <th
                   scope='col'
-                  className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className='bg-gray-50  px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
                   Carbon
                 </th>
                 <th
                   scope='col'
-                  className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className='bg-gray-50  px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
                   Protein
                 </th>
                 <th
                   scope='col'
-                  className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className='bg-gray-50  px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
                   Fat
                 </th>
                 <th
                   scope='col'
-                  className='bg-gray-50 sticky top-0 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  className='bg-gray-50  px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                 >
                   Calorie
                 </th>
                 <th
                   scope='col'
-                  className='bg-gray-50 sticky top-0 relative px-3 py-3'
+                  className='bg-gray-50 px-3 py-3'
                 >
                   <span className='sr-only'>Edit</span>
                 </th>
@@ -441,7 +441,7 @@ const FoodOptionList = () => {
           open ? null : (
             <div
               colSpan='5'
-              className='-mt-12 relative  pt-3 mx-2 bg-gray-50 h-12 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300'
+              className='-mt-12 pt-3 mx-2 bg-gray-50 h-12 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300'
               onClick={() => {
                 setOpen(true)
               }}
