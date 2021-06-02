@@ -27,5 +27,6 @@ export default async function read(req, res) {
     res.status(200).send(dbRes.rows)
   } catch (error) {
     console.log('api/exercise/read error:', error)
+    res.status(500).end(error)
   }
 }
