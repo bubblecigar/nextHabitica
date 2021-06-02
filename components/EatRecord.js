@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 const Td = props => {
   return (
-    <td className='px-6 py-4 whitespace-nowrap' {...props}>
+    <td className='px-6 py-3 whitespace-nowrap text-sm' {...props}>
       {props.children}
     </td>
   )
@@ -19,7 +19,7 @@ const Td = props => {
 const Th = props => (
   <th
     scope='col'
-    className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+    className='bg-gray-50 top-0 px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
   >
     {props.children}
   </th>
