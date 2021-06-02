@@ -347,7 +347,7 @@ const NutritionSummary = ({ group }) => {
     }, { carbon: 0, protein: 0, fat: 0, calorie: 0 }
   )
   return (
-    <tr className='bg-gradient-to-r from-transparent to-gray-100'>
+    <tr className='bg-gradient-to-r from-transparent to-indigo-50'>
       <Td colSpan='3' />
       <Td>
         {nutritionOfDay.carbon.toFixed(0)} 公克
