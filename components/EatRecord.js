@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Children } from 'react'
 import { PlusCircleIcon, MinusCircleIcon } from '@heroicons/react/solid'
 import { mutate } from 'swr'
 import { useFoodOptions, useGroupByDateEat, useEat } from '../lib/hooks'
@@ -8,6 +8,22 @@ import DatePicker from '../components/DatePicker'
 import SelectBox from '../components/SelectBox'
 import DialogBox from '../components/DialogBox'
 import { v4 as uuidv4 } from 'uuid'
+
+const Td = props => {
+  return (
+    <td className='px-6 py-3 whitespace-nowrap text-sm' {...props}>
+      {props.children}
+    </td>
+  )
+}
+const Th = props => (
+  <th
+    scope='col'
+    className='bg-gray-50 top-0 px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+  >
+    {props.children}
+  </th>
+)
 
 const FoodEditor = ({ id, value, onChange = () => { }, onDelete }) => {
   const _foodOptions = useFoodOptions()
@@ -198,56 +214,61 @@ const EatEditor = ({ eat, setHintId, setOpen }) => {
   )
 }
 
-const FoodRow = ({ eat, food, dayHead, timeHead, totalRowsCount, setOpen, setEditEat }) => {
+const getNutrition = food => {
   const nutritionPerUnit = food.units[food.unit] || {}
-  const carbon = (nutritionPerUnit.carbon * food.amount).toFixed(0)
-  const protein = (nutritionPerUnit.protein * food.amount).toFixed(0)
-  const fat = (nutritionPerUnit.fat * food.amount).toFixed(0)
-  const calories = (nutritionPerUnit.calorie * food.amount).toFixed(0)
+  const carbon = (nutritionPerUnit.carbon * food.amount)
+  const protein = (nutritionPerUnit.protein * food.amount)
+  const fat = (nutritionPerUnit.fat * food.amount)
+  const calorie = (nutritionPerUnit.calorie * food.amount)
+  return { carbon, protein, fat, calorie }
+}
+
+const FoodRow = ({ eat, food, dayHead, timeHead, totalRowsCount, setOpen, setEditEat }) => {
+  const { carbon, protein, fat, calorie } = getNutrition(food)
   return (
     <tr>
       {
         (dayHead && timeHead) ? (
-          <td rowSpan={totalRowsCount} className='px-6 py-4 whitespace-nowrap'>
+          <Td rowSpan={totalRowsCount}>
             {
               format(new Date(eat.time), 'MMMdo', {
                 locale: zhTWLocale
               })
             }
-          </td>
+          </Td>
         ) : null
       }
       {
         (timeHead) ? (
-          <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap'>
+          <Td rowSpan={eat.foods.length}>
             {
               format(new Date(eat.time), 'HH:mm', {
                 locale: zhTWLocale
               })
             }
-          </td>
+          </Td>
         ) : null
       }
       {
         <>
-          <td className='px-6 py-4 whitespace-nowrap'>
+          <Td>
             {food.foodName}
-          </td>
-          <td className='px-6 py-4 whitespace-nowrap'>
+          </Td>
+          <Td>
             {food.amount} {food.unit}
-          </td>
-          <td className='px-6 py-4 whitespace-nowrap'>
-            {carbon} 公克
-          </td>
-          <td className='px-6 py-4 whitespace-nowrap'>
-            {protein} 公克
-          </td>
-          <td className='px-6 py-4 whitespace-nowrap'>
-            {fat} 公克
-          </td>
-          <td className='px-6 py-4 whitespace-nowrap'>
-            {calories} 卡
-          </td>
+          </Td>
+          <Td>
+            {carbon.toFixed(0)} 公克
+          </Td>
+          <Td>
+            {protein.toFixed(0)} 公克
+          </Td>
+          <Td>
+            {fat.toFixed(0)} 公克
+          </Td>
+          <Td>
+            {calorie.toFixed(0)} 大卡
+          </Td>
           {
             timeHead ? (
               <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
@@ -288,7 +309,7 @@ const EatRecords = (props) => {
 
 const DayGroup = (props) => {
   const { group } = props
-  const totalRowsCount = group.reduce((acc, cur) => (acc + cur.foods.length), 0)
+  const totalRowsCount = group.reduce((acc, cur) => (acc + cur.foods.length), 0) + 1
   return (
     <>
       {
@@ -300,7 +321,48 @@ const DayGroup = (props) => {
           }
         )
       }
+      <NutritionSummary group={group} />
     </>
+  )
+}
+
+const NutritionSummary = ({ group }) => {
+  const nutritionOfDay = group.reduce(
+    (acc, eat) => {
+      const nutritionOfEat = eat.foods.reduce(
+        (a, f) => {
+          const { carbon, protein, fat, calorie } = getNutrition(f)
+          a.carbon += carbon
+          a.protein += protein
+          a.fat += fat
+          a.calorie += calorie
+          return a
+        }, { carbon: 0, protein: 0, fat: 0, calorie: 0 }
+      )
+      acc.carbon += nutritionOfEat.carbon
+      acc.protein += nutritionOfEat.protein
+      acc.fat += nutritionOfEat.fat
+      acc.calorie += nutritionOfEat.calorie
+      return acc
+    }, { carbon: 0, protein: 0, fat: 0, calorie: 0 }
+  )
+  return (
+    <tr className='bg-gradient-to-r from-transparent to-indigo-50'>
+      <Td colSpan='3' />
+      <Td>
+        {nutritionOfDay.carbon.toFixed(0)} 公克
+      </Td>
+      <Td>
+        {nutritionOfDay.protein.toFixed(0)} 公克
+      </Td>
+      <Td>
+        {nutritionOfDay.fat.toFixed(0)} 公克
+      </Td>
+      <Td>
+        {nutritionOfDay.calorie.toFixed(0)} 大卡
+      </Td>
+      <Td />
+    </tr>
   )
 }
 
@@ -319,60 +381,33 @@ const EatRecord = () => {
           <table className='min-w-full divide-y divide-gray-200'>
             <thead className='top-0'>
               <tr className='top-0'>
-                <th
-                  scope='col'
-                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                >
+                <Th>
                   Date
-                </th>
-                <th
-                  scope='col'
-                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                >
+                </Th>
+                <Th>
                   Time
-                </th>
-                <th
-                  scope='col'
-                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                >
+                </Th>
+                <Th>
                   Foods
-                </th>
-                <th
-                  scope='col'
-                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                >
+                </Th>
+                <Th>
                   Amount
-                </th>
-                <th
-                  scope='col'
-                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                >
+                </Th>
+                <Th>
                   Carbon
-                </th>
-                <th
-                  scope='col'
-                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                >
+                </Th>
+                <Th>
                   Protein
-                </th>
-                <th
-                  scope='col'
-                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                >
+                </Th>
+                <Th>
                   Fat
-                </th>
-                <th
-                  scope='col'
-                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                >
+                </Th>
+                <Th>
                   Calorie
-                </th>
-                <th
-                  scope='col'
-                  className='bg-gray-50 top-0 px-6 py-3'
-                >
+                </Th>
+                <Th>
                   <span className='sr-only'>Edit</span>
-                </th>
+                </Th>
               </tr>
             </thead>
             <tbody className='bg-white divide-y divide-gray-200 text-sm'>
