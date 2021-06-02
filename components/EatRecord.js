@@ -203,7 +203,7 @@ const FoodRow = ({ eat, food, dayHead, timeHead, totalRowsCount, setOpen, setEdi
   const carbon = (nutritionPerUnit.carbon * food.amount).toFixed(0)
   const protein = (nutritionPerUnit.protein * food.amount).toFixed(0)
   const fat = (nutritionPerUnit.fat * food.amount).toFixed(0)
-  const calories = (nutritionPerUnit.calorie * food.amount).toFixed(0)
+  const calorie = (nutritionPerUnit.calorie * food.amount).toFixed(0)
   return (
     <tr>
       {
@@ -246,7 +246,7 @@ const FoodRow = ({ eat, food, dayHead, timeHead, totalRowsCount, setOpen, setEdi
             {fat} 公克
           </td>
           <td className='px-6 py-4 whitespace-nowrap'>
-            {calories} 卡
+            {calorie} 大卡
           </td>
           {
             timeHead ? (
