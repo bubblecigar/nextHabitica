@@ -198,12 +198,17 @@ const EatEditor = ({ eat, setHintId, setOpen }) => {
   )
 }
 
-const FoodRow = ({ eat, food, dayHead, timeHead, totalRowsCount, setOpen, setEditEat }) => {
+const getNutrition = food => {
   const nutritionPerUnit = food.units[food.unit] || {}
   const carbon = (nutritionPerUnit.carbon * food.amount).toFixed(0)
   const protein = (nutritionPerUnit.protein * food.amount).toFixed(0)
   const fat = (nutritionPerUnit.fat * food.amount).toFixed(0)
   const calorie = (nutritionPerUnit.calorie * food.amount).toFixed(0)
+  return { carbon, protein, fat, calorie }
+}
+
+const FoodRow = ({ eat, food, dayHead, timeHead, totalRowsCount, setOpen, setEditEat }) => {
+  const { carbon, protein, fat, calorie } = getNutrition(food)
   return (
     <tr>
       {
