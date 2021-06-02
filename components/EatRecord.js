@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Children } from 'react'
 import { PlusCircleIcon, MinusCircleIcon } from '@heroicons/react/solid'
 import { mutate } from 'swr'
 import { useFoodOptions, useGroupByDateEat, useEat } from '../lib/hooks'
@@ -8,6 +8,22 @@ import DatePicker from '../components/DatePicker'
 import SelectBox from '../components/SelectBox'
 import DialogBox from '../components/DialogBox'
 import { v4 as uuidv4 } from 'uuid'
+
+const Td = props => {
+  return (
+    <td className='px-6 py-4 whitespace-nowrap' {...props}>
+      {props.children}
+    </td>
+  )
+}
+const Th = props => (
+  <th
+    scope='col'
+    className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+  >
+    {props.children}
+  </th>
+)
 
 const FoodEditor = ({ id, value, onChange = () => { }, onDelete }) => {
   const _foodOptions = useFoodOptions()
@@ -213,46 +229,46 @@ const FoodRow = ({ eat, food, dayHead, timeHead, totalRowsCount, setOpen, setEdi
     <tr>
       {
         (dayHead && timeHead) ? (
-          <td rowSpan={totalRowsCount} className='px-6 py-4 whitespace-nowrap'>
+          <Td rowSpan={totalRowsCount}>
             {
               format(new Date(eat.time), 'MMMdo', {
                 locale: zhTWLocale
               })
             }
-          </td>
+          </Td>
         ) : null
       }
       {
         (timeHead) ? (
-          <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap'>
+          <Td rowSpan={eat.foods.length}>
             {
               format(new Date(eat.time), 'HH:mm', {
                 locale: zhTWLocale
               })
             }
-          </td>
+          </Td>
         ) : null
       }
       {
         <>
-          <td className='px-6 py-4 whitespace-nowrap'>
+          <Td>
             {food.foodName}
-          </td>
-          <td className='px-6 py-4 whitespace-nowrap'>
+          </Td>
+          <Td>
             {food.amount} {food.unit}
-          </td>
-          <td className='px-6 py-4 whitespace-nowrap'>
+          </Td>
+          <Td>
             {carbon.toFixed(0)} 公克
-          </td>
-          <td className='px-6 py-4 whitespace-nowrap'>
+          </Td>
+          <Td>
             {protein.toFixed(0)} 公克
-          </td>
-          <td className='px-6 py-4 whitespace-nowrap'>
+          </Td>
+          <Td>
             {fat.toFixed(0)} 公克
-          </td>
-          <td className='px-6 py-4 whitespace-nowrap'>
+          </Td>
+          <Td>
             {calorie.toFixed(0)} 大卡
-          </td>
+          </Td>
           {
             timeHead ? (
               <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
@@ -332,20 +348,20 @@ const NutritionSummary = ({ group }) => {
   )
   return (
     <tr className='bg-gradient-to-r from-transparent to-gray-100'>
-      <td colSpan='3' className='px-6 py-4 whitespace-nowrap' />
-      <td className='px-6 py-4 whitespace-nowrap'>
+      <Td colSpan='3' />
+      <Td>
         {nutritionOfDay.carbon.toFixed(0)} 公克
-      </td>
-      <td className='px-6 py-4 whitespace-nowrap'>
+      </Td>
+      <Td>
         {nutritionOfDay.protein.toFixed(0)} 公克
-      </td>
-      <td className='px-6 py-4 whitespace-nowrap'>
+      </Td>
+      <Td>
         {nutritionOfDay.fat.toFixed(0)} 公克
-      </td>
-      <td className='px-6 py-4 whitespace-nowrap'>
+      </Td>
+      <Td>
         {nutritionOfDay.calorie.toFixed(0)} 大卡
-      </td>
-      <td className='px-6 py-4 whitespace-nowrap' />
+      </Td>
+      <Td />
     </tr>
   )
 }
@@ -365,60 +381,33 @@ const EatRecord = () => {
           <table className='min-w-full divide-y divide-gray-200'>
             <thead className='top-0'>
               <tr className='top-0'>
-                <th
-                  scope='col'
-                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                >
+                <Th>
                   Date
-                </th>
-                <th
-                  scope='col'
-                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                >
+                </Th>
+                <Th>
                   Time
-                </th>
-                <th
-                  scope='col'
-                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                >
+                </Th>
+                <Th>
                   Foods
-                </th>
-                <th
-                  scope='col'
-                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                >
+                </Th>
+                <Th>
                   Amount
-                </th>
-                <th
-                  scope='col'
-                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                >
+                </Th>
+                <Th>
                   Carbon
-                </th>
-                <th
-                  scope='col'
-                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                >
+                </Th>
+                <Th>
                   Protein
-                </th>
-                <th
-                  scope='col'
-                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                >
+                </Th>
+                <Th>
                   Fat
-                </th>
-                <th
-                  scope='col'
-                  className='bg-gray-50 top-0 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                >
+                </Th>
+                <Th>
                   Calorie
-                </th>
-                <th
-                  scope='col'
-                  className='bg-gray-50 top-0 px-6 py-3'
-                >
+                </Th>
+                <Th>
                   <span className='sr-only'>Edit</span>
-                </th>
+                </Th>
               </tr>
             </thead>
             <tbody className='bg-white divide-y divide-gray-200 text-sm'>
