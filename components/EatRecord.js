@@ -293,7 +293,7 @@ const EatRecords = (props) => {
 
 const DayGroup = (props) => {
   const { group } = props
-  const totalRowsCount = group.reduce((acc, cur) => (acc + cur.foods.length), 0)
+  const totalRowsCount = group.reduce((acc, cur) => (acc + cur.foods.length), 0) + 1
   return (
     <>
       {
@@ -305,7 +305,48 @@ const DayGroup = (props) => {
           }
         )
       }
+      <NutritionSummary group={group} />
     </>
+  )
+}
+
+const NutritionSummary = ({ group }) => {
+  const nutritionOfDay = group.reduce(
+    (acc, eat) => {
+      const nutritionOfEat = eat.foods.reduce(
+        (a, f) => {
+          const { carbon, protein, fat, calorie } = getNutrition(f)
+          a.carbon += carbon
+          a.protein += protein
+          a.fat += fat
+          a.calorie += calorie
+          return a
+        }, { carbon: 0, protein: 0, fat: 0, calorie: 0 }
+      )
+      acc.carbon += nutritionOfEat.carbon
+      acc.protein += nutritionOfEat.protein
+      acc.fat += nutritionOfEat.fat
+      acc.calorie += nutritionOfEat.calorie
+      return acc
+    }, { carbon: 0, protein: 0, fat: 0, calorie: 0 }
+  )
+  return (
+    <tr className='bg-gradient-to-r from-transparent to-gray-100'>
+      <td colSpan='3' className='px-6 py-4 whitespace-nowrap' />
+      <td className='px-6 py-4 whitespace-nowrap'>
+        {nutritionOfDay.carbon.toFixed(0)} 公克
+      </td>
+      <td className='px-6 py-4 whitespace-nowrap'>
+        {nutritionOfDay.protein.toFixed(0)} 公克
+      </td>
+      <td className='px-6 py-4 whitespace-nowrap'>
+        {nutritionOfDay.fat.toFixed(0)} 公克
+      </td>
+      <td className='px-6 py-4 whitespace-nowrap'>
+        {nutritionOfDay.calorie.toFixed(0)} 大卡
+      </td>
+      <td className='px-6 py-4 whitespace-nowrap' />
+    </tr>
   )
 }
 
