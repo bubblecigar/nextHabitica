@@ -200,10 +200,10 @@ const EatEditor = ({ eat, setHintId, setOpen }) => {
 
 const getNutrition = food => {
   const nutritionPerUnit = food.units[food.unit] || {}
-  const carbon = (nutritionPerUnit.carbon * food.amount).toFixed(0)
-  const protein = (nutritionPerUnit.protein * food.amount).toFixed(0)
-  const fat = (nutritionPerUnit.fat * food.amount).toFixed(0)
-  const calorie = (nutritionPerUnit.calorie * food.amount).toFixed(0)
+  const carbon = (nutritionPerUnit.carbon * food.amount)
+  const protein = (nutritionPerUnit.protein * food.amount)
+  const fat = (nutritionPerUnit.fat * food.amount)
+  const calorie = (nutritionPerUnit.calorie * food.amount)
   return { carbon, protein, fat, calorie }
 }
 
@@ -242,16 +242,16 @@ const FoodRow = ({ eat, food, dayHead, timeHead, totalRowsCount, setOpen, setEdi
             {food.amount} {food.unit}
           </td>
           <td className='px-6 py-4 whitespace-nowrap'>
-            {carbon} 公克
+            {carbon.toFixed(0)} 公克
           </td>
           <td className='px-6 py-4 whitespace-nowrap'>
-            {protein} 公克
+            {protein.toFixed(0)} 公克
           </td>
           <td className='px-6 py-4 whitespace-nowrap'>
-            {fat} 公克
+            {fat.toFixed(0)} 公克
           </td>
           <td className='px-6 py-4 whitespace-nowrap'>
-            {calorie} 大卡
+            {calorie.toFixed(0)} 大卡
           </td>
           {
             timeHead ? (
