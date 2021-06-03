@@ -441,7 +441,7 @@ const FoodOptionList = () => {
           open ? null : (
             <div
               colSpan='5'
-              className='-mt-12 pt-3 mx-2 bg-gray-50 h-12 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300'
+              className='-mt-12 relative rela pt-3 mx-2 bg-gray-50 h-12 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300'
               onClick={() => {
                 setOpen(true)
               }}
