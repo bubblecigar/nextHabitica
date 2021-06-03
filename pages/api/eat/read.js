@@ -5,7 +5,7 @@ const readEatRows = async (userId) => {
   return new Promise((resolve, reject) => {
     db.query(`
       SELECT * FROM eat
-      WHERE user_id = $1
+      WHERE user_id = $1 AND time > current_date - interval '6 day'
       ORDER BY time DESC
     `
       , [userId]
