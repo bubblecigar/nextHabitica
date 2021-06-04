@@ -42,13 +42,23 @@ const FocusableField = ({ value, onChange, type, classNames }) => {
   return (
     <input
       type={type}
-      className={'w-20 col-span-2 bg-transparent rounded-md p-1 pl-2 text-left focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames}
+      className={'w-20 col-span-2 bg-transparent p-1 text-left focus:outline-none sm:text-sm' + ' ' + classNames}
       value={value}
       onChange={e => onChange(typeTransform(e.target.value))}
     />
   )
 }
 
+
+const Cell = (props) => {
+  return (
+    <props.tag
+      scope='col'
+      className='bg-gray-50 p-1 text-left text-xs font-medium text-gray-500 tracking-wider border border-gray-200'
+      {...props}
+    >{props.children}</props.tag>
+  )
+}
 
 const TrainingTableEditor = ({ staticValue }) => {
   const [columns, setColumns] = React.useState([])
@@ -86,39 +96,39 @@ const TrainingTableEditor = ({ staticValue }) => {
   return (
     <div>
       <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
-        <div
-          className='shadow border-b border-gray-200 sm:rounded-lg overflow-y-auto max-h-75v'
-        >
-          <table className='min-w-full divide-y divide-gray-200'>
+        <div>
+          <table className='min-w-full'>
             <thead>
               <tr>
                 {
                   columns.map(
                     (col, i) => (
-                      <th
-                        scope='col'
-                        key={i}
-                        className='bg-gray-50 p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                      >
-                        <DotsHorizontalIcon className='mx-auto h-4 w-4 mb-1 -mt-1 text-sm cursor-pointer hover:text-indigo-500 text-indigo-300' aria-hidden='true' onClick={removeColumn(i)} />
-                        <FocusableField show value={col} onChange={writeColumn(i)} />
+                      <th tag='th' key={i}>
+                        <DotsHorizontalIcon className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-indigo-500 text-indigo-300' aria-hidden='true' onClick={removeColumn(i)} />
                       </th>
                     )
                   )
                 }
-                <th
-                  scope='col'
-                  onClick={addColumn}
-                  className='bg-gray-50 p-3 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300'
-                >
+              </tr>
+              <tr>
+                {
+                  columns.map(
+                    (col, i) => (
+                      <Cell tag='th' key={i}>
+                        <FocusableField show value={col} onChange={writeColumn(i)} />
+                      </Cell>
+                    )
+                  )
+                }
+                <td tag='th' onClick={addColumn}>
                   <ChevronRightIcon
-                    className='mx-auto h-5 w-5 cursor-pointer'
+                    className='mx-auto h-5 w-5 cursor-pointer text-sm hover:text-indigo-500 text-indigo-300'
                     aria-hidden='true'
                   />
-                </th>
+                </td>
               </tr>
             </thead>
-            <tbody className='divide-y divide-gray-200'>
+            <tbody>
               {
                 rows.map(
                   (row, i) => (
@@ -126,13 +136,9 @@ const TrainingTableEditor = ({ staticValue }) => {
                       {
                         row.map(
                           (data, j) => (
-                            <td
-                              key={j}
-                              scope='col'
-                              className='bg-gray-50 p-3 whitespace-nowrap text-right text-sm font-medium'
-                            >
+                            <Cell key={j} tag='td'>
                               <FocusableField value={data} onChange={writeData(i, j)} show />
-                            </td>
+                            </Cell>
                           )
                         )
                       }
@@ -149,7 +155,7 @@ const TrainingTableEditor = ({ staticValue }) => {
                 ? (
                   <tfoot>
                     <tr>
-                      <td colSpan={columns.length + 1}
+                      <td colSpan={columns.length}
                         className='bg-gray-50 p-3 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300'
                         onClick={addRow}>
                         <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
