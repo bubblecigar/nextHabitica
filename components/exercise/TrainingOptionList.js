@@ -37,13 +37,15 @@ const EditableField = ({ onEdit, staticValue, value, onChange, type, classNames 
   )
 }
 
-const FocusableField = ({ value, onChange, type, classNames }) => {
+const FocusableField = ({ value, onChange, onFocus, onBlur, type, classNames }) => {
   const typeTransform = value => type === 'number' ? Number(value) : value
   return (
     <input
       type={type}
-      className={'w-20 col-span-2 bg-transparent p-1 text-left focus:outline-none sm:text-sm' + ' ' + classNames}
+      className={'w-20 col-span-2 bg-transparent p-2 text-left focus:outline-none sm:text-sm' + ' ' + classNames}
       value={value}
+      onFocus={e => onFocus(e)}
+      onBlur={e => onBlur(e)}
       onChange={e => onChange(typeTransform(e.target.value))}
     />
   )
@@ -54,7 +56,7 @@ const Cell = (props) => {
   return (
     <props.tag
       scope='col'
-      className='bg-gray-50 p-1 text-left text-xs font-medium text-gray-500 tracking-wider border border-gray-200'
+      className='bg-gray-50 text-left text-xs font-medium text-gray-500 tracking-wider border border-gray-200'
       {...props}
     >{props.children}</props.tag>
   )
@@ -63,6 +65,7 @@ const Cell = (props) => {
 const TrainingTableEditor = ({ staticValue }) => {
   const [columns, setColumns] = React.useState([])
   const [rows, setRows] = React.useState([])
+  const [focus, setFocus] = React.useState([null, null])
   const addColumn = () => {
     setColumns([...columns, ''])
     const _rows = rows.map(row => [...row, ''])
@@ -92,6 +95,12 @@ const TrainingTableEditor = ({ staticValue }) => {
     _row[j] = value
     setRows(rows.map((row, n) => n === i ? _row : row))
   }
+  const onFocus = (row, col) => () => {
+    setFocus([row, col])
+  }
+  const onBlur = () => {
+    setFocus([null, null])
+  }
 
   return (
     <div>
@@ -104,7 +113,15 @@ const TrainingTableEditor = ({ staticValue }) => {
                   columns.map(
                     (col, i) => (
                       <th tag='th' key={i}>
-                        <DotsHorizontalIcon className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-indigo-500 text-indigo-300' aria-hidden='true' onClick={removeColumn(i)} />
+                        {
+                          focus[1] === i ? (
+                            <DotsHorizontalIcon
+                              className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-indigo-500 text-indigo-300' aria-hidden='true' onClick={removeColumn(i)}
+                            />
+                          ) : <DotsHorizontalIcon
+                              className='mx-auto h-4 w-4 text-transparent' aria-hidden='true' onClick={removeColumn(i)}
+                            />
+                        }
                       </th>
                     )
                   )
@@ -115,7 +132,7 @@ const TrainingTableEditor = ({ staticValue }) => {
                   columns.map(
                     (col, i) => (
                       <Cell tag='th' key={i}>
-                        <FocusableField show value={col} onChange={writeColumn(i)} />
+                        <FocusableField show value={col} onChange={writeColumn(i)} onFocus={onFocus(-1, i)} onBlur={onBlur} />
                       </Cell>
                     )
                   )
@@ -137,14 +154,19 @@ const TrainingTableEditor = ({ staticValue }) => {
                         row.map(
                           (data, j) => (
                             <Cell key={j} tag='td'>
-                              <FocusableField value={data} onChange={writeData(i, j)} show />
+                              <FocusableField value={data} onChange={writeData(i, j)} show onFocus={onFocus(i, j)} onBlur={onBlur} />
                             </Cell>
                           )
                         )
                       }
-                      <td>
-                        <DotsVerticalIcon className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-indigo-500 text-indigo-300' aria-hidden='true' onClick={removeRow(i)} />
-                      </td>
+                      {
+                        focus[0] === i
+                          ? (
+                            <td>
+                              <DotsVerticalIcon className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-indigo-500 text-indigo-300' aria-hidden='true' onClick={removeRow(i)} />
+                            </td>
+                          ) : null
+                      }
                     </tr>
                   )
                 )
