@@ -107,8 +107,9 @@ const TrainingTableEditor = ({ staticValue }) => {
       <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
         <div>
           <table className='min-w-full'>
-            <thead>
+            <tbody>
               <tr>
+                <th></th>
                 {
                   columns.map(
                     (col, i) => (
@@ -128,6 +129,7 @@ const TrainingTableEditor = ({ staticValue }) => {
                 }
               </tr>
               <tr>
+                <th></th>
                 {
                   columns.map(
                     (col, i) => (
@@ -137,19 +139,27 @@ const TrainingTableEditor = ({ staticValue }) => {
                     )
                   )
                 }
-                <td tag='th' onClick={addColumn}>
+                <td tag='th' onClick={addColumn} rowSpan={rows.length + 1} className=' cursor-pointer text-sm hover:text-indigo-500 text-indigo-300'>
                   <ChevronRightIcon
-                    className='mx-auto h-5 w-5 cursor-pointer text-sm hover:text-indigo-500 text-indigo-300'
+                    className='mx-auto h-5 w-5'
                     aria-hidden='true'
                   />
                 </td>
               </tr>
-            </thead>
-            <tbody>
               {
                 rows.map(
                   (row, i) => (
                     <tr key={i}>
+                      {
+                        focus[0] === i
+                          ? (
+                            <td>
+                              <DotsVerticalIcon className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-indigo-500 text-indigo-300' aria-hidden='true' onMouseDown={removeRow(i)} />
+                            </td>
+                          ) : <td>
+                            <DotsVerticalIcon className='mx-auto h-4 w-4 text-sm text-transparent' aria-hidden='true' />
+                          </td>
+                      }
                       {
                         row.map(
                           (data, j) => (
@@ -158,14 +168,6 @@ const TrainingTableEditor = ({ staticValue }) => {
                             </Cell>
                           )
                         )
-                      }
-                      {
-                        focus[0] === i
-                          ? (
-                            <td>
-                              <DotsVerticalIcon className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-indigo-500 text-indigo-300' aria-hidden='true' onMouseDown={removeRow(i)} />
-                            </td>
-                          ) : null
                       }
                     </tr>
                   )
@@ -177,6 +179,7 @@ const TrainingTableEditor = ({ staticValue }) => {
                 ? (
                   <tfoot>
                     <tr>
+                      <td></td>
                       <td colSpan={columns.length}
                         className='bg-gray-50 p-3 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300'
                         onClick={addRow}>
