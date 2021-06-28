@@ -1,5 +1,5 @@
 import React from 'react'
-import { PlusCircleIcon, PlusIcon, DotsHorizontalIcon, DotsVerticalIcon } from '@heroicons/react/solid'
+import { PlusCircleIcon, PlusIcon, MinusIcon, } from '@heroicons/react/solid'
 import { mutate } from 'swr'
 import { useTrainingOptions, useFoodOptions } from '../../lib/hooks'
 
@@ -111,8 +111,8 @@ const TrainingTableEditor = ({ staticValue }) => {
               <tr>
                 {
                   columns.length === 0 ? null :
-                    <th>
-                      <DotsVerticalIcon className='mx-auto h-4 w-4 text-sm text-transparent' aria-hidden='true' />
+                    <th className='p-2'>
+                      <MinusIcon className='mx-auto h-4 w-4 text-sm text-transparent' aria-hidden='true' />
                     </th>
                 }
                 {
@@ -121,10 +121,10 @@ const TrainingTableEditor = ({ staticValue }) => {
                       <th tag='th' key={i}>
                         {
                           focus[1] === i ? (
-                            <DotsHorizontalIcon
+                            <MinusIcon
                               className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-indigo-500 text-indigo-300' aria-hidden='true' onMouseDown={removeColumn(i)}
                             />
-                          ) : <DotsHorizontalIcon
+                          ) : <MinusIcon
                               className='mx-auto h-4 w-4 text-transparent' aria-hidden='true'
                             />
                         }
@@ -159,10 +159,10 @@ const TrainingTableEditor = ({ staticValue }) => {
                         focus[0] === i
                           ? (
                             <td>
-                              <DotsVerticalIcon className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-indigo-500 text-indigo-300' aria-hidden='true' onMouseDown={removeRow(i)} />
+                              <MinusIcon className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-indigo-500 text-indigo-300' aria-hidden='true' onMouseDown={removeRow(i)} />
                             </td>
                           ) : <td>
-                            <DotsVerticalIcon className='mx-auto h-4 w-4 text-sm text-transparent' aria-hidden='true' />
+                            <MinusIcon className='mx-auto h-4 w-4 text-sm text-transparent' aria-hidden='true' />
                           </td>
                       }
                       {
