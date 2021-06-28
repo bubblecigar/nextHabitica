@@ -116,10 +116,10 @@ const TrainingTableEditor = ({ staticValue }) => {
                         {
                           focus[1] === i ? (
                             <DotsHorizontalIcon
-                              className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-indigo-500 text-indigo-300' aria-hidden='true' onClick={removeColumn(i)}
+                              className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-indigo-500 text-indigo-300' aria-hidden='true' onMouseDown={removeColumn(i)}
                             />
                           ) : <DotsHorizontalIcon
-                              className='mx-auto h-4 w-4 text-transparent' aria-hidden='true' onClick={removeColumn(i)}
+                              className='mx-auto h-4 w-4 text-transparent' aria-hidden='true'
                             />
                         }
                       </th>
@@ -163,7 +163,7 @@ const TrainingTableEditor = ({ staticValue }) => {
                         focus[0] === i
                           ? (
                             <td>
-                              <DotsVerticalIcon className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-indigo-500 text-indigo-300' aria-hidden='true' onClick={removeRow(i)} />
+                              <DotsVerticalIcon className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-indigo-500 text-indigo-300' aria-hidden='true' onMouseDown={removeRow(i)} />
                             </td>
                           ) : null
                       }
