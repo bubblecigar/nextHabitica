@@ -1,5 +1,5 @@
 import React from 'react'
-import { PlusCircleIcon, ChevronRightIcon, DotsHorizontalIcon, DotsVerticalIcon, ReplyIcon } from '@heroicons/react/solid'
+import { PlusCircleIcon, PlusIcon, DotsHorizontalIcon, DotsVerticalIcon } from '@heroicons/react/solid'
 import { mutate } from 'swr'
 import { useTrainingOptions, useFoodOptions } from '../../lib/hooks'
 
@@ -144,8 +144,8 @@ const TrainingTableEditor = ({ staticValue }) => {
                     )
                   )
                 }
-                <td tag='th' onClick={addColumn} rowSpan={rows.length + 1} className=' cursor-pointer text-sm hover:text-indigo-500 text-indigo-300'>
-                  <ChevronRightIcon
+                <td tag='th' onClick={addColumn} rowSpan={rows.length + 1} className='p-2  cursor-pointer text-sm hover:text-indigo-500 text-indigo-300'>
+                  <PlusIcon
                     className='mx-auto h-5 w-5'
                     aria-hidden='true'
                   />
