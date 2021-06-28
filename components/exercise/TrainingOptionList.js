@@ -105,11 +105,16 @@ const TrainingTableEditor = ({ staticValue }) => {
   return (
     <div>
       <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
-        <div>
+        <div className='shadow border-gray-200 sm:rounded-lg'>
           <table className='min-w-full'>
             <tbody>
               <tr>
-                <th></th>
+                {
+                  columns.length === 0 ? null :
+                    <th>
+                      <DotsVerticalIcon className='mx-auto h-4 w-4 text-sm text-transparent' aria-hidden='true' />
+                    </th>
+                }
                 {
                   columns.map(
                     (col, i) => (
