@@ -1,13 +1,14 @@
 import React from 'react'
 import { PlusCircleIcon, PlusIcon, MinusSmIcon, TrashIcon, CloudUploadIcon, ReplyIcon, PencilAltIcon } from '@heroicons/react/solid'
 
-const FocusableField = ({ value, onChange, onFocus, onBlur, type, classNames }) => {
+const FocusableField = ({ staticValue, value, onChange, onFocus, onBlur, type, classNames, onEdit }) => {
   const typeTransform = value => type === 'number' ? Number(value) : value
   return (
     <input
       type={type}
       className={'w-20 col-span-2 bg-transparent p-2 text-left focus:outline-none sm:text-sm' + ' ' + classNames}
       value={value}
+      disabled={!onEdit}
       onFocus={e => onFocus(e)}
       onBlur={e => onBlur(e)}
       onChange={e => onChange(typeTransform(e.target.value))}
@@ -26,10 +27,10 @@ const Cell = (props) => {
   )
 }
 
-const TrainingTable = ({ staticValue }) => {
+const TrainingTable = ({ staticValue = { rows: [], columns: [] } }) => {
   const [onEdit, setOnEdit] = React.useState(false)
-  const [columns, setColumns] = React.useState(staticValue ? staticValue.columns : [])
-  const [rows, setRows] = React.useState(staticValue ? staticValue.rows : [])
+  const [columns, setColumns] = React.useState(staticValue.columns)
+  const [rows, setRows] = React.useState(staticValue.rows)
   const [focus, setFocus] = React.useState([null, null])
   const resetTable = () => {
     setColumns(staticValue ? staticValue.columns : [])
@@ -92,14 +93,14 @@ const TrainingTable = ({ staticValue }) => {
             </div>
           }
           {
-            onEdit && columns.length > 0 ? (
+            onEdit ? (
               <div className='absolute -left-10 top-12'>
                 <CloudUploadIcon onClick={onSave} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-indigo-500 cursor-pointer' aria-hidden='true' />
               </div>
             ) : null
           }
           {
-            onEdit && columns.length > 0 ? (
+            onEdit ? (
               <div className='absolute -left-10 top-20'>
                 {
                   staticValue
@@ -140,10 +141,10 @@ const TrainingTable = ({ staticValue }) => {
               <tr>
                 <th></th>
                 {
-                  columns.map(
+                  (onEdit ? columns : staticValue.columns).map(
                     (col, i) => (
                       <Cell tag='th' key={i} className={'bg-gray-100 text-left text-xs font-medium tracking-wider border border-gray-200'} >
-                        <FocusableField show value={col} onChange={writeColumn(i)} onFocus={onFocus(-1, i)} onBlur={onBlur} />
+                        <FocusableField show value={col} onChange={writeColumn(i)} onFocus={onFocus(-1, i)} onEdit={onEdit} onBlur={onBlur} />
                       </Cell>
                     )
                   )
@@ -161,7 +162,7 @@ const TrainingTable = ({ staticValue }) => {
                   </td>}
               </tr>
               {
-                rows.map(
+                (onEdit ? rows : staticValue.rows).map(
                   (row, i) => (
                     <tr key={i}>
                       {
@@ -178,7 +179,7 @@ const TrainingTable = ({ staticValue }) => {
                         row.map(
                           (data, j) => (
                             <Cell key={j} tag='td'>
-                              <FocusableField value={data} onChange={writeData(i, j)} show onFocus={onFocus(i, j)} onBlur={onBlur} />
+                              <FocusableField value={data} onChange={writeData(i, j)} show onFocus={onFocus(i, j)} onEdit={onEdit} onBlur={onBlur} />
                             </Cell>
                           )
                         )
