@@ -27,8 +27,8 @@ const Cell = (props) => {
   )
 }
 
-const TrainingTable = ({ staticValue = { rows: [], columns: [] } }) => {
-  const [onEdit, setOnEdit] = React.useState(false)
+const TrainingTable = ({ closeCreation, initEditState = false, staticValue = { rows: [], columns: [] } }) => {
+  const [onEdit, setOnEdit] = React.useState(initEditState)
   const [columns, setColumns] = React.useState(staticValue.columns)
   const [rows, setRows] = React.useState(staticValue.rows)
   const [focus, setFocus] = React.useState([null, null])
@@ -88,7 +88,7 @@ const TrainingTable = ({ staticValue = { rows: [], columns: [] } }) => {
       <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
         <div className='shadow border-gray-200 sm:rounded-lg relative'>
           {
-            <div className='absolute -left-10 top-4'>
+            initEditState ? null : <div className='absolute -left-10 top-4'>
               <PencilAltIcon onClick={() => setOnEdit(!onEdit)} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-indigo-500 cursor-pointer' aria-hidden='true' />
             </div>
           }
@@ -103,9 +103,9 @@ const TrainingTable = ({ staticValue = { rows: [], columns: [] } }) => {
             onEdit ? (
               <div className='absolute -left-10 top-20'>
                 {
-                  staticValue
-                    ? <ReplyIcon onClick={resetTable} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-red-500 cursor-pointer' aria-hidden='true' />
-                    : <TrashIcon onClick={resetTable} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-red-500 cursor-pointer' aria-hidden='true' />
+                  initEditState
+                    ? <TrashIcon onClick={closeCreation} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-red-500 cursor-pointer' aria-hidden='true' />
+                    : <ReplyIcon onClick={resetTable} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-red-500 cursor-pointer' aria-hidden='true' />
                 }
               </div>
             ) : null
@@ -149,12 +149,16 @@ const TrainingTable = ({ staticValue = { rows: [], columns: [] } }) => {
                     )
                   )
                 }
-                {onEdit ? <td tag='th' onClick={addColumn} rowSpan={rows.length + 1} className='p-2  cursor-pointer text-sm hover:text-indigo-500 text-indigo-300'>
-                  <PlusIcon
-                    className='mx-auto h-5 w-5'
-                    aria-hidden='true'
-                  />
-                </td> : <td tag='th' rowSpan={rows.length + 1} className='p-2 text-sm hover:text-indigo-500 text-indigo-300'>
+                {onEdit
+                  ? (columns.length === 0
+                    ? <td className='p-10 cursor-pointer text-sm hover:text-indigo-500 text-indigo-300' onClick={addColumn}>Create Column</td>
+                    : <td tag='th' onClick={addColumn} rowSpan={rows.length + 1} className='p-2 cursor-pointer text-sm hover:text-indigo-500 text-indigo-300'>
+                      <PlusIcon
+                        className='mx-auto h-5 w-5'
+                        aria-hidden='true'
+                      />
+                    </td>
+                  ) : <td tag='th' rowSpan={rows.length + 1} className='p-2 text-sm'>
                     <PlusIcon
                       className='mx-auto h-5 w-5 text-transparent'
                       aria-hidden='true'
@@ -189,29 +193,7 @@ const TrainingTable = ({ staticValue = { rows: [], columns: [] } }) => {
                 )
               }
             </tbody>
-            {
-              onEdit && columns.length > 0
-                ? (
-                  <tfoot>
-                    <tr>
-                      <td></td>
-                      <td colSpan={columns.length}
-                        className='bg-gray-50 p-3 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300'
-                        onClick={addRow}>
-                        <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
-                      </td>
-                    </tr>
-                  </tfoot>
-                ) : <tfoot>
-                  <tr>
-                    <td></td>
-                    <td colSpan={columns.length}
-                      className='bg-gray-50 p-3 whitespace-nowrap text-sm font-medium text-transparent'>
-                      <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
-                    </td>
-                  </tr>
-                </tfoot>
-            }
+            {getFoot(onEdit, columns, staticValue, addRow)}
           </table>
         </div>
       </div>
@@ -219,4 +201,42 @@ const TrainingTable = ({ staticValue = { rows: [], columns: [] } }) => {
   )
 }
 
+const getFoot = (onEdit, columns, staticValue, addRow) => {
+  if (onEdit && columns.length === 0) {
+    return null
+  }
+  if (!onEdit && staticValue.columns.length === 0) {
+    return null
+  }
+  if (onEdit && columns.length > 0) {
+    return <tfoot>
+      <tr>
+        <td></td>
+        <td colSpan={columns.length}
+          className='bg-gray-50 p-3 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300'
+          onClick={addRow}>
+          <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
+        </td>
+      </tr>
+    </tfoot>
+  }
+  if (!onEdit && staticValue.columns.length > 0) {
+    return <tfoot>
+      <tr>
+        <td></td>
+        <td colSpan={columns.length}
+          className='bg-gray-50 p-3 whitespace-nowrap text-sm font-medium text-transparent'>
+          <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
+        </td>
+      </tr>
+    </tfoot>
+  }
+}
+
+const TrainingTableCreator = () => {
+  const [onCreate, setOnCreate] = React.useState(false)
+  return onCreate ? <TrainingTable closeCreation={() => setOnCreate(false)} initEditState staticValue={{ columns: ['', '', ''], rows: [['', '', ''], ['', '', '']] }} /> : <div className='p-10 cursor-pointer text-sm hover:text-indigo-500 text-indigo-300' onClick={() => setOnCreate(true)}>Create Table +</div>
+}
+
 export default TrainingTable
+export { TrainingTableCreator }
