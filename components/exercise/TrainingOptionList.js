@@ -106,9 +106,15 @@ const TrainingTableEditor = ({ staticValue }) => {
   const onBlur = () => {
     setFocus([null, null])
   }
-  const onSave = () => {
-    console.log('columns:', columns)
-    console.log('rows:', rows)
+  const onSave = async () => {
+    const body = {
+      table: { columns, rows }
+    }
+    await window.fetch('/api/exercise/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
   }
 
   return (
