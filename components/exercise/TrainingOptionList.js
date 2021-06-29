@@ -1,5 +1,5 @@
 import React from 'react'
-import { PlusCircleIcon, PlusIcon, MinusSmIcon, TrashIcon } from '@heroicons/react/solid'
+import { PlusCircleIcon, PlusIcon, MinusSmIcon, TrashIcon, CloudUploadIcon } from '@heroicons/react/solid'
 import { mutate } from 'swr'
 import { useTrainingOptions, useFoodOptions } from '../../lib/hooks'
 
@@ -106,6 +106,10 @@ const TrainingTableEditor = ({ staticValue }) => {
   const onBlur = () => {
     setFocus([null, null])
   }
+  const onSave = () => {
+    console.log('columns:', columns)
+    console.log('rows:', rows)
+  }
 
   return (
     <div>
@@ -113,7 +117,14 @@ const TrainingTableEditor = ({ staticValue }) => {
         <div className='shadow border-gray-200 sm:rounded-lg relative'>
           {
             columns.length > 0 ? (
-              <div className='absolute -left-10 top-11'>
+              <div className='absolute -left-10 top-12'>
+                <CloudUploadIcon onClick={onSave} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-indigo-500 cursor-pointer' aria-hidden='true' />
+              </div>
+            ) : null
+          }
+          {
+            columns.length > 0 ? (
+              <div className='absolute -left-10 top-20'>
                 <TrashIcon onClick={resetTable} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-red-500 cursor-pointer' aria-hidden='true' />
               </div>
             ) : null
