@@ -82,6 +82,7 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue = { r
       exercise_id
     }
     if (initEditState) { // create
+      closeCreation()
       body.exercise_id = uuidv4()
       mutate('/api/exercise/read', [{ ...body }, ...exercise], false)
       await window.fetch('/api/exercise/create', {
@@ -91,6 +92,7 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue = { r
       })
       mutate('/api/exercise/read')
     } else { // update
+      setOnEdit(false)
       mutate('/api/exercise/read', exercise.map(e => e.exercise_id === exercise_id ? { ...e, ...body } : e), false)
       await window.fetch('/api/exercise/update', {
         method: 'POST',
