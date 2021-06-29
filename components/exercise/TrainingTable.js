@@ -1,5 +1,8 @@
 import React from 'react'
 import { PlusCircleIcon, PlusIcon, MinusSmIcon, TrashIcon, CloudUploadIcon, ReplyIcon, PencilAltIcon } from '@heroicons/react/solid'
+import { mutate } from 'swr'
+import { useExercise } from '../../lib/hooks'
+import { v4 as uuidv4 } from 'uuid'
 
 const FocusableField = ({ staticValue, value, onChange, onFocus, onBlur, type, classNames, onEdit }) => {
   const typeTransform = value => type === 'number' ? Number(value) : value
@@ -28,6 +31,7 @@ const Cell = (props) => {
 }
 
 const TrainingTable = ({ closeCreation, initEditState = false, staticValue = { rows: [], columns: [] }, exercise_id }) => {
+  const exercise = useExercise()
   const [onEdit, setOnEdit] = React.useState(initEditState)
   const [columns, setColumns] = React.useState(staticValue.columns)
   const [rows, setRows] = React.useState(staticValue.rows)
@@ -74,30 +78,37 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue = { r
   }
   const onSave = async () => {
     const body = {
-      table: { columns, rows },
+      training_table: { columns, rows },
       exercise_id
     }
-    if (initEditState) {
+    if (initEditState) { // create
+      body.exercise_id = uuidv4()
+      mutate('/api/exercise/read', [{ ...body }, ...exercise], false)
       await window.fetch('/api/exercise/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       })
-    } else {
+      mutate('/api/exercise/read')
+    } else { // update
+      mutate('/api/exercise/read', exercise.map(e => e.exercise_id === exercise_id ? { ...e, ...body } : e), false)
       await window.fetch('/api/exercise/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       })
+      mutate('/api/exercise/read')
     }
   }
   const onDelete = async () => {
     const body = { exercise_id }
+    mutate('/api/exercise/read', exercise.filter(e => e.exercise_id !== exercise_id), false)
     await window.fetch('/api/exercise/delete', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
+    mutate('/api/exercise/read')
   }
 
   return (
