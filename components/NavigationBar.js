@@ -15,8 +15,8 @@ const NavigationBar = () => {
   const router = useRouter()
 
   return (
-    <div className='fixed left-0 top-0 w-screen'>
-      <Disclosure as='nav' className='bg-gray-800 absolute w-full'>
+    <div className='fixed left-0 top-0 w-screen z-50'>
+      <Disclosure as='nav' className='bg-gray-800'>
         {({ open }) => (
           <>
             <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
