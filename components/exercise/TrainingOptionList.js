@@ -1,5 +1,5 @@
 import React from 'react'
-import { PlusCircleIcon, PlusIcon, MinusIcon, } from '@heroicons/react/solid'
+import { PlusCircleIcon, PlusIcon, MinusSmIcon, TrashIcon } from '@heroicons/react/solid'
 import { mutate } from 'swr'
 import { useTrainingOptions, useFoodOptions } from '../../lib/hooks'
 
@@ -66,6 +66,11 @@ const TrainingTableEditor = ({ staticValue }) => {
   const [columns, setColumns] = React.useState([])
   const [rows, setRows] = React.useState([])
   const [focus, setFocus] = React.useState([null, null])
+  const resetTable = () => {
+    setColumns([])
+    setRows([])
+    setFocus([null, null])
+  }
   const addColumn = () => {
     setColumns([...columns, ''])
     const _rows = rows.map(row => [...row, ''])
@@ -105,14 +110,22 @@ const TrainingTableEditor = ({ staticValue }) => {
   return (
     <div>
       <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
-        <div className='shadow border-gray-200 sm:rounded-lg'>
+        <div className='shadow border-gray-200 sm:rounded-lg relative'>
+          {
+            columns.length > 0 ? (
+              <div className='absolute -left-10 top-11'>
+                <TrashIcon onClick={resetTable} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-red-500 cursor-pointer' aria-hidden='true' />
+              </div>
+            ) : null
+          }
+
           <table className='min-w-full'>
             <tbody>
               <tr>
                 {
                   columns.length === 0 ? null :
                     <th className='p-2'>
-                      <MinusIcon className='mx-auto h-4 w-4 text-sm text-transparent' aria-hidden='true' />
+                      <MinusSmIcon className='mx-auto h-4 w-4 text-sm text-transparent' aria-hidden='true' />
                     </th>
                 }
                 {
@@ -121,10 +134,10 @@ const TrainingTableEditor = ({ staticValue }) => {
                       <th tag='th' key={i}>
                         {
                           focus[1] === i ? (
-                            <MinusIcon
-                              className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-indigo-500 text-indigo-300' aria-hidden='true' onMouseDown={removeColumn(i)}
+                            <MinusSmIcon
+                              className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-red-500 text-red-300' aria-hidden='true' onMouseDown={removeColumn(i)}
                             />
-                          ) : <MinusIcon
+                          ) : <MinusSmIcon
                               className='mx-auto h-4 w-4 text-transparent' aria-hidden='true'
                             />
                         }
@@ -159,10 +172,10 @@ const TrainingTableEditor = ({ staticValue }) => {
                         focus[0] === i
                           ? (
                             <td>
-                              <MinusIcon className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-indigo-500 text-indigo-300' aria-hidden='true' onMouseDown={removeRow(i)} />
+                              <MinusSmIcon className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-red-500 text-red-300' aria-hidden='true' onMouseDown={removeRow(i)} />
                             </td>
                           ) : <td>
-                            <MinusIcon className='mx-auto h-4 w-4 text-sm text-transparent' aria-hidden='true' />
+                            <MinusSmIcon className='mx-auto h-4 w-4 text-sm text-transparent' aria-hidden='true' />
                           </td>
                       }
                       {
