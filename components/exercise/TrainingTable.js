@@ -27,7 +27,7 @@ const Cell = (props) => {
   )
 }
 
-const TrainingTable = ({ closeCreation, initEditState = false, staticValue = { rows: [], columns: [] } }) => {
+const TrainingTable = ({ closeCreation, initEditState = false, staticValue = { rows: [], columns: [] }, exercise_id }) => {
   const [onEdit, setOnEdit] = React.useState(initEditState)
   const [columns, setColumns] = React.useState(staticValue.columns)
   const [rows, setRows] = React.useState(staticValue.rows)
@@ -82,6 +82,14 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue = { r
       body: JSON.stringify(body)
     })
   }
+  const onDelete = async () => {
+    const body = { exercise_id }
+    await window.fetch('/api/exercise/delete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+  }
 
   return (
     <div>
@@ -110,6 +118,18 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue = { r
               </div>
             ) : null
           }
+          {
+            onEdit ? (
+              <div className='absolute -left-10 top-28'>
+                {
+                  initEditState
+                    ? null
+                    : <TrashIcon onClick={onDelete} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-red-500 cursor-pointer' aria-hidden='true' />
+                }
+              </div>
+            ) : null
+          }
+
 
           <table className='min-w-full'>
             <tbody>

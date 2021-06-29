@@ -8,7 +8,7 @@ const ExerciseRecord = () => {
   return exercises ? (
     exercises.map(
       exercise => (
-        <TrainingTable key={exercise.exercise_id} staticValue={exercise.training_table} />
+        <TrainingTable key={exercise.exercise_id} exercise_id={exercise.exercise_id} staticValue={exercise.training_table} />
       )
     )
   ) : null
