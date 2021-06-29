@@ -74,13 +74,22 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue = { r
   }
   const onSave = async () => {
     const body = {
-      table: { columns, rows }
+      table: { columns, rows },
+      exercise_id
     }
-    await window.fetch('/api/exercise/create', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    })
+    if (initEditState) {
+      await window.fetch('/api/exercise/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      })
+    } else {
+      await window.fetch('/api/exercise/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      })
+    }
   }
   const onDelete = async () => {
     const body = { exercise_id }
