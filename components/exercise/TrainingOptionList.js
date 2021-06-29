@@ -123,14 +123,14 @@ const TrainingTableEditor = ({ staticValue }) => {
         <div className='shadow border-gray-200 sm:rounded-lg relative'>
           {
             columns.length > 0 ? (
-              <div className='absolute -left-10 top-12'>
+              <div className='absolute -left-10 top-6'>
                 <CloudUploadIcon onClick={onSave} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-indigo-500 cursor-pointer' aria-hidden='true' />
               </div>
             ) : null
           }
           {
             columns.length > 0 ? (
-              <div className='absolute -left-10 top-20'>
+              <div className='absolute -left-10 top-14'>
                 <TrashIcon onClick={resetTable} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-red-500 cursor-pointer' aria-hidden='true' />
               </div>
             ) : null
