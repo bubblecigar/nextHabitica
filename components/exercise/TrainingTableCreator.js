@@ -1,41 +1,5 @@
 import React from 'react'
 import { PlusCircleIcon, PlusIcon, MinusSmIcon, TrashIcon, CloudUploadIcon } from '@heroicons/react/solid'
-import { mutate } from 'swr'
-import { useTrainingOptions, useFoodOptions } from '../../lib/hooks'
-
-const StyledInput = ({ value, onChange, type, classNames, show }) => {
-  const typeTransform = value => type === 'number' ? Number(value) : value
-  return (
-    <input
-      type={type}
-      readOnly={!show}
-      disabled={!show}
-      className={'w-20 col-span-2 bg-white border border-gray-300 rounded-md shadow-sm p-1 pl-2 text-left focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames + ' ' + (show ? '' : 'opacity-0')}
-      value={value}
-      onChange={e => onChange(typeTransform(e.target.value))}
-    />
-  )
-}
-
-const EditableField = ({ onEdit, staticValue, value, onChange, type, classNames }) => {
-  const typeTransform = value => type === 'number' ? Number(value) : value
-  return (
-    <div className='h-5 flex items-center justify-start'>
-      {
-        onEdit ? (
-          <input
-            type={type}
-            className={'w-20 col-span-2 bg-white border border-gray-300 rounded-md shadow-sm p-1 pl-2 text-left focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' + ' ' + classNames}
-            value={value}
-            onChange={e => onChange(typeTransform(e.target.value))}
-          />
-        ) : (
-            <span className='block px-2 p-1'>{staticValue}</span>
-          )
-      }
-    </div>
-  )
-}
 
 const FocusableField = ({ value, onChange, onFocus, onBlur, type, classNames }) => {
   const typeTransform = value => type === 'number' ? Number(value) : value
@@ -62,7 +26,7 @@ const Cell = (props) => {
   )
 }
 
-const TrainingTableEditor = ({ staticValue }) => {
+const TrainingTableCreator = ({ staticValue }) => {
   const [columns, setColumns] = React.useState([])
   const [rows, setRows] = React.useState([])
   const [focus, setFocus] = React.useState([null, null])
@@ -231,10 +195,4 @@ const TrainingTableEditor = ({ staticValue }) => {
   )
 }
 
-const TrainingOptionList = () => {
-  return (
-    <TrainingTableEditor />
-  )
-}
-
-export default TrainingOptionList
+export default TrainingTableCreator
