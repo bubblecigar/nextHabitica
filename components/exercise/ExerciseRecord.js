@@ -1,13 +1,5 @@
-import React, { Children } from 'react'
-import { PlusCircleIcon, MinusCircleIcon } from '@heroicons/react/solid'
-import { mutate } from 'swr'
-import { useFoodOptions, useGroupByDateEat, useEat, useExercise } from '../../lib/hooks'
-import { format } from 'date-fns-tz'
-import zhTWLocale from 'date-fns/locale/zh-TW'
-import DatePicker from '../DatePicker'
-import SelectBox from '../SelectBox'
-import DialogBox from '../DialogBox'
-import { v4 as uuidv4 } from 'uuid'
+import React from 'react'
+import { useExercise } from '../../lib/hooks'
 import TrainingTable from './TrainingTable'
 
 const ExerciseRecord = () => {
