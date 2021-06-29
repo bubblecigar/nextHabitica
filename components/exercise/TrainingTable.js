@@ -1,5 +1,5 @@
 import React from 'react'
-import { PlusCircleIcon, PlusIcon, MinusSmIcon, TrashIcon, CloudUploadIcon, ReplyIcon } from '@heroicons/react/solid'
+import { PlusCircleIcon, PlusIcon, MinusSmIcon, TrashIcon, CloudUploadIcon, ReplyIcon, PencilAltIcon } from '@heroicons/react/solid'
 
 const FocusableField = ({ value, onChange, onFocus, onBlur, type, classNames }) => {
   const typeTransform = value => type === 'number' ? Number(value) : value
@@ -27,6 +27,7 @@ const Cell = (props) => {
 }
 
 const TrainingTable = ({ staticValue }) => {
+  const [onEdit, setOnEdit] = React.useState(false)
   const [columns, setColumns] = React.useState(staticValue ? staticValue.columns : [])
   const [rows, setRows] = React.useState(staticValue ? staticValue.rows : [])
   const [focus, setFocus] = React.useState([null, null])
@@ -86,15 +87,20 @@ const TrainingTable = ({ staticValue }) => {
       <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
         <div className='shadow border-gray-200 sm:rounded-lg relative'>
           {
-            columns.length > 0 ? (
-              <div className='absolute -left-10 top-6'>
+            <div className='absolute -left-10 top-4'>
+              <PencilAltIcon onClick={() => setOnEdit(!onEdit)} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-indigo-500 cursor-pointer' aria-hidden='true' />
+            </div>
+          }
+          {
+            onEdit && columns.length > 0 ? (
+              <div className='absolute -left-10 top-12'>
                 <CloudUploadIcon onClick={onSave} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-indigo-500 cursor-pointer' aria-hidden='true' />
               </div>
             ) : null
           }
           {
-            columns.length > 0 ? (
-              <div className='absolute -left-10 top-14'>
+            onEdit && columns.length > 0 ? (
+              <div className='absolute -left-10 top-20'>
                 {
                   staticValue
                     ? <ReplyIcon onClick={resetTable} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-red-500 cursor-pointer' aria-hidden='true' />
@@ -108,7 +114,7 @@ const TrainingTable = ({ staticValue }) => {
             <tbody>
               <tr>
                 {
-                  columns.length === 0 ? null :
+                  onEdit && columns.length === 0 ? null :
                     <th className='p-2'>
                       <MinusSmIcon className='mx-auto h-4 w-4 text-sm text-transparent' aria-hidden='true' />
                     </th>
@@ -118,13 +124,13 @@ const TrainingTable = ({ staticValue }) => {
                     (col, i) => (
                       <th tag='th' key={i}>
                         {
-                          focus[1] === i ? (
+                          onEdit && (focus[1] === i ? (
                             <MinusSmIcon
                               className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-red-500 text-red-300' aria-hidden='true' onMouseDown={removeColumn(i)}
                             />
                           ) : <MinusSmIcon
                               className='mx-auto h-4 w-4 text-transparent' aria-hidden='true'
-                            />
+                            />)
                         }
                       </th>
                     )
@@ -142,19 +148,24 @@ const TrainingTable = ({ staticValue }) => {
                     )
                   )
                 }
-                <td tag='th' onClick={addColumn} rowSpan={rows.length + 1} className='p-2  cursor-pointer text-sm hover:text-indigo-500 text-indigo-300'>
+                {onEdit ? <td tag='th' onClick={addColumn} rowSpan={rows.length + 1} className='p-2  cursor-pointer text-sm hover:text-indigo-500 text-indigo-300'>
                   <PlusIcon
                     className='mx-auto h-5 w-5'
                     aria-hidden='true'
                   />
-                </td>
+                </td> : <td tag='th' rowSpan={rows.length + 1} className='p-2 text-sm hover:text-indigo-500 text-indigo-300'>
+                    <PlusIcon
+                      className='mx-auto h-5 w-5 text-transparent'
+                      aria-hidden='true'
+                    />
+                  </td>}
               </tr>
               {
                 rows.map(
                   (row, i) => (
                     <tr key={i}>
                       {
-                        focus[0] === i
+                        onEdit && focus[0] === i
                           ? (
                             <td>
                               <MinusSmIcon className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-red-500 text-red-300' aria-hidden='true' onMouseDown={removeRow(i)} />
@@ -178,7 +189,7 @@ const TrainingTable = ({ staticValue }) => {
               }
             </tbody>
             {
-              columns.length > 0
+              onEdit && columns.length > 0
                 ? (
                   <tfoot>
                     <tr>
@@ -190,7 +201,15 @@ const TrainingTable = ({ staticValue }) => {
                       </td>
                     </tr>
                   </tfoot>
-                ) : null
+                ) : <tfoot>
+                  <tr>
+                    <td></td>
+                    <td colSpan={columns.length}
+                      className='bg-gray-50 p-3 whitespace-nowrap text-sm font-medium text-transparent'>
+                      <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
+                    </td>
+                  </tr>
+                </tfoot>
             }
           </table>
         </div>
