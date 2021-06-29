@@ -168,7 +168,7 @@ const TrainingTableEditor = ({ staticValue }) => {
                 {
                   columns.map(
                     (col, i) => (
-                      <Cell tag='th' key={i} className={'bg-gray-300 text-left text-xs font-medium tracking-wider border border-gray-200'} >
+                      <Cell tag='th' key={i} className={'bg-gray-100 text-left text-xs font-medium tracking-wider border border-gray-200'} >
                         <FocusableField show value={col} onChange={writeColumn(i)} onFocus={onFocus(-1, i)} onBlur={onBlur} />
                       </Cell>
                     )
