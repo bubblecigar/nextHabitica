@@ -117,7 +117,7 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue = { r
         <div className='shadow border-gray-200 sm:rounded-lg relative'>
           {
             initEditState ? null : <div className='absolute -left-10 top-4'>
-              <PencilAltIcon onClick={() => setOnEdit(!onEdit)} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-indigo-500 cursor-pointer' aria-hidden='true' />
+              <PencilAltIcon onClick={() => setOnEdit(!onEdit)} className={'mx-auto h-4 w-4 text-sm cursor-pointer' + ' ' + (onEdit ? 'text-indigo-500' : 'text-gray-300')} aria-hidden='true' />
             </div>
           }
           {
