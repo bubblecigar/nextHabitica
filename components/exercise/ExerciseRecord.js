@@ -1,13 +1,14 @@
 import React, { Children } from 'react'
 import { PlusCircleIcon, MinusCircleIcon } from '@heroicons/react/solid'
 import { mutate } from 'swr'
-import { useFoodOptions, useGroupByDateEat, useEat } from '../../lib/hooks'
+import { useFoodOptions, useGroupByDateEat, useEat, useExercise } from '../../lib/hooks'
 import { format } from 'date-fns-tz'
 import zhTWLocale from 'date-fns/locale/zh-TW'
 import DatePicker from '../DatePicker'
 import SelectBox from '../SelectBox'
 import DialogBox from '../DialogBox'
 import { v4 as uuidv4 } from 'uuid'
+import TrainingTable from './TrainingTable'
 
 const Td = props => {
   return (
@@ -366,90 +367,17 @@ const NutritionSummary = ({ group }) => {
   )
 }
 
-const EatRecord = () => {
-  const eatGroups = useGroupByDateEat()
-  const [editEat, setEditEat] = React.useState(null)
-  const [open, setOpen] = React.useState(false)
+const ExerciseRecord = () => {
+  const exercises = useExercise()
+  console.log(exercises)
 
-  return (
-    <div className=''>
-      <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
-        <div
-          className='shadow border-gray-200 sm:rounded-lg overflow-y-auto max-h-75v'
-        >
-          <table className='min-w-full divide-y divide-gray-200'>
-            <thead className='top-0'>
-              <tr className='top-0'>
-                <Th>
-                  Date
-                </Th>
-                <Th>
-                  Time
-                </Th>
-                <Th>
-                  Foods
-                </Th>
-                <Th>
-                  Amount
-                </Th>
-                <Th>
-                  Carbon
-                </Th>
-                <Th>
-                  Protein
-                </Th>
-                <Th>
-                  Fat
-                </Th>
-                <Th>
-                  Calorie
-                </Th>
-                <Th>
-                  <span className='sr-only'>Edit</span>
-                </Th>
-              </tr>
-            </thead>
-            <tbody className='bg-white divide-y divide-gray-200 text-sm'>
-              {
-                eatGroups.map(
-                  (group, i) => <DayGroup
-                    key={i}
-                    group={group}
-                    setOpen={setOpen}
-                    setEditEat={setEditEat}
-                  />
-                )
-              }
-            </tbody>
-            <tfoot>
-              <tr>
-                <td
-                  colSpan='9' className='bg-gray-50 px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300' onClick={() => {
-                    setEditEat({})
-                    setOpen(true)
-                  }}
-                >
-                  <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-        <DialogBox open={open} setOpen={setOpen}>
-          <table className='min-w-full divide-y divide-gray-200'>
-            <tbody className='bg-white divide-y divide-gray-200'>
-              <EatEditor
-                eat={editEat}
-                setOpen={setOpen}
-                setHintId={setHintId}
-              />
-            </tbody>
-          </table>
-        </DialogBox>
-      </div>
-    </div>
-
-  )
+  return exercises ? (
+    exercises.map(
+      exercise => (
+        <TrainingTable key={exercise.exercise_id} staticValue={exercise.training_table} />
+      )
+    )
+  ) : null
 }
 
-export default EatRecord
+export default ExerciseRecord

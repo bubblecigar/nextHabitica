@@ -1,5 +1,5 @@
 import React from 'react'
-import { PlusCircleIcon, PlusIcon, MinusSmIcon, TrashIcon, CloudUploadIcon } from '@heroicons/react/solid'
+import { PlusCircleIcon, PlusIcon, MinusSmIcon, TrashIcon, CloudUploadIcon, ReplyIcon } from '@heroicons/react/solid'
 
 const FocusableField = ({ value, onChange, onFocus, onBlur, type, classNames }) => {
   const typeTransform = value => type === 'number' ? Number(value) : value
@@ -26,13 +26,13 @@ const Cell = (props) => {
   )
 }
 
-const TrainingTableCreator = ({ staticValue }) => {
-  const [columns, setColumns] = React.useState([])
-  const [rows, setRows] = React.useState([])
+const TrainingTable = ({ staticValue }) => {
+  const [columns, setColumns] = React.useState(staticValue ? staticValue.columns : [])
+  const [rows, setRows] = React.useState(staticValue ? staticValue.rows : [])
   const [focus, setFocus] = React.useState([null, null])
   const resetTable = () => {
-    setColumns([])
-    setRows([])
+    setColumns(staticValue ? staticValue.columns : [])
+    setRows(staticValue ? staticValue.rows : [])
     setFocus([null, null])
   }
   const addColumn = () => {
@@ -95,7 +95,11 @@ const TrainingTableCreator = ({ staticValue }) => {
           {
             columns.length > 0 ? (
               <div className='absolute -left-10 top-14'>
-                <TrashIcon onClick={resetTable} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-red-500 cursor-pointer' aria-hidden='true' />
+                {
+                  staticValue
+                    ? <ReplyIcon onClick={resetTable} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-red-500 cursor-pointer' aria-hidden='true' />
+                    : <TrashIcon onClick={resetTable} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-red-500 cursor-pointer' aria-hidden='true' />
+                }
               </div>
             ) : null
           }
@@ -195,4 +199,4 @@ const TrainingTableCreator = ({ staticValue }) => {
   )
 }
 
-export default TrainingTableCreator
+export default TrainingTable
