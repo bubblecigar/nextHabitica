@@ -1,11 +1,12 @@
 import React from 'react'
-import { PlusCircleIcon, PlusIcon, MinusSmIcon, TrashIcon, CloudUploadIcon, ReplyIcon, PencilAltIcon } from '@heroicons/react/solid'
+import { PlusCircleIcon, PlusIcon, MinusSmIcon, TrashIcon, CloudUploadIcon, ReplyIcon, PencilAltIcon, PencilIcon } from '@heroicons/react/solid'
 import { mutate } from 'swr'
 import { useExercise } from '../../lib/hooks'
 import { v4 as uuidv4 } from 'uuid'
 import { format } from 'date-fns-tz'
 import zhTWLocale from 'date-fns/locale/zh-TW'
 import DatePicker from '../DatePicker'
+import DialogBox from '../DialogBox'
 
 const FocusableField = ({ staticValue, value, onChange, onFocus, onBlur, type, classNames, onEdit }) => {
   const typeTransform = value => type === 'number' ? Number(value) : value
@@ -37,6 +38,7 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exer
   const exercise = useExercise()
   const [onEdit, setOnEdit] = React.useState(initEditState)
   const [time, setTime] = React.useState(staticValue.time)
+  const [openDatePicker, setOpenDatePicker] = React.useState(false)
   const [columns, setColumns] = React.useState(staticValue.columns)
   const [rows, setRows] = React.useState(staticValue.rows)
   const [focus, setFocus] = React.useState([null, null])
@@ -122,13 +124,36 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exer
     <div className='my-8'>
       <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
         <div className='shadow border-gray-200 sm:rounded-lg relative'>
-          <div className='absolute -top-8 left-0 text-gray-400 text-sm'>
+          <div className='flex absolute -top-8 left-0 text-gray-400 text-sm'>
             {
               format(new Date(time), 'Y 年 MMM do HH:mm', {
                 locale: zhTWLocale
               })
             }
+            {onEdit ? <PencilIcon onClick={() => setOpenDatePicker(!openDatePicker)} className={'ml-2 mx-auto h-4 w-4 text-sm cursor-pointer' + ' ' + (openDatePicker ? 'text-indigo-500' : 'text-gray-300')} aria-hidden='true' /> : null}
           </div>
+          <DialogBox open={openDatePicker} setOpen={setOpenDatePicker}>
+            <div className='h-48 pr-10 py-8'>
+              <DatePicker value={time} onChange={setTime} />
+              <div className='mt-16 flex justify-end items-center'>
+                <button
+                  className='relative flex justify-center mr-5 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none'
+                  onClick={() => setOpenDatePicker(false)}
+                >
+                  Done
+                </button>
+                <button
+                  className='relative flex justify-center my-1 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-400 hover:bg-red-500 focus:outline-none'
+                  onClick={() => {
+                    setTime(staticValue.time)
+                    setOpenDatePicker(false)
+                  }}
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+          </DialogBox>
           {
             initEditState ? null : <div className='absolute -left-10 top-4'>
               <PencilAltIcon onClick={() => setOnEdit(!onEdit)} className={'mx-auto h-4 w-4 text-sm cursor-pointer' + ' ' + (onEdit ? 'text-indigo-500' : 'text-gray-300')} aria-hidden='true' />
