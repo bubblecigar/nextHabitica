@@ -130,7 +130,10 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exer
                 locale: zhTWLocale
               })
             }
-            {onEdit ? <PencilIcon onClick={() => setOpenDatePicker(!openDatePicker)} className={'ml-2 mx-auto h-4 w-4 text-sm cursor-pointer' + ' ' + (openDatePicker ? 'text-indigo-500' : 'text-gray-300')} aria-hidden='true' /> : null}
+            {onEdit ? <div className='has-tooltip'>
+              <PencilIcon onClick={() => setOpenDatePicker(!openDatePicker)} className={'ml-2 mx-auto h-4 w-4 text-sm cursor-pointer' + ' ' + (openDatePicker ? 'text-indigo-500' : 'text-gray-300')} aria-hidden='true' />
+              <span className='tooltip text-indigo-500'>edit date</span>
+            </div> : null}
           </div>
           <DialogBox open={openDatePicker} setOpen={setOpenDatePicker}>
             <div className='h-48 pr-10 py-8'>
@@ -155,36 +158,45 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exer
             </div>
           </DialogBox>
           {
-            initEditState ? null : <div className='absolute -left-10 top-4'>
+            initEditState ? null : <div className='has-tooltip absolute -left-10 top-4'>
               <PencilAltIcon onClick={() => setOnEdit(!onEdit)} className={'mx-auto h-4 w-4 text-sm cursor-pointer' + ' ' + (onEdit ? 'text-indigo-500' : 'text-gray-300')} aria-hidden='true' />
+              <span className='tooltip text-indigo-500'>toggle edit mode</span>
             </div>
           }
           {
             onEdit ? (
-              <div className='absolute -left-10 top-12'>
+              <div className='has-tooltip absolute -left-10 top-12'>
                 <CloudUploadIcon onClick={onSave} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-indigo-500 cursor-pointer' aria-hidden='true' />
+                <span className='tooltip text-indigo-500'>save changes</span>
               </div>
             ) : null
           }
           {
             onEdit ? (
-              <div className='absolute -left-10 top-20'>
+              <div className='has-tooltip absolute -left-10 top-20'>
                 {
                   initEditState
                     ? <TrashIcon onClick={closeCreation} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-red-500 cursor-pointer' aria-hidden='true' />
                     : <ReplyIcon onClick={resetTable} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-red-500 cursor-pointer' aria-hidden='true' />
                 }
+                <span className='tooltip text-red-500'>{
+                  initEditState
+                    ? 'adandon table'
+                    : 'discard changes'
+                }</span>
+
               </div>
             ) : null
           }
           {
             onEdit ? (
-              <div className='absolute -left-10 top-28'>
+              <div className='has-tooltip absolute -left-10 top-28'>
                 {
                   initEditState
                     ? null
                     : <TrashIcon onClick={onDelete} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-red-500 cursor-pointer' aria-hidden='true' />
                 }
+                <span className='tooltip text-red-500'>delete table</span>
               </div>
             ) : null
           }
@@ -203,9 +215,12 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exer
                       <th tag='th' key={i}>
                         {
                           onEdit && (focus[1] === i ? (
-                            <MinusSmIcon
-                              className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-red-500 text-red-300' aria-hidden='true' onMouseDown={removeColumn(i)}
-                            />
+                            <div className='has-tooltip'>
+                              <MinusSmIcon
+                                className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-red-500 text-red-300' aria-hidden='true' onMouseDown={removeColumn(i)}
+                              />
+                              <span className='tooltip text-red-500'>remove column</span>
+                            </div>
                           ) : <MinusSmIcon
                               className='mx-auto h-4 w-4 text-transparent' aria-hidden='true'
                             />)
@@ -229,11 +244,12 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exer
                 {onEdit
                   ? (columns.length === 0
                     ? <td className='p-10 cursor-pointer text-sm hover:text-indigo-500 text-indigo-300' onClick={addColumn}>Create Column</td>
-                    : <td tag='th' onClick={addColumn} rowSpan={rows.length + 1} className='p-2 cursor-pointer text-sm hover:text-indigo-500 text-indigo-300'>
+                    : <td tag='th' onClick={addColumn} rowSpan={rows.length + 1} className='has-tooltip p-2 cursor-pointer text-sm hover:text-indigo-500 text-indigo-300'>
                       <PlusIcon
                         className='mx-auto h-5 w-5'
                         aria-hidden='true'
                       />
+                      <span className='tooltip text-indigo-500'>add column</span>
                     </td>
                   ) : <td tag='th' rowSpan={rows.length + 1} className='p-2 text-sm'>
                     <PlusIcon
@@ -250,7 +266,10 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exer
                         onEdit && focus[0] === i
                           ? (
                             <td>
-                              <MinusSmIcon className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-red-500 text-red-300' aria-hidden='true' onMouseDown={removeRow(i)} />
+                              <div className='has-tooltip'>
+                                <MinusSmIcon className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-red-500 text-red-300' aria-hidden='true' onMouseDown={removeRow(i)} />
+                                <span className='tooltip text-red-500'>remove row</span>
+                              </div>
                             </td>
                           ) : <td>
                             <MinusSmIcon className='mx-auto h-4 w-4 text-sm text-transparent' aria-hidden='true' />
@@ -290,9 +309,10 @@ const getFoot = (onEdit, columns, staticValue, addRow) => {
       <tr>
         <td></td>
         <td colSpan={columns.length}
-          className='bg-gray-50 p-3 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300'
+          className='has-tooltip bg-gray-50 p-3 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300'
           onClick={addRow}>
           <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
+          <span className='tooltip text-indigo-500 bottom-0 left-1/2'>add row</span>
         </td>
       </tr>
     </tfoot>

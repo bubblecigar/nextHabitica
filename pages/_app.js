@@ -1,4 +1,5 @@
 import 'tailwindcss/tailwind.css'
+import '../styles/global.css'
 import NavigationBar from '../components/NavigationBar'
 import { useUser } from '../lib/hooks'
 
