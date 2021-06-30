@@ -15,6 +15,9 @@ export default function App({ Component, pageProps }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="icon" href="/star.png"></link>
+        <link rel="preload" href="/api/sleep/read" as="fetch" crossorigin="anonymous" ></link>
+        <link rel="preload" href="/api/eat/read" as="fetch" crossorigin="anonymous" ></link>
+        <link rel="preload" href="/api/exercise/read" as="fetch" crossorigin="anonymous" ></link>
       </Head>
       {user ? <NavigationBar /> : null}
       <Component {...pageProps} />
