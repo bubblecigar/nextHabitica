@@ -1,5 +1,5 @@
 import React from 'react'
-import { PlusCircleIcon, PlusIcon, MinusSmIcon, TrashIcon, CloudUploadIcon, ReplyIcon, PencilAltIcon, PencilIcon } from '@heroicons/react/solid'
+import { PlusIcon, MinusSmIcon, TrashIcon, CloudUploadIcon, ReplyIcon, PencilAltIcon, PencilIcon } from '@heroicons/react/solid'
 import { mutate } from 'swr'
 import { useExercise } from '../../lib/hooks'
 import { v4 as uuidv4 } from 'uuid'
@@ -206,7 +206,7 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exer
               </div>
             ) : null
           }
-          <table className='min-w-full'>
+          <table>
             <tbody>
               <tr>
                 {
@@ -315,9 +315,9 @@ const getFoot = (onEdit, columns, staticValue, addRow) => {
       <tr>
         <td></td>
         <td colSpan={columns.length}
-          className='has-tooltip bg-gray-50 p-3 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300'
+          className='has-tooltip bg-gray-50 p-3 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300 relative'
           onClick={addRow}>
-          <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
+          <PlusIcon className='mx-auto h-5 w-5' aria-hidden='true' />
           <span className='tooltip text-indigo-500 bottom-0 left-1/2'>add row</span>
         </td>
       </tr>
@@ -329,7 +329,7 @@ const getFoot = (onEdit, columns, staticValue, addRow) => {
         <td></td>
         <td colSpan={columns.length}
           className='bg-gray-50 p-3 whitespace-nowrap text-sm font-medium text-transparent'>
-          <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
+          <PlusIcon className='mx-auto h-5 w-5' aria-hidden='true' />
         </td>
       </tr>
     </tfoot>

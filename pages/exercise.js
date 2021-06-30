@@ -3,7 +3,7 @@ import { TrainingTableCreator } from '../components/exercise/TrainingTable'
 
 export default function Exercise(props) {
   return (
-    <div className='flex flex-col items-start w-full'>
+    <div className='flex flex-col items-initial w-full'>
       <TrainingTableCreator />
       <ExerciseRecord />
     </div>
