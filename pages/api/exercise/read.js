@@ -6,7 +6,7 @@ const readExerciseRows = async (userId) => {
     db.query(`
       SELECT * FROM exercise
       WHERE user_id = $1
-      ORDER BY created_at DESC
+      ORDER BY time DESC
     `
       , [userId]
       , (err, dbRes) => {

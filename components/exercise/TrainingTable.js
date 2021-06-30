@@ -3,6 +3,9 @@ import { PlusCircleIcon, PlusIcon, MinusSmIcon, TrashIcon, CloudUploadIcon, Repl
 import { mutate } from 'swr'
 import { useExercise } from '../../lib/hooks'
 import { v4 as uuidv4 } from 'uuid'
+import { format } from 'date-fns-tz'
+import zhTWLocale from 'date-fns/locale/zh-TW'
+import DatePicker from '../DatePicker'
 
 const FocusableField = ({ staticValue, value, onChange, onFocus, onBlur, type, classNames, onEdit }) => {
   const typeTransform = value => type === 'number' ? Number(value) : value
@@ -30,9 +33,10 @@ const Cell = (props) => {
   )
 }
 
-const TrainingTable = ({ closeCreation, initEditState = false, staticValue = { rows: [], columns: [] }, exercise_id }) => {
+const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exercise_id }) => {
   const exercise = useExercise()
   const [onEdit, setOnEdit] = React.useState(initEditState)
+  const [time, setTime] = React.useState(staticValue.time)
   const [columns, setColumns] = React.useState(staticValue.columns)
   const [rows, setRows] = React.useState(staticValue.rows)
   const [focus, setFocus] = React.useState([null, null])
@@ -79,7 +83,8 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue = { r
   const onSave = async () => {
     const body = {
       training_table: { columns, rows },
-      exercise_id
+      exercise_id,
+      time
     }
     if (initEditState) { // create
       closeCreation()
@@ -114,9 +119,16 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue = { r
   }
 
   return (
-    <div>
+    <div className='my-8'>
       <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
         <div className='shadow border-gray-200 sm:rounded-lg relative'>
+          <div className='absolute -top-8 left-0 text-gray-400 text-sm'>
+            {
+              format(new Date(time), 'Y 年 MMM do HH:mm', {
+                locale: zhTWLocale
+              })
+            }
+          </div>
           {
             initEditState ? null : <div className='absolute -left-10 top-4'>
               <PencilAltIcon onClick={() => setOnEdit(!onEdit)} className={'mx-auto h-4 w-4 text-sm cursor-pointer' + ' ' + (onEdit ? 'text-indigo-500' : 'text-gray-300')} aria-hidden='true' />
@@ -151,8 +163,6 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue = { r
               </div>
             ) : null
           }
-
-
           <table className='min-w-full'>
             <tbody>
               <tr>
@@ -277,7 +287,7 @@ const getFoot = (onEdit, columns, staticValue, addRow) => {
 
 const TrainingTableCreator = () => {
   const [onCreate, setOnCreate] = React.useState(false)
-  return onCreate ? <TrainingTable closeCreation={() => setOnCreate(false)} initEditState staticValue={{ columns: ['', '', ''], rows: [['', '', ''], ['', '', '']] }} /> : <div className='p-5 m-8 mt-0 shadow border-gray-200 sm:rounded-lg cursor-pointer text-sm hover:text-indigo-500 text-indigo-300' onClick={() => setOnCreate(true)}>Create Table +</div>
+  return onCreate ? <TrainingTable closeCreation={() => setOnCreate(false)} initEditState staticValue={{ columns: ['', '', ''], rows: [['', '', ''], ['', '', '']], time: new Date() }} /> : <div className='p-5 m-8 mt-0 shadow border-gray-200 sm:rounded-lg cursor-pointer text-sm hover:text-indigo-500 text-indigo-300' onClick={() => setOnCreate(true)}>Create Table +</div>
 }
 
 export default TrainingTable
