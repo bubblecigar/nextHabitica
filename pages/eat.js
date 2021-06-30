@@ -1,4 +1,3 @@
-import React from 'react'
 import EatRecord from '../components/EatRecord'
 import FoodOptionList from '../components/FoodOptionList'
 

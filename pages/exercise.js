@@ -1,10 +1,11 @@
-import { useUser } from '../lib/hooks'
+import ExerciseRecord from '../components/exercise/ExerciseRecord'
+import { TrainingTableCreator } from '../components/exercise/TrainingTable'
 
-export default function Exercise (props) {
-  const user = useUser({ redirectTo: '/' })
+export default function Exercise(props) {
   return (
-    <div>
-      exercise
+    <div className='flex flex-col items-start w-full'>
+      <TrainingTableCreator />
+      <ExerciseRecord />
     </div>
   )
 }

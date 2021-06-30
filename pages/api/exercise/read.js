@@ -1,17 +1,17 @@
 import db from '../../../db/index.js'
 import { getUserFromLoginSession } from '../user'
 
-const readSleepRows = async (userId) => {
+const readExerciseRows = async (userId) => {
   return new Promise((resolve, reject) => {
     db.query(`
-      SELECT * FROM sleep
+      SELECT * FROM exercise
       WHERE user_id = $1
-      ORDER BY start DESC
+      ORDER BY time DESC
     `
       , [userId]
       , (err, dbRes) => {
         if (err) {
-          console.log('readSleepRows err:', err)
+          console.log('readExerciseRows err:', err)
           reject(err)
         } else {
           resolve(dbRes)
@@ -23,10 +23,10 @@ const readSleepRows = async (userId) => {
 export default async function read(req, res) {
   try {
     const user = await getUserFromLoginSession(req)
-    const dbRes = await readSleepRows(user.user_id)
+    const dbRes = await readExerciseRows(user.user_id)
     res.status(200).send(dbRes.rows)
   } catch (error) {
-    console.log('api/sleep/read error:', error)
+    console.log('api/exercise/read error:', error)
     res.status(500).end(error)
   }
 }
