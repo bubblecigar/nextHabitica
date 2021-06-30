@@ -91,7 +91,10 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exer
     if (initEditState) { // create
       closeCreation()
       body.exercise_id = uuidv4()
-      mutate('/api/exercise/read', [{ ...body }, ...exercise], false)
+      const newExercise = [{ ...body }, ...exercise].sort(
+        (e1, e2) => e1 - e2
+      )
+      mutate('/api/exercise/read', newExercise, false)
       await window.fetch('/api/exercise/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -100,7 +103,10 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exer
       mutate('/api/exercise/read')
     } else { // update
       setOnEdit(false)
-      mutate('/api/exercise/read', exercise.map(e => e.exercise_id === exercise_id ? { ...e, ...body } : e), false)
+      const newExercise = exercise.map(e => e.exercise_id === exercise_id ? { ...e, ...body } : e).sort(
+        (e1, e2) => e1 - e2
+      )
+      mutate('/api/exercise/read', newExercise, false)
       await window.fetch('/api/exercise/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
