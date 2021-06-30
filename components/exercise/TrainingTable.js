@@ -277,7 +277,7 @@ const getFoot = (onEdit, columns, staticValue, addRow) => {
 
 const TrainingTableCreator = () => {
   const [onCreate, setOnCreate] = React.useState(false)
-  return onCreate ? <TrainingTable closeCreation={() => setOnCreate(false)} initEditState staticValue={{ columns: ['', '', ''], rows: [['', '', ''], ['', '', '']] }} /> : <div className='p-10 cursor-pointer text-sm hover:text-indigo-500 text-indigo-300' onClick={() => setOnCreate(true)}>Create Table +</div>
+  return onCreate ? <TrainingTable closeCreation={() => setOnCreate(false)} initEditState staticValue={{ columns: ['', '', ''], rows: [['', '', ''], ['', '', '']] }} /> : <div className='p-5 m-8 mt-0 shadow border-gray-200 sm:rounded-lg cursor-pointer text-sm hover:text-indigo-500 text-indigo-300' onClick={() => setOnCreate(true)}>Create Table +</div>
 }
 
 export default TrainingTable
