@@ -179,7 +179,7 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exer
                     ? <TrashIcon onClick={closeCreation} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-red-500 cursor-pointer' aria-hidden='true' />
                     : <ReplyIcon onClick={resetTable} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-red-500 cursor-pointer' aria-hidden='true' />
                 }
-                <span className='tooltip text-red-500'>{
+                <span className='tooltip text-red-400'>{
                   initEditState
                     ? 'adandon table'
                     : 'discard changes'
@@ -196,7 +196,7 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exer
                     ? null
                     : <TrashIcon onClick={onDelete} className='mx-auto h-4 w-4 text-sm text-gray-300 hover:text-red-500 cursor-pointer' aria-hidden='true' />
                 }
-                <span className='tooltip text-red-500'>delete table</span>
+                <span className='tooltip text-red-400'>delete table</span>
               </div>
             ) : null
           }
@@ -219,7 +219,7 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exer
                               <MinusSmIcon
                                 className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-red-500 text-red-300' aria-hidden='true' onMouseDown={removeColumn(i)}
                               />
-                              <span className='tooltip text-red-500'>remove column</span>
+                              <span className='tooltip text-red-400'>remove column</span>
                             </div>
                           ) : <MinusSmIcon
                               className='mx-auto h-4 w-4 text-transparent' aria-hidden='true'
@@ -268,7 +268,7 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exer
                             <td>
                               <div className='has-tooltip'>
                                 <MinusSmIcon className='mx-auto h-4 w-4 text-sm cursor-pointer hover:text-red-500 text-red-300' aria-hidden='true' onMouseDown={removeRow(i)} />
-                                <span className='tooltip text-red-500'>remove row</span>
+                                <span className='tooltip text-red-400'>remove row</span>
                               </div>
                             </td>
                           ) : <td>
