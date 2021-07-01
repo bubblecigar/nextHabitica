@@ -29,6 +29,6 @@ export default async function create(req, res) {
     const createdRow = await createFriend(user.user_id, acceptor.user_id)
     res.status(200).send({ done: true, createdRow })
   } catch (error) {
-    res.status(404).send({ done: false })
+    res.status(404).send({ done: false, errorMessage: error.message })
   }
 }

@@ -67,16 +67,23 @@ const FriendList = () => {
   const friends = useFriend()
   const [open, setOpen] = React.useState(false)
   const [acceptorName, setAcceptorName] = React.useState('')
+  const [resMessage, setResMessage] = React.useState('')
 
   const onSend = async () => {
-    setOpen(false)
     const body = { acceptorName }
     const res = await window.fetch('/api/friend/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
-    console.log('res.json():', await res.json())
+    const resObject = await res.json()
+    if (resObject.done) { // onSuccess
+      setAcceptorName('')
+      setResMessage('')
+      setOpen(false)
+    } else {
+      setResMessage('Invalid user or request has been already sent')
+    }
   }
 
   return (
@@ -134,7 +141,10 @@ const FriendList = () => {
               <tbody className='bg-white divide-y divide-gray-200'>
                 <tr >
                   <td className='flex items-center justify-between px-6 py-4 whitespace-nowrap text-sm font-medium'>
-                    <input value={acceptorName} onChange={e => setAcceptorName(e.target.value)} placeholder='user name' className='py-1 px-2' />
+                    <input value={acceptorName} onChange={e => {
+                      setAcceptorName(e.target.value)
+                      setResMessage('')
+                    }} placeholder='user name' className='py-1 px-2' />
                     <div className='flex'>
                       <button
                         className='my-2 relative flex justify-center m-1 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none'
@@ -151,6 +161,11 @@ const FriendList = () => {
                     </div>
                   </td>
                 </tr>
+                {resMessage ? <tr>
+                  <td className='flex items-center justify-between px-6 py-4 whitespace-nowrap text-sm font-medium'>
+                    {resMessage}
+                  </td>
+                </tr> : null}
               </tbody>
             </table>
           </DialogBox>
