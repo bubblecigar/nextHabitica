@@ -94,7 +94,7 @@ const FriendList = () => {
       setOpen(false)
       mutate('/api/friend/read')
     } else {
-      setResMessage('Invalid user or request has been already sent')
+      setResMessage(resObject.errorMessage)
     }
   }
 
