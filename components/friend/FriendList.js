@@ -8,6 +8,7 @@ import DialogBox from '../../components/DialogBox'
 
 const FriendRow = ({ friend }) => {
   const user = useUser()
+  const friends = useFriend()
   const { requestor, acceptor, accepted } = friend
   const youAreRequestor = user.user_id === requestor
   const friendId = youAreRequestor ? acceptor : requestor
@@ -15,21 +16,27 @@ const FriendRow = ({ friend }) => {
   const onAccept = async () => {
     const { requestor, acceptor } = friend
     const body = { requestor, acceptor, accepted: true }
+    const _friends = friends.map(f => f.requestor === requestor && f.acceptor === acceptor ? { ...f, accepted: true } : f)
+    mutate('/api/friend/read', _friends, false)
     const res = await window.fetch('/api/friend/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
+    mutate('/api/friend/read')
   }
 
   const onRemove = async () => {
     const { requestor, acceptor } = friend
     const body = { requestor, acceptor }
+    const _friends = friends.filter(f => !(f.requestor === requestor && f.acceptor === acceptor))
+    mutate('/api/friend/read', _friends, false)
     const res = await window.fetch('/api/friend/delete', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
+    mutate('/api/friend/read')
   }
 
   return (
@@ -85,6 +92,7 @@ const FriendList = () => {
       setAcceptorName('')
       setResMessage('')
       setOpen(false)
+      mutate('/api/friend/read')
     } else {
       setResMessage('Invalid user or request has been already sent')
     }
