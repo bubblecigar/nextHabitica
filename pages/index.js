@@ -1,5 +1,6 @@
 import { useUser } from '../lib/hooks'
 import AccountForm from '../components/AccountForm'
+import FriendList from '../components/friend/FriendList'
 
 export default function Home(props) {
   const user = useUser()
@@ -12,9 +13,7 @@ export default function Home(props) {
     )
   } else {
     return (
-      <>
-        <div>currently login as {user.user_name}</div>
-      </>
+      <FriendList />
     )
   }
 }
