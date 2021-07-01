@@ -11,3 +11,6 @@ module.exports = {
     return pool.query(text, params, callback)
   }
 }
+
+// connect from client:
+// psql "sslmode=disable dbname=guest user=postgres hostaddr=104.199.219.31"
