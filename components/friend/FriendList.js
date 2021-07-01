@@ -1,6 +1,7 @@
 import { useFriend } from '../../lib/hooks'
 import React from 'react'
 import { PlusCircleIcon } from '@heroicons/react/solid'
+import { EyeIcon } from '@heroicons/react/outline'
 import { mutate } from 'swr'
 import { useUser } from '../../lib/hooks'
 import DialogBox from '../../components/DialogBox'
@@ -40,7 +41,7 @@ const FriendRow = ({ friend }) => {
       </td>
       <td className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
         <div className='text-sm text-gray-900 text-center'>
-          online status
+          <EyeIcon className='mx-auto h-5 w-5' aria-hidden='true' />
         </div>
       </td>
       <td className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
