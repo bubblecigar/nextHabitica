@@ -10,6 +10,27 @@ const FriendRow = ({ friend }) => {
   const { requestor, acceptor, accepted } = friend
   const youAreRequestor = user.user_id === requestor
   const friendId = youAreRequestor ? acceptor : requestor
+
+  const onAccept = async () => {
+    const { requestor, acceptor } = friend
+    const body = { requestor, acceptor, accepted: true }
+    const res = await window.fetch('/api/friend/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+  }
+
+  const onRemove = async () => {
+    const { requestor, acceptor } = friend
+    const body = { requestor, acceptor }
+    const res = await window.fetch('/api/friend/delete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+  }
+
   return (
     <tr>
       <td className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
@@ -26,13 +47,13 @@ const FriendRow = ({ friend }) => {
         <div className='text-sm text-gray-900 text-center'>
           {
             accepted
-              ? <button className='mx-2 text-indigo-600 hover:text-indigo-900 cursor-pointer'>remove</button>
+              ? <button className='mx-2 text-red-400 hover:text-red-500 cursor-pointer' onClick={onRemove}>remove</button>
               : (
                 youAreRequestor
                   ? 'pending...'
                   : <>
-                    <button className='mx-2 text-indigo-600 hover:text-indigo-900 cursor-pointer'>accept</button>
-                    <button className='mx-2 text-red-400 hover:text-red-500 cursor-pointer'>deny</button>
+                    <button className='mx-2 text-indigo-600 hover:text-indigo-900 cursor-pointer' onClick={onAccept}>accept</button>
+                    <button className='mx-2 text-red-400 hover:text-red-500 cursor-pointer' onClick={onRemove}>deny</button>
                   </>
               )
           }
