@@ -68,15 +68,18 @@ const FriendList = () => {
   const [open, setOpen] = React.useState(false)
   const [acceptorName, setAcceptorName] = React.useState('')
   const [resMessage, setResMessage] = React.useState('')
+  const [isWaitForResponse, setIsWaitForResponse] = React.useState(false)
 
   const onSend = async () => {
     const body = { acceptorName }
+    setIsWaitForResponse(true)
     const res = await window.fetch('/api/friend/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
     const resObject = await res.json()
+    setIsWaitForResponse(false)
     if (resObject.done) { // onSuccess
       setAcceptorName('')
       setResMessage('')
@@ -145,7 +148,7 @@ const FriendList = () => {
                       setAcceptorName(e.target.value)
                       setResMessage('')
                     }} placeholder='user name' className='py-1 px-2' />
-                    <div className='flex'>
+                    {isWaitForResponse ? 'wait for response...' : <div className='flex'>
                       <button
                         className='my-2 relative flex justify-center m-1 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none'
                         onClick={onSend}
@@ -158,7 +161,7 @@ const FriendList = () => {
                       >
                         Cancel
                     </button>
-                    </div>
+                    </div>}
                   </td>
                 </tr>
                 {resMessage ? <tr>
