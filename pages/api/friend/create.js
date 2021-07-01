@@ -1,10 +1,11 @@
 import db from '../../../db/index.js'
 import { getUserFromLoginSession } from '../user'
+import { findUser } from '../../../lib/user'
 
 const createFriend = async (userId, acceptor) => {
   return new Promise((resolve, reject) => {
     db.query(`
-      INSERT INTO friend(user_id, acceptor)
+      INSERT INTO friend(requestor, acceptor)
       VALUES ($1, $2)
       RETURNING *
     `
@@ -23,9 +24,10 @@ const createFriend = async (userId, acceptor) => {
 export default async function create(req, res) {
   try {
     const user = await getUserFromLoginSession(req)
-    const { acceptor } = req.body
-    const createdRow = await createFriend(user.user_id, acceptor)
-    res.status(200).send({ done: true })
+    const { acceptorName } = req.body
+    const acceptor = await findUser({ username: acceptorName })
+    const createdRow = await createFriend(user.user_id, acceptor.user_id)
+    res.status(200).send({ done: true, createdRow })
   } catch (error) {
     res.status(404).send({ done: false })
   }

@@ -6,7 +6,6 @@ import { useUser } from '../../lib/hooks'
 import DialogBox from '../../components/DialogBox'
 
 const FriendRow = ({ friend }) => {
-  console.log('friend:', friend)
   const user = useUser()
   const { requestor, acceptor, accepted } = friend
   const youAreRequestor = user.user_id === requestor
@@ -27,13 +26,13 @@ const FriendRow = ({ friend }) => {
         <div className='text-sm text-gray-900 text-center'>
           {
             accepted
-              ? <button>remove</button>
+              ? <button className='mx-2 text-indigo-600 hover:text-indigo-900 cursor-pointer'>remove</button>
               : (
                 youAreRequestor
                   ? 'pending...'
                   : <>
-                    <button>accept</button>
-                    <button>deny</button>
+                    <button className='mx-2 text-indigo-600 hover:text-indigo-900 cursor-pointer'>accept</button>
+                    <button className='mx-2 text-red-400 hover:text-red-500 cursor-pointer'>deny</button>
                   </>
               )
           }
@@ -45,8 +44,19 @@ const FriendRow = ({ friend }) => {
 
 const FriendList = () => {
   const friends = useFriend()
-
   const [open, setOpen] = React.useState(false)
+  const [acceptorName, setAcceptorName] = React.useState('')
+
+  const onSend = async () => {
+    setOpen(false)
+    const body = { acceptorName }
+    const res = await window.fetch('/api/friend/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    console.log('res.json():', await res.json())
+  }
 
   return (
     <div className='flex flex-col'>
@@ -103,10 +113,11 @@ const FriendList = () => {
               <tbody className='bg-white divide-y divide-gray-200'>
                 <tr >
                   <td className='flex items-center justify-between px-6 py-4 whitespace-nowrap text-sm font-medium'>
-                    <input placeholder='user name' className='py-1 px-2' />
+                    <input value={acceptorName} onChange={e => setAcceptorName(e.target.value)} placeholder='user name' className='py-1 px-2' />
                     <div className='flex'>
                       <button
                         className='my-2 relative flex justify-center m-1 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none'
+                        onClick={onSend}
                       >
                         Send Request
                     </button>
