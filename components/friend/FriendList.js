@@ -27,7 +27,7 @@ const FriendRow = ({ friend }) => {
   }
 
   const onRemove = async () => {
-    const { requestor, acceptor } = friend
+    const { requestor, acceptor, accepted } = friend
     const body = { requestor, acceptor }
     const _friends = friends.filter(f => !(f.requestor === requestor && f.acceptor === acceptor))
     mutate('/api/friend/read', _friends, false)
@@ -48,7 +48,7 @@ const FriendRow = ({ friend }) => {
       </td>
       <td className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
         <div className='text-sm text-gray-900 text-center'>
-          <EyeIcon className='mx-auto h-5 w-5' aria-hidden='true' />
+          {accepted ? <EyeIcon className='mx-auto h-5 w-5' aria-hidden='true' /> : null}
         </div>
       </td>
       <td className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
