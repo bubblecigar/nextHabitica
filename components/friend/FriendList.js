@@ -94,9 +94,7 @@ const FriendRow = ({ friend }) => {
   )
 }
 
-const FriendList = () => {
-  const friends = useFriend()
-  const [open, setOpen] = React.useState(false)
+const FriendRequestDialog = ({ open, setOpen }) => {
   const [acceptorName, setAcceptorName] = React.useState('')
   const [resMessage, setResMessage] = React.useState('')
   const [isWaitForResponse, setIsWaitForResponse] = React.useState(false)
@@ -120,6 +118,48 @@ const FriendList = () => {
       setResMessage(resObject.errorMessage)
     }
   }
+
+  return <DialogBox open={open} setOpen={setOpen}>
+    <table className='min-w-full divide-y divide-gray-200'>
+      <tbody className='bg-white divide-y divide-gray-200'>
+        <tr >
+          <td className='flex items-center justify-between px-6 py-4 whitespace-nowrap text-sm font-medium'>
+            <input value={acceptorName} onChange={e => {
+              setAcceptorName(e.target.value)
+              setResMessage('')
+            }} placeholder='user name' className='py-1 px-2' />
+            {isWaitForResponse ? 'wait for response...' : <div className='flex'>
+              <button
+                className='my-2 relative flex justify-center m-1 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none'
+                onClick={onSend}
+              >
+                Send Request
+              </button>
+              <button
+                className='my-2 relative flex justify-center m-1 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-400 hover:bg-red-500 focus:outline-none'
+                onClick={() => setOpen(false)}
+              >
+                Cancel
+              </button>
+            </div>}
+          </td>
+        </tr>
+        {resMessage ? <tr>
+          <td className='flex items-center justify-between px-6 py-4 whitespace-nowrap text-sm font-medium'>
+            {resMessage}
+          </td>
+        </tr> : null}
+      </tbody>
+    </table>
+  </DialogBox>
+}
+
+const FriendList = () => {
+  const friends = useFriend()
+  const [open, setOpen] = React.useState(false)
+
+
+
 
   return (
     <div className='flex flex-col'>
@@ -183,39 +223,7 @@ const FriendList = () => {
               </tfoot>
             </table>
           </div>
-          <DialogBox open={open} setOpen={setOpen}>
-            <table className='min-w-full divide-y divide-gray-200'>
-              <tbody className='bg-white divide-y divide-gray-200'>
-                <tr >
-                  <td className='flex items-center justify-between px-6 py-4 whitespace-nowrap text-sm font-medium'>
-                    <input value={acceptorName} onChange={e => {
-                      setAcceptorName(e.target.value)
-                      setResMessage('')
-                    }} placeholder='user name' className='py-1 px-2' />
-                    {isWaitForResponse ? 'wait for response...' : <div className='flex'>
-                      <button
-                        className='my-2 relative flex justify-center m-1 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none'
-                        onClick={onSend}
-                      >
-                        Send Request
-                    </button>
-                      <button
-                        className='my-2 relative flex justify-center m-1 py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-400 hover:bg-red-500 focus:outline-none'
-                        onClick={() => setOpen(false)}
-                      >
-                        Cancel
-                    </button>
-                    </div>}
-                  </td>
-                </tr>
-                {resMessage ? <tr>
-                  <td className='flex items-center justify-between px-6 py-4 whitespace-nowrap text-sm font-medium'>
-                    {resMessage}
-                  </td>
-                </tr> : null}
-              </tbody>
-            </table>
-          </DialogBox>
+          <FriendRequestDialog open={open} setOpen={setOpen} />
         </div>
       </div>
     </div>
