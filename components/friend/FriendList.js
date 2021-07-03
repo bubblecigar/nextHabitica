@@ -5,6 +5,7 @@ import { EyeIcon } from '@heroicons/react/outline'
 import { mutate } from 'swr'
 import { useUser } from '../../lib/hooks'
 import DialogBox from '../../components/DialogBox'
+import { SleepTable } from '../SleepList'
 
 const FriendRow = ({ friend, onGetData, setDataOpen }) => {
   const user = useUser()
@@ -164,7 +165,7 @@ const FriendDataDialog = ({ open, setOpen, friendData }) => {
   switch (friendData.type) {
     case 'sleep': {
       return <DialogBox open={open} setOpen={setOpen}>
-        {friendData.type}
+        <SleepTable sleep={friendData.data} />
         <button>OK</button>
       </DialogBox>
     }

@@ -245,6 +245,17 @@ const SleepHeadBody = ({ sleep, editable }) => {
   )
 }
 
+export const SleepTable = ({ sleep }) => {
+  return (
+    <table className='min-w-full divide-y divide-gray-200'>
+      <SleepHeadBody
+        sleep={sleep}
+        editable={false}
+      />
+    </table>
+  )
+}
+
 const EditableSleepTable = ({ sleep, setEditSl, hintId, setOpen }) => {
   return (
     <table className='min-w-full divide-y divide-gray-200'>
