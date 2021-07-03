@@ -8,7 +8,7 @@ import zhTWLocale from 'date-fns/locale/zh-TW'
 import DatePicker from '../DatePicker'
 import DialogBox from '../DialogBox'
 
-const FocusableField = ({ staticValue, value, onChange, onFocus, onBlur, type, classNames, onEdit }) => {
+const FocusableField = ({ value, onChange, onFocus, onBlur, type, classNames, onEdit }) => {
   const typeTransform = value => type === 'number' ? Number(value) : value
   return (
     <input
