@@ -42,6 +42,7 @@ const FriendRow = ({ friend, onGetData, setDataOpen }) => {
 
   const onInspect = type => async () => {
     setDataOpen(true)
+    onGetData(null)
     const body = { friendId }
     const res = await window.fetch(`/api/friend/data/${type}`, {
       method: 'POST',
@@ -196,8 +197,8 @@ const FriendList = () => {
   const [dataOpen, setDataOpen] = React.useState(false)
   const [friendData, setFriendData] = React.useState(null)
 
-  const onGetData = ({ type, data }) => {
-    setFriendData({ type, data })
+  const onGetData = (data) => {
+    setFriendData(data)
   }
 
   return (
