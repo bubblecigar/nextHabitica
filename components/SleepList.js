@@ -9,7 +9,8 @@ import zhTWLocale from 'date-fns/locale/zh-TW'
 import DatePicker from './DatePicker'
 import DialogBox from './DialogBox'
 
-const SleepRow = ({ sl, setEditSl, hintId, setOpen }) => {
+const SleepRow = ({ sl, editable }) => {
+  const hintId = editable ? editable.hintId : null
   const { years, months, days, hours, minutes } = intervalToDuration({ start: new Date(sl.start), end: new Date(sl.end) })
   const validDuration = years === 0 && months === 0 && days === 0
   const validOrder = isBefore(new Date(sl.start), new Date(sl.end))
@@ -66,15 +67,15 @@ const SleepRow = ({ sl, setEditSl, hintId, setOpen }) => {
         }
       </td>
       <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
-        <a
+        {editable ? <a
           onClick={() => {
-            setEditSl(sl)
-            setOpen(true)
+            editable.setEditSl(sl)
+            editable.setOpen(true)
           }}
           className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
         >
           Edit
-        </a>
+        </a> : null}
       </td>
     </tr>
   )
@@ -183,9 +184,9 @@ const SleepEditor = ({ sl, setHintId, setOpen, scrollRef }) => {
   )
 }
 
-const SleepTable = ({ sleep, setEditSl, hintId, setOpen }) => {
+const SleepHeadBody = ({ sleep, editable }) => {
   return (
-    <table className='min-w-full divide-y divide-gray-200'>
+    <>
       <thead>
         <tr>
           <th
@@ -226,9 +227,7 @@ const SleepTable = ({ sleep, setEditSl, hintId, setOpen }) => {
             ? (
               <SleepRow
                 key={sl.sleep_id} sl={sl}
-                setEditSl={setEditSl}
-                hintId={hintId}
-                setOpen={setOpen}
+                editable={editable}
               />
             ) : (
               <tr key={i}>
@@ -242,6 +241,17 @@ const SleepTable = ({ sleep, setEditSl, hintId, setOpen }) => {
         )
         )}
       </tbody>
+    </>
+  )
+}
+
+const EditableSleepTable = ({ sleep, setEditSl, hintId, setOpen }) => {
+  return (
+    <table className='min-w-full divide-y divide-gray-200'>
+      <SleepHeadBody
+        sleep={sleep}
+        editable={{ setEditSl, hintId, setOpen }}
+      />
       <tfoot>
         <tr>
           <td
@@ -272,7 +282,7 @@ export default function SleepList(props) {
       <div>
         <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
           <div className='shadow border-gray-200 sm:rounded-lg overflow-y-auto max-h-75v'>
-            <SleepTable sleep={sleep} setEditSl={setEditSl} hintId={hintId} setOpen={setOpen} />
+            <EditableSleepTable sleep={sleep} setEditSl={setEditSl} hintId={hintId} setOpen={setOpen} />
           </div>
           <DialogBox open={open} setOpen={setOpen}>
             <table className='min-w-full divide-y divide-gray-200'>
