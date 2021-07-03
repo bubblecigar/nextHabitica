@@ -39,6 +39,19 @@ const FriendRow = ({ friend }) => {
     mutate('/api/friend/read')
   }
 
+  const onInspect = type => async () => {
+    console.log('type:', type)
+    const body = { friendId }
+    // mutate(`/api/friend/data/${type}`, _friends, false)
+    const res = await window.fetch(`/api/friend/data/${type}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    console.log('res:', await res.json())
+    // mutate('/api/friend/read')
+  }
+
   return (
     <tr>
       <td className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
@@ -48,7 +61,17 @@ const FriendRow = ({ friend }) => {
       </td>
       <td className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
         <div className='text-sm text-gray-900 text-center'>
-          {accepted ? <EyeIcon className='mx-auto h-5 w-5' aria-hidden='true' /> : null}
+          {accepted ? <EyeIcon onClick={onInspect('sleep')} className='mx-auto h-5 w-5' aria-hidden='true' /> : null}
+        </div>
+      </td>
+      <td className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
+        <div className='text-sm text-gray-900 text-center'>
+          {accepted ? <EyeIcon onClick={onInspect('eat')} className='mx-auto h-5 w-5' aria-hidden='true' /> : null}
+        </div>
+      </td>
+      <td className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
+        <div className='text-sm text-gray-900 text-center'>
+          {accepted ? <EyeIcon onClick={onInspect('exercise')} className='mx-auto h-5 w-5' aria-hidden='true' /> : null}
         </div>
       </td>
       <td className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
@@ -118,7 +141,19 @@ const FriendList = () => {
                     scope='col'
                     className='bg-gray-50 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
                   >
-                    status
+                    sleep
+                  </th>
+                  <th
+                    scope='col'
+                    className='bg-gray-50 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  >
+                    eat
+                  </th>
+                  <th
+                    scope='col'
+                    className='bg-gray-50 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                  >
+                    exercise
                   </th>
                   <th
                     scope='col'
