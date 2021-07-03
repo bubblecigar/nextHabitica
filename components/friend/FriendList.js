@@ -6,7 +6,7 @@ import { mutate } from 'swr'
 import { useUser } from '../../lib/hooks'
 import DialogBox from '../../components/DialogBox'
 
-const FriendRow = ({ friend }) => {
+const FriendRow = ({ friend, onGetData, setDataOpen }) => {
   const user = useUser()
   const friends = useFriend()
   const { requestor, acceptor, accepted } = friend
@@ -40,16 +40,14 @@ const FriendRow = ({ friend }) => {
   }
 
   const onInspect = type => async () => {
-    console.log('type:', type)
+    setDataOpen(true)
     const body = { friendId }
-    // mutate(`/api/friend/data/${type}`, _friends, false)
     const res = await window.fetch(`/api/friend/data/${type}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
-    console.log('res:', await res.json())
-    // mutate('/api/friend/read')
+    onGetData({ type, data: await res.json() })
   }
 
   return (
@@ -61,17 +59,17 @@ const FriendRow = ({ friend }) => {
       </td>
       <td className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
         <div className='text-sm text-gray-900 text-center'>
-          {accepted ? <EyeIcon onClick={onInspect('sleep')} className='mx-auto h-5 w-5' aria-hidden='true' /> : null}
+          {accepted ? <EyeIcon onClick={onInspect('sleep')} className='cursor-pointer mx-auto h-5 w-5' aria-hidden='true' /> : null}
         </div>
       </td>
       <td className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
         <div className='text-sm text-gray-900 text-center'>
-          {accepted ? <EyeIcon onClick={onInspect('eat')} className='mx-auto h-5 w-5' aria-hidden='true' /> : null}
+          {accepted ? <EyeIcon onClick={onInspect('eat')} className='cursor-pointer mx-auto h-5 w-5' aria-hidden='true' /> : null}
         </div>
       </td>
       <td className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
         <div className='text-sm text-gray-900 text-center'>
-          {accepted ? <EyeIcon onClick={onInspect('exercise')} className='mx-auto h-5 w-5' aria-hidden='true' /> : null}
+          {accepted ? <EyeIcon onClick={onInspect('exercise')} className='cursor-pointer mx-auto h-5 w-5' aria-hidden='true' /> : null}
         </div>
       </td>
       <td className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
@@ -154,12 +152,52 @@ const FriendRequestDialog = ({ open, setOpen }) => {
   </DialogBox>
 }
 
+const FriendDataDialog = ({ open, setOpen, friendData }) => {
+  if (!friendData) {
+    return (
+      <DialogBox open={open} setOpen={setOpen}>
+        waiting for response...
+      <button>OK</button>
+      </DialogBox>
+    )
+  }
+  switch (friendData.type) {
+    case 'sleep': {
+      return <DialogBox open={open} setOpen={setOpen}>
+        {friendData.type}
+        <button>OK</button>
+      </DialogBox>
+    }
+    case 'eat': {
+      return <DialogBox open={open} setOpen={setOpen}>
+        {friendData.type}
+        <button>OK</button>
+      </DialogBox>
+    }
+    case 'exercise': {
+      return <DialogBox open={open} setOpen={setOpen}>
+        {friendData.type}
+        <button>OK</button>
+      </DialogBox>
+    }
+    default: {
+      return <DialogBox open={open} setOpen={setOpen}>
+        unhandled data type
+        <button>OK</button>
+      </DialogBox>
+    }
+  }
+}
+
 const FriendList = () => {
   const friends = useFriend()
   const [open, setOpen] = React.useState(false)
+  const [dataOpen, setDataOpen] = React.useState(false)
+  const [friendData, setFriendData] = React.useState(null)
 
-
-
+  const onGetData = ({ type, data }) => {
+    setFriendData({ type, data })
+  }
 
   return (
     <div className='flex flex-col'>
@@ -206,7 +244,7 @@ const FriendList = () => {
               <tbody className='bg-white divide-y divide-gray-200'>
                 {
                   friends.map(
-                    (friend, i) => <FriendRow key={i} friend={friend} />
+                    (friend, i) => <FriendRow key={i} friend={friend} onGetData={onGetData} setDataOpen={setDataOpen} />
                   )
                 }
               </tbody>
@@ -224,6 +262,7 @@ const FriendList = () => {
             </table>
           </div>
           <FriendRequestDialog open={open} setOpen={setOpen} />
+          <FriendDataDialog open={dataOpen} setOpen={setDataOpen} friendData={friendData} />
         </div>
       </div>
     </div>
