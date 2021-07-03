@@ -183,7 +183,82 @@ const SleepEditor = ({ sl, setHintId, setOpen, scrollRef }) => {
   )
 }
 
-export default function Sleep(props) {
+const SleepTable = ({ sleep, setEditSl, hintId, setOpen }) => {
+  return (
+    <table className='min-w-full divide-y divide-gray-200'>
+      <thead>
+        <tr>
+          <th
+            scope='col'
+            className='bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+          >
+            Date
+          </th>
+          <th
+            scope='col'
+            className='bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+          >
+            Start
+          </th>
+          <th
+            scope='col'
+            className='bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+          >
+            End
+          </th>
+          <th
+            scope='col'
+            className='bg-gray-50 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-48'
+          >
+            Duration
+          </th>
+          <th
+            scope='col'
+            className='bg-gray-50 px-6 py-3'
+          >
+            <span className='sr-only'>Edit</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody className='bg-white divide-y divide-gray-200'>
+        {sleep.map((sl, i) => (
+          sl
+            ? (
+              <SleepRow
+                key={sl.sleep_id} sl={sl}
+                setEditSl={setEditSl}
+                hintId={hintId}
+                setOpen={setOpen}
+              />
+            ) : (
+              <tr key={i}>
+                <td colSpan='5' className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
+                  <div className='text-sm text-gray-900 text-center'>
+                    updating...
+                  </div>
+                </td>
+              </tr>
+            )
+        )
+        )}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td
+            colSpan='9' className='bg-gray-50 px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300' onClick={() => {
+              setEditSl({})
+              setOpen(true)
+            }}
+          >
+            <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  )
+}
+
+export default function SleepList(props) {
   const sleep = useSleep()
 
   const [editSl, setEditSl] = React.useState(null)
@@ -194,82 +269,10 @@ export default function Sleep(props) {
 
   return (
     <div className='flex flex-col'>
-      <div className=''>
+      <div>
         <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
-          <div
-            className='shadow border-gray-200 sm:rounded-lg overflow-y-auto max-h-75v'
-            ref={scrollRef}
-          >
-            <table className='min-w-full divide-y divide-gray-200'>
-              <thead>
-                <tr>
-                  <th
-                    scope='col'
-                    className='bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                  >
-                    Date
-                  </th>
-                  <th
-                    scope='col'
-                    className='bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                  >
-                    Start
-                  </th>
-                  <th
-                    scope='col'
-                    className='bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                  >
-                    End
-                  </th>
-                  <th
-                    scope='col'
-                    className='bg-gray-50 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-48'
-                  >
-                    Duration
-                  </th>
-                  <th
-                    scope='col'
-                    className='bg-gray-50 px-6 py-3'
-                  >
-                    <span className='sr-only'>Edit</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody className='bg-white divide-y divide-gray-200'>
-                {sleep.map((sl, i) => (
-                  sl
-                    ? (
-                      <SleepRow
-                        key={sl.sleep_id} sl={sl}
-                        setEditSl={setEditSl}
-                        hintId={hintId}
-                        setOpen={setOpen}
-                      />
-                    ) : (
-                      <tr key={i}>
-                        <td colSpan='5' className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
-                          <div className='text-sm text-gray-900 text-center'>
-                            updating...
-                          </div>
-                        </td>
-                      </tr>
-                    )
-                )
-                )}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td
-                    colSpan='9' className='bg-gray-50 px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300' onClick={() => {
-                      setEditSl({})
-                      setOpen(true)
-                    }}
-                  >
-                    <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
+          <div className='shadow border-gray-200 sm:rounded-lg overflow-y-auto max-h-75v'>
+            <SleepTable sleep={sleep} setEditSl={setEditSl} hintId={hintId} setOpen={setOpen} />
           </div>
           <DialogBox open={open} setOpen={setOpen}>
             <table className='min-w-full divide-y divide-gray-200'>
