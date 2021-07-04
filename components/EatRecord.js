@@ -366,6 +366,68 @@ const NutritionSummary = ({ group }) => {
   )
 }
 
+const EditableEatTable = ({ eatGroups, editable }) => {
+  const { setEditEat, setHintId, setOpen } = editable
+
+  return <table className='min-w-full divide-y divide-gray-200'>
+    <thead className='top-0'>
+      <tr className='top-0'>
+        <Th>
+          Date
+      </Th>
+        <Th>
+          Time
+      </Th>
+        <Th>
+          Foods
+      </Th>
+        <Th>
+          Amount
+      </Th>
+        <Th>
+          Carbon
+      </Th>
+        <Th>
+          Protein
+      </Th>
+        <Th>
+          Fat
+      </Th>
+        <Th>
+          Calorie
+      </Th>
+        <Th>
+          <span className='sr-only'>Edit</span>
+        </Th>
+      </tr>
+    </thead>
+    <tbody className='bg-white divide-y divide-gray-200 text-sm'>
+      {
+        eatGroups.map(
+          (group, i) => <DayGroup
+            key={i}
+            group={group}
+            setOpen={setOpen}
+            setEditEat={setEditEat}
+          />
+        )
+      }
+    </tbody>
+    <tfoot>
+      <tr>
+        <td
+          colSpan='9' className='bg-gray-50 px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300' onClick={() => {
+            setEditEat({})
+            setOpen(true)
+          }}
+        >
+          <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+}
+
 const EatRecord = () => {
   const eatGroups = useGroupByDateEat()
   const [editEat, setEditEat] = React.useState(null)
@@ -378,63 +440,7 @@ const EatRecord = () => {
         <div
           className='shadow border-gray-200 sm:rounded-lg overflow-y-auto max-h-75v'
         >
-          <table className='min-w-full divide-y divide-gray-200'>
-            <thead className='top-0'>
-              <tr className='top-0'>
-                <Th>
-                  Date
-                </Th>
-                <Th>
-                  Time
-                </Th>
-                <Th>
-                  Foods
-                </Th>
-                <Th>
-                  Amount
-                </Th>
-                <Th>
-                  Carbon
-                </Th>
-                <Th>
-                  Protein
-                </Th>
-                <Th>
-                  Fat
-                </Th>
-                <Th>
-                  Calorie
-                </Th>
-                <Th>
-                  <span className='sr-only'>Edit</span>
-                </Th>
-              </tr>
-            </thead>
-            <tbody className='bg-white divide-y divide-gray-200 text-sm'>
-              {
-                eatGroups.map(
-                  (group, i) => <DayGroup
-                    key={i}
-                    group={group}
-                    setOpen={setOpen}
-                    setEditEat={setEditEat}
-                  />
-                )
-              }
-            </tbody>
-            <tfoot>
-              <tr>
-                <td
-                  colSpan='9' className='bg-gray-50 px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300' onClick={() => {
-                    setEditEat({})
-                    setOpen(true)
-                  }}
-                >
-                  <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
-                </td>
-              </tr>
-            </tfoot>
-          </table>
+          <EditableEatTable eatGroups={eatGroups} editable={{ setEditEat, setHintId, setOpen }} />
         </div>
         <DialogBox open={open} setOpen={setOpen}>
           <table className='min-w-full divide-y divide-gray-200'>
