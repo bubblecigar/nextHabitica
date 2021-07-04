@@ -296,7 +296,7 @@ export default function SleepList(props) {
             <EditableSleepTable sleep={sleep} setEditSl={setEditSl} hintId={hintId} setOpen={setOpen} />
           </div>
           <DialogBox open={open} setOpen={setOpen}>
-            <table className='min-w-full divide-y divide-gray-200'>
+            <table style={{ width: '500px' }} className='min-w-full divide-y divide-gray-200'>
               <tbody className='bg-white divide-y divide-gray-200'>
                 <SleepEditor
                   sl={editSl}

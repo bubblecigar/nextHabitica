@@ -142,7 +142,7 @@ const TrainingTable = ({ editable, closeCreation, initEditState = false, staticV
             </div> : null}
           </div>
           <DialogBox open={openDatePicker} setOpen={setOpenDatePicker}>
-            <div className='h-48 pr-10 py-8'>
+            <div className='h-48 pr-10 py-8' style={{ width: '500px' }}>
               <DatePicker value={time} onChange={setTime} />
               <div className='mt-16 flex justify-end items-center'>
                 <button

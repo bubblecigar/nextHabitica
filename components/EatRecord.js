@@ -455,7 +455,7 @@ const EatRecord = () => {
           <EditableEatTable eatGroups={eatGroups} hooks={{ setEditEat, setHintId, setOpen }} />
         </div>
         <DialogBox open={open} setOpen={setOpen}>
-          <table className='min-w-full divide-y divide-gray-200'>
+          <table style={{ width: '500px' }} className='min-w-full divide-y divide-gray-200'>
             <tbody className='bg-white divide-y divide-gray-200'>
               <EatEditor
                 eat={editEat}
