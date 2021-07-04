@@ -34,7 +34,7 @@ const Cell = (props) => {
   )
 }
 
-const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exercise_id }) => {
+const TrainingTable = ({ editable, closeCreation, initEditState = false, staticValue, exercise_id }) => {
   const exercise = useExercise()
   const [onEdit, setOnEdit] = React.useState(initEditState)
   const [time, setTime] = React.useState(staticValue.time)
@@ -164,7 +164,7 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exer
             </div>
           </DialogBox>
           {
-            initEditState ? null : <div className='has-tooltip absolute -left-10 top-4'>
+            (initEditState || !editable) ? null : <div className='has-tooltip absolute -left-10 top-4'>
               <PencilAltIcon onClick={() => setOnEdit(!onEdit)} className={'mx-auto h-4 w-4 text-sm cursor-pointer' + ' ' + (onEdit ? 'text-indigo-500' : 'text-gray-300')} aria-hidden='true' />
               <span className='tooltip text-indigo-500'>toggle edit mode</span>
             </div>

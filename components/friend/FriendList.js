@@ -7,6 +7,7 @@ import { useUser, useGroupByDateEat } from '../../lib/hooks'
 import DialogBox from '../../components/DialogBox'
 import { SleepTable } from '../SleepList'
 import { EatTable } from '../EatRecord'
+import ExerciseRecord from '../exercise/ExerciseRecord'
 
 const FriendRow = ({ friend, onGetData, setDataOpen }) => {
   const user = useUser()
@@ -180,7 +181,7 @@ const FriendDataDialog = ({ open, setOpen, friendData }) => {
     }
     case 'exercise': {
       return <DialogBox open={open} setOpen={setOpen}>
-        {friendData.type}
+        <ExerciseRecord exercises={friendData.data} editable={false} />
         <button>OK</button>
       </DialogBox>
     }
