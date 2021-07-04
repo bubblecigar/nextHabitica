@@ -3,9 +3,10 @@ import React from 'react'
 import { PlusCircleIcon } from '@heroicons/react/solid'
 import { EyeIcon } from '@heroicons/react/outline'
 import { mutate } from 'swr'
-import { useUser } from '../../lib/hooks'
+import { useUser, useGroupByDateEat } from '../../lib/hooks'
 import DialogBox from '../../components/DialogBox'
 import { SleepTable } from '../SleepList'
+import { EatTable } from '../EatRecord'
 
 const FriendRow = ({ friend, onGetData, setDataOpen }) => {
   const user = useUser()
@@ -171,8 +172,9 @@ const FriendDataDialog = ({ open, setOpen, friendData }) => {
       </DialogBox>
     }
     case 'eat': {
+      const eatGroups = useGroupByDateEat(friendData.data)
       return <DialogBox open={open} setOpen={setOpen}>
-        {friendData.type}
+        <EatTable eatGroups={eatGroups} />
         <button>OK</button>
       </DialogBox>
     }
