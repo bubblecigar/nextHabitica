@@ -175,7 +175,7 @@ const FriendDataDialog = ({ open, setOpen, friendData }) => {
   if (!friendData) {
     return (
       <DialogBox open={open} setOpen={setOpen}>
-        waiting for response...
+        <div className='p-5 pb-0'>waiting for response...</div>
         <CloseButton setOpen={setOpen} />
       </DialogBox>
     )
