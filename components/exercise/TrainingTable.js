@@ -315,7 +315,7 @@ const getFoot = (onEdit, columns, staticValue, addRow) => {
       <tr>
         <td></td>
         <td colSpan={columns.length}
-          className='has-tooltip bg-gray-50 p-3 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300 relative'
+          className='has-tooltip bg-transparent p-3 whitespace-nowrap text-sm font-medium  cursor-pointer hover:text-indigo-500 text-indigo-300 relative'
           onClick={addRow}>
           <PlusIcon className='mx-auto h-5 w-5' aria-hidden='true' />
           <span className='tooltip text-indigo-500 bottom-0 left-1/2'>add row</span>
@@ -328,7 +328,7 @@ const getFoot = (onEdit, columns, staticValue, addRow) => {
       <tr>
         <td></td>
         <td colSpan={columns.length}
-          className='bg-gray-50 p-3 whitespace-nowrap text-sm font-medium text-transparent'>
+          className='bg-transparent p-3 whitespace-nowrap text-sm font-medium text-transparent'>
           <PlusIcon className='mx-auto h-5 w-5' aria-hidden='true' />
         </td>
       </tr>
