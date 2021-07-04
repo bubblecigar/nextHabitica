@@ -1,7 +1,7 @@
 import db from '../../../db/index.js'
 import { getUserFromLoginSession } from '../user'
 
-const readSleepRows = async (userId) => {
+export const readSleepRows = async (userId) => {
   return new Promise((resolve, reject) => {
     db.query(`
       SELECT * FROM sleep

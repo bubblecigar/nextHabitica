@@ -1,5 +1,5 @@
 import React from 'react'
-import { PlusCircleIcon, PlusIcon, MinusSmIcon, TrashIcon, CloudUploadIcon, ReplyIcon, PencilAltIcon, PencilIcon } from '@heroicons/react/solid'
+import { PlusIcon, MinusSmIcon, TrashIcon, CloudUploadIcon, ReplyIcon, PencilAltIcon, PencilIcon } from '@heroicons/react/solid'
 import { mutate } from 'swr'
 import { useExercise } from '../../lib/hooks'
 import { v4 as uuidv4 } from 'uuid'
@@ -8,7 +8,7 @@ import zhTWLocale from 'date-fns/locale/zh-TW'
 import DatePicker from '../DatePicker'
 import DialogBox from '../DialogBox'
 
-const FocusableField = ({ staticValue, value, onChange, onFocus, onBlur, type, classNames, onEdit }) => {
+const FocusableField = ({ value, onChange, onFocus, onBlur, type, classNames, onEdit }) => {
   const typeTransform = value => type === 'number' ? Number(value) : value
   return (
     <input
@@ -34,7 +34,7 @@ const Cell = (props) => {
   )
 }
 
-const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exercise_id }) => {
+const TrainingTable = ({ editable, closeCreation, initEditState = false, staticValue, exercise_id }) => {
   const exercise = useExercise()
   const [onEdit, setOnEdit] = React.useState(initEditState)
   const [time, setTime] = React.useState(staticValue.time)
@@ -142,7 +142,7 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exer
             </div> : null}
           </div>
           <DialogBox open={openDatePicker} setOpen={setOpenDatePicker}>
-            <div className='h-48 pr-10 py-8'>
+            <div className='h-48 pr-10 py-8' style={{ width: '500px' }}>
               <DatePicker value={time} onChange={setTime} />
               <div className='mt-16 flex justify-end items-center'>
                 <button
@@ -164,7 +164,7 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exer
             </div>
           </DialogBox>
           {
-            initEditState ? null : <div className='has-tooltip absolute -left-10 top-4'>
+            (initEditState || !editable) ? null : <div className='has-tooltip absolute -left-10 top-4'>
               <PencilAltIcon onClick={() => setOnEdit(!onEdit)} className={'mx-auto h-4 w-4 text-sm cursor-pointer' + ' ' + (onEdit ? 'text-indigo-500' : 'text-gray-300')} aria-hidden='true' />
               <span className='tooltip text-indigo-500'>toggle edit mode</span>
             </div>
@@ -206,7 +206,7 @@ const TrainingTable = ({ closeCreation, initEditState = false, staticValue, exer
               </div>
             ) : null
           }
-          <table className='min-w-full'>
+          <table>
             <tbody>
               <tr>
                 {
@@ -315,9 +315,9 @@ const getFoot = (onEdit, columns, staticValue, addRow) => {
       <tr>
         <td></td>
         <td colSpan={columns.length}
-          className='has-tooltip bg-gray-50 p-3 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300'
+          className='has-tooltip bg-transparent p-3 whitespace-nowrap text-sm font-medium  cursor-pointer hover:text-indigo-500 text-indigo-300 relative'
           onClick={addRow}>
-          <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
+          <PlusIcon className='mx-auto h-5 w-5' aria-hidden='true' />
           <span className='tooltip text-indigo-500 bottom-0 left-1/2'>add row</span>
         </td>
       </tr>
@@ -328,8 +328,8 @@ const getFoot = (onEdit, columns, staticValue, addRow) => {
       <tr>
         <td></td>
         <td colSpan={columns.length}
-          className='bg-gray-50 p-3 whitespace-nowrap text-sm font-medium text-transparent'>
-          <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
+          className='bg-transparent p-3 whitespace-nowrap text-sm font-medium text-transparent'>
+          <PlusIcon className='mx-auto h-5 w-5' aria-hidden='true' />
         </td>
       </tr>
     </tfoot>

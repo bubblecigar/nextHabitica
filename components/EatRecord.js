@@ -223,7 +223,7 @@ const getNutrition = food => {
   return { carbon, protein, fat, calorie }
 }
 
-const FoodRow = ({ eat, food, dayHead, timeHead, totalRowsCount, setOpen, setEditEat }) => {
+const FoodRow = ({ eat, food, dayHead, timeHead, totalRowsCount, hooks }) => {
   const { carbon, protein, fat, calorie } = getNutrition(food)
   return (
     <tr>
@@ -271,17 +271,19 @@ const FoodRow = ({ eat, food, dayHead, timeHead, totalRowsCount, setOpen, setEdi
           </Td>
           {
             timeHead ? (
-              <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
+              hooks ? <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
                 <a
                   onClick={() => {
-                    setEditEat(eat)
-                    setOpen(true)
+                    hooks.setEditEat(eat)
+                    hooks.setOpen(true)
                   }}
                   className='text-xs text-indigo-600 hover:text-indigo-900 cursor-pointer'
                 >
                   Edit
                 </a>
               </td>
+                : <td rowSpan={eat.foods.length} className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
+                </td>
             ) : null
           }
         </>
@@ -366,6 +368,78 @@ const NutritionSummary = ({ group }) => {
   )
 }
 
+const EatHeadBody = ({ eatGroups, hooks }) => {
+  return <>
+    <thead className='top-0'>
+      <tr className='top-0'>
+        <Th>
+          Date
+        </Th>
+        <Th>
+          Time
+        </Th>
+        <Th>
+          Foods
+        </Th>
+        <Th>
+          Amount
+        </Th>
+        <Th>
+          Carbon
+        </Th>
+        <Th>
+          Protein
+        </Th>
+        <Th>
+          Fat
+        </Th>
+        <Th>
+          Calorie
+        </Th>
+        <Th>
+          <span className='sr-only'>Edit</span>
+        </Th>
+      </tr>
+    </thead>
+    <tbody className='bg-white divide-y divide-gray-200 text-sm'>
+      {
+        eatGroups.map(
+          (group, i) => <DayGroup
+            key={i}
+            group={group}
+            hooks={hooks}
+          />
+        )
+      }
+    </tbody>
+  </>
+}
+
+export const EatTable = ({ eatGroups }) => {
+  return <table className='min-w-full divide-y divide-gray-200'>
+    <EatHeadBody eatGroups={eatGroups} />
+  </table>
+}
+const EditableEatTable = ({ eatGroups, hooks }) => {
+  const { setEditEat, setHintId, setOpen } = hooks
+
+  return <table className='min-w-full divide-y divide-gray-200'>
+    <EatHeadBody eatGroups={eatGroups} hooks={hooks} />
+    <tfoot>
+      <tr>
+        <td
+          colSpan='9' className='bg-gray-50 px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300' onClick={() => {
+            setEditEat({})
+            setOpen(true)
+          }}
+        >
+          <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+}
+
 const EatRecord = () => {
   const eatGroups = useGroupByDateEat()
   const [editEat, setEditEat] = React.useState(null)
@@ -378,66 +452,10 @@ const EatRecord = () => {
         <div
           className='shadow border-gray-200 sm:rounded-lg overflow-y-auto max-h-75v'
         >
-          <table className='min-w-full divide-y divide-gray-200'>
-            <thead className='top-0'>
-              <tr className='top-0'>
-                <Th>
-                  Date
-                </Th>
-                <Th>
-                  Time
-                </Th>
-                <Th>
-                  Foods
-                </Th>
-                <Th>
-                  Amount
-                </Th>
-                <Th>
-                  Carbon
-                </Th>
-                <Th>
-                  Protein
-                </Th>
-                <Th>
-                  Fat
-                </Th>
-                <Th>
-                  Calorie
-                </Th>
-                <Th>
-                  <span className='sr-only'>Edit</span>
-                </Th>
-              </tr>
-            </thead>
-            <tbody className='bg-white divide-y divide-gray-200 text-sm'>
-              {
-                eatGroups.map(
-                  (group, i) => <DayGroup
-                    key={i}
-                    group={group}
-                    setOpen={setOpen}
-                    setEditEat={setEditEat}
-                  />
-                )
-              }
-            </tbody>
-            <tfoot>
-              <tr>
-                <td
-                  colSpan='9' className='bg-gray-50 px-6 py-4 whitespace-nowrap text-sm font-medium hover:bg-gray-50 cursor-pointer hover:text-indigo-500 text-indigo-300' onClick={() => {
-                    setEditEat({})
-                    setOpen(true)
-                  }}
-                >
-                  <PlusCircleIcon className='mx-auto h-5 w-5' aria-hidden='true' />
-                </td>
-              </tr>
-            </tfoot>
-          </table>
+          <EditableEatTable eatGroups={eatGroups} hooks={{ setEditEat, setHintId, setOpen }} />
         </div>
         <DialogBox open={open} setOpen={setOpen}>
-          <table className='min-w-full divide-y divide-gray-200'>
+          <table style={{ width: '500px' }} className='min-w-full divide-y divide-gray-200'>
             <tbody className='bg-white divide-y divide-gray-200'>
               <EatEditor
                 eat={editEat}

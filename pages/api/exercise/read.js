@@ -1,7 +1,7 @@
 import db from '../../../db/index.js'
 import { getUserFromLoginSession } from '../user'
 
-const readExerciseRows = async (userId) => {
+export const readExerciseRows = async (userId) => {
   return new Promise((resolve, reject) => {
     db.query(`
       SELECT * FROM exercise
