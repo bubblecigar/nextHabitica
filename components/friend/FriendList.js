@@ -1,6 +1,6 @@
 import { useFriend } from '../../lib/hooks'
 import React from 'react'
-import { PlusCircleIcon } from '@heroicons/react/solid'
+import { PlusCircleIcon, EyeIcon as SolidEye } from '@heroicons/react/solid'
 import { EyeIcon } from '@heroicons/react/outline'
 import { mutate } from 'swr'
 import { useUser, useGroupByDateEat } from '../../lib/hooks'
@@ -8,6 +8,14 @@ import DialogBox from '../../components/DialogBox'
 import { SleepTable } from '../SleepList'
 import { EatTable } from '../EatRecord'
 import ExerciseRecord from '../exercise/ExerciseRecord'
+
+const InspectButton = ({ onInspect }) => {
+  const [onHover, setOnHover] = React.useState(false)
+
+  return <span onMouseEnter={() => setOnHover(true)} onMouseLeave={() => setOnHover(false)}>
+    {onHover ? <SolidEye onClick={onInspect} className='text-indigo-500 cursor-pointer mx-auto h-5 w-5' aria-hidden='true' /> : <EyeIcon onClick={onInspect} className='text-indigo-500 cursor-pointer mx-auto h-5 w-5' aria-hidden='true' />}
+  </span>
+}
 
 const FriendRow = ({ friend, onGetData, setDataOpen }) => {
   const user = useUser()
@@ -56,27 +64,27 @@ const FriendRow = ({ friend, onGetData, setDataOpen }) => {
 
   return (
     <tr>
-      <td className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
+      <td className='px-6 py-4 whitespace-nowrap'>
         <div className='text-sm text-gray-900 text-center'>
           {friend.info.user_name}
         </div>
       </td>
-      <td className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
+      <td className='px-6 py-4 whitespace-nowrap'>
         <div className='text-sm text-gray-900 text-center'>
-          {accepted ? <EyeIcon onClick={onInspect('sleep')} className='cursor-pointer mx-auto h-5 w-5' aria-hidden='true' /> : null}
+          {accepted ? <InspectButton onInspect={onInspect('sleep')} /> : null}
         </div>
       </td>
-      <td className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
+      <td className='px-6 py-4 whitespace-nowrap'>
         <div className='text-sm text-gray-900 text-center'>
-          {accepted ? <EyeIcon onClick={onInspect('eat')} className='cursor-pointer mx-auto h-5 w-5' aria-hidden='true' /> : null}
+          {accepted ? <InspectButton onInspect={onInspect('eat')} /> : null}
         </div>
       </td>
-      <td className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
+      <td className='px-6 py-4 whitespace-nowrap'>
         <div className='text-sm text-gray-900 text-center'>
-          {accepted ? <EyeIcon onClick={onInspect('exercise')} className='cursor-pointer mx-auto h-5 w-5' aria-hidden='true' /> : null}
+          {accepted ? <InspectButton onInspect={onInspect('exercise')} /> : null}
         </div>
       </td>
-      <td className='bg-indigo-50 px-6 py-4 whitespace-nowrap'>
+      <td className='px-6 py-4 whitespace-nowrap'>
         <div className='text-sm text-gray-900 text-center'>
           {
             accepted
