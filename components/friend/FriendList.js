@@ -165,7 +165,7 @@ const FriendRequestDialog = ({ open, setOpen }) => {
 }
 
 const CloseButton = ({ setOpen }) => <button
-  className='block w-full p-2 mt-10 border border-transparent text-xs font-medium text-white bg-indigo-400 hover:bg-indigo-600 focus:outline-none'
+  className='block w-full p-2 mt-10 border border-transparent text-xs font-medium text-white bg-indigo-400 hover:bg-indigo-500 focus:outline-none'
   onClick={() => setOpen(false)}
 >
   CLOSE
