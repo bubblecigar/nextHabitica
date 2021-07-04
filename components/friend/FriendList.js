@@ -122,7 +122,7 @@ const FriendRequestDialog = ({ open, setOpen }) => {
   }
 
   return <DialogBox open={open} setOpen={setOpen}>
-    <table className='min-w-full divide-y divide-gray-200'>
+    <table style={{ width: '500px' }} className='min-w-full divide-y divide-gray-200'>
       <tbody className='bg-white divide-y divide-gray-200'>
         <tr >
           <td className='flex items-center justify-between px-6 py-4 whitespace-nowrap text-sm font-medium'>
@@ -156,12 +156,19 @@ const FriendRequestDialog = ({ open, setOpen }) => {
   </DialogBox>
 }
 
+const CloseButton = ({ setOpen }) => <button
+  className='block w-full p-2 mt-10 border border-transparent text-xs font-medium text-white bg-indigo-400 hover:bg-indigo-600 focus:outline-none'
+  onClick={() => setOpen(false)}
+>
+  CLOSE
+</button>
+
 const FriendDataDialog = ({ open, setOpen, friendData }) => {
   if (!friendData) {
     return (
       <DialogBox open={open} setOpen={setOpen}>
         waiting for response...
-      <button>OK</button>
+        <CloseButton setOpen={setOpen} />
       </DialogBox>
     )
   }
@@ -169,26 +176,26 @@ const FriendDataDialog = ({ open, setOpen, friendData }) => {
     case 'sleep': {
       return <DialogBox open={open} setOpen={setOpen}>
         <SleepTable sleep={friendData.data} />
-        <button>OK</button>
+        <CloseButton setOpen={setOpen} />
       </DialogBox>
     }
     case 'eat': {
       const eatGroups = useGroupByDateEat(friendData.data)
       return <DialogBox open={open} setOpen={setOpen}>
         <EatTable eatGroups={eatGroups} />
-        <button>OK</button>
+        <CloseButton setOpen={setOpen} />
       </DialogBox>
     }
     case 'exercise': {
       return <DialogBox open={open} setOpen={setOpen}>
         <ExerciseRecord exercises={friendData.data} editable={false} />
-        <button>OK</button>
+        <CloseButton setOpen={setOpen} />
       </DialogBox>
     }
     default: {
       return <DialogBox open={open} setOpen={setOpen}>
         unhandled data type
-        <button>OK</button>
+        <CloseButton setOpen={setOpen} />
       </DialogBox>
     }
   }
